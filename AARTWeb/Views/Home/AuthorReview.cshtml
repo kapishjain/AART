@@ -1,0 +1,896 @@
+﻿@{
+    ViewBag.Title = "Author Review";
+}
+
+@{
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">
+<script src="~/Scripts/diff_match_patch.js"></script>*@
+
+<style>
+    div.k-edit-form-container {
+        width: auto;
+        height: auto;
+    }
+
+    .k-edit-label {
+        width: 15% !important;
+        text-align: left !important;
+    }
+
+    .k-edit-field {
+        width: 80% !important;
+    }
+
+    .red {
+        color: black;
+        background-color: #ea5757;
+    }
+    .blue {
+        background-color: #6495edb5;
+                color:black;
+    }
+
+    .orange {
+        background-color: #ffa500a6;
+                color:black;
+
+    }
+
+    .green {
+        background-color: #98d0627a;
+                color:black;
+
+    }
+
+    .black {
+        color: black;
+    }
+
+    ins {
+        background-color: #cfc;
+        text-decoration: none;
+    }
+
+
+
+    del {
+        color: #999;
+        background-color: #FEC8C8;
+    }
+</style>
+
+<script>
+
+    var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
+
+    $(document).ready(function () {
+
+        var datasource = new kendo.data.DataSource({
+            schema: {
+                model: {
+                    id: "ProDoc_Section_Assignment_id",
+                    fields: {
+                        Section: { type: 'string', editable: false },
+                        Template_Content: { type: 'string', editable: true },
+                        Status: { type: 'string', editable: false },
+                        Product_Status: { type: 'string', editable: false },
+
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("ProDocSecAssList", "Home")',
+                    type: 'post',
+					dataType: 'json',
+					complete: function (e) {
+						console.log(e);
+					}
+                },
+                update: {
+                    url: '@Url.Action("UpdateProDocSecAss", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        $("#grid").data("kendoGrid").dataSource.read();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+             },
+            pageSize: 10
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: datasource,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "Section", title: "Section",width: "300px" },
+                { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
+                { field: "status", title: "Status",width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be Review\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+                { command: ["edit", { name: "Submit", click: SubmitSecRecord } ,{ name: "Accept", click: AcceptRecord }, { name: "Revert", click: RevertRecord }], width: "100px" },
+                { command: [ {name: "View Comments", click: OpenData} ], width: "100px" }
+            ],
+            editable: "popup",
+              dataBound: function (e) {
+                $("#grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                $("#grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                 $("#grid tbody tr .k-grid-Accept").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                $("#grid tbody tr .k-grid-Revert").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+            }
+        });
+
+        var pDataSource = new kendo.data.DataSource({
+            schema: {
+                model: {
+                    id: "ProDoc_Template_id",
+                    fields: {
+                        Action: { type: 'string', editable: false },
+                        Template_Content: { type: 'string', editable: true },
+                        Status: { type: 'string', editable: false },
+                        ProductStatus: { type: 'string', editable: false },
+
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("ProDocActList", "Home")',
+                    type: 'post',
+					dataType: 'json',
+					complete: function (o) {
+						console.log(o);
+					}
+                },
+                update: {
+                    url: '@Url.Action("UpdateProDocActAss", "Home")',
+                    type: 'post',
+					dataType: 'json',
+					complete: function (e) {
+						alert(e.responseJSON.info);
+						reloadPage();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+             },
+            pageSize: 10
+        });
+
+        $("#act-grid").kendoGrid({
+            dataSource: pDataSource,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "Action", title: "Action", width: "300px"},
+                { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
+                                { field: "status", title: "Status",width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be Review\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+                { command: ["edit", { name: "Submit", click: SubmitActRecord } ,{ name: "Accept", click: AcceptActRecord }, { name: "Revert", click: RevertActRecord }], width: "100px" },
+                { command: [ {name: "View Comments", click: OpenActData} ], width: "100px" }
+            ],
+            editable: "popup",
+            dataBound: function (e) {
+                $("#act-grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#act-grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                $("#act-grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#act-grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                $("#act-grid tbody tr .k-grid-Accept").each(function () {
+                    var currentDataItem = $("#act-grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+                $("#act-grid tbody tr .k-grid-Revert").each(function () {
+                    var currentDataItem = $("#act-grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.Product_Status == "S") {
+                        $(this).remove();
+                    }
+                })
+            }
+        });
+
+    });
+
+    function SectionEditor(container, options) {
+            //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
+        $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+            resizable: { content: true, toolbar: true },
+            tools: [
+                {
+                    name: "fontName",
+                    items: [
+                        { text: "Andale Mono", value: "Andale Mono" },
+                        { text: "Arial", value: "Arial" },
+                        { text: "Arial Black", value: "Arial Black" },
+                        { text: "Book Antiqua", value: "Book Antiqua" },
+                        { text: "Calibri", value: "Calibri" },
+                        { text: "Comic Sans MS", value: "Comic Sans MS" },
+                        { text: "Courier New", value: "Courier New" },
+                        { text: "Georgia", value: "Georgia" },
+                        { text: "Helvetica", value: "Helvetica" },
+                        { text: "Impact", value: "Impact" },
+                        { text: "Symbol", value: "Symbol" },
+                        { text: "Tahoma", value: "Tahoma" },
+                        { text: "Terminal", value: "Terminal" },
+                        { text: "Times New Roman", value: "Times New Roman" },
+                        { text: "Trebuchet MS", value: "Trebuchet MS" },
+                        { text: "Verdana", value: "Verdana" },
+                        { text: "Webdings", value: "Webdings" },
+                        { text: "Wingdings", value: "Wingdings" }]
+                },
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "subscript",
+                "superscript",
+                "tableWizard",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "fontSize",
+                "foreColor",
+                "backColor",
+                "print"
+            ]
+        });
+	};
+
+	function reloadPage() {
+		window.location.reload();
+	}
+
+	// window for sections view data
+    function OpenData(e) {
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+		from = "Section"
+		Id = dataItem.ProDoc_Section_Assignment_id;
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+				id: Id,
+				templateVar: from
+            },
+            success: function (rs) {
+				console.log(rs);
+				if (rs.Count < 0) {
+					alert("Not commented Yet!")
+					return
+				}
+                $("#data-grid").kendoGrid({
+                    dataSource: rs,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+
+
+        dataWnd = $("#k-dwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+    }
+
+    // submit section record 
+    function SubmitSecRecordByUser() {
+
+
+        Comment = $("#comment").val();
+        console.log("Update: ", Comment);
+
+        recId = $("#pro-sec-id").text();        
+
+        recStatus = $("#status").text();
+        console.log("status: ", recStatus);
+
+        recTemp = $("#template-content").text();
+        console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitAuthRevSecAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,              
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+                console.log(varJ);
+
+                console.log("Success: ", res);
+                alert(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                alert("Error occured");
+                console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
+
+    function SubmitActRecordByUser() {
+
+
+        Comment = $("#comment").val();
+        console.log("Update: ", Comment);
+
+        recId = $("#pro-act-id").text();        
+
+        recStatus = $("#status").text();
+        console.log("status: ", recStatus);
+
+        recTemp = $("#template-content").text();
+        console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitAuthRevActAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,               
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+                console.log(varJ);
+
+                console.log("Success: ", res);
+                alert(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                alert("Error occured");
+                console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
+
+
+	// window for activity view data
+	function OpenActData(a) {
+
+        var dataItem = this.dataItem($(a.currentTarget).closest("tr"));
+
+		from = "Activity"
+		Id = dataItem.ProDoc_Template_id;
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+				id: Id,
+				templateVar: from
+            },
+			success: function (r) {
+				console.log("View data window item length: ", r)
+				console.log(r.Count);
+				if (r.Count < 0) {
+					alert("Not commented Yet!");
+					return;
+				}
+                $("#diff-data-grid").kendoGrid({
+                    dataSource: r,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+
+
+        dataWnd = $("#k-diffwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+	}
+
+	// window for accept functionality for activity
+	function AcceptActRecord(e) {
+
+         wnd = $("#k-wnd").kendoWindow({
+             width: 400,
+             height: 150,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        console.log("Accept: ", dataItem);
+
+		Id = dataItem.ProDoc_Template_id;
+		from = "Activity";
+        Status = "S";
+        template = dataItem.Template_Content;
+
+        console.log("id + status: ", Id, Status);
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+	}
+
+	// window for revert functionality for activity
+	function RevertActRecord(e) {
+
+		wnd = $("#k-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        console.log("Reject: ", dataItem);
+
+		Id = dataItem.ProDoc_Template_id;
+		from = "Activity";
+        Status = "R";
+        template = dataItem.Template_Content;
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+	// window for accept functionality in section
+    function AcceptRecord(e) {
+         wnd = $("#k-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        console.log("Accept: ", dataItem);
+
+		Id = dataItem.ProDoc_Section_Assignment_id;
+		from = "Section";
+        Status = "S";
+        template = dataItem.Template_Content;
+
+        console.log("id + status: ", Id, Status);
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+	}
+
+	//window for revert functionality for sections
+	function RevertRecord(e) {
+		wnd = $("#k-wnd").kendoWindow({
+             width: 800,
+             height: 500,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+		}).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        console.log("Reject: ", dataItem);
+
+		Id = dataItem.ProDoc_Section_Assignment_id;
+		from = "Section";
+        Status = "R";
+        template = dataItem.Template_Content;
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+	// accept or revert submit functionality
+    function UpdateAcceptReject() {
+        Comment = $("#comment").val();
+        console.log("Update: ",Id, Status, Comment);
+
+        $.ajax({
+            url: '@Url.Action("UpdateAcceptReject", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                id: Id,
+                status: Status,
+                comment: Comment,
+				recTemplate: template,
+				templateVar: from
+            },
+            success: function (res) {
+                alert(res.info);
+                console.log("Success: ", res.info);
+                wnd.center().close();
+
+            },
+            error: function (err) {
+                alert("Error occured");
+                console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
+
+	// window for Difference button inside view data for activities
+	function OpenActDiffData(ae) {
+
+		diffActWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+
+		diffActTemp = kendo.template($("#diff-act-template").html());
+
+		var dItem = this.dataItem($(ae.currentTarget).closest("tr"));
+		console.log("Diff: ", dItem);
+		var aId = dItem.Review_Activity_Id;
+
+		console.log("Difference: ", aId);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: aId,
+				templateVar: from
+			},
+			success: function (es) {
+				console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffActWnd.content(diffActTemp(objdiff));
+			},
+			error: function (er) {
+				console.log("Error: ", er);
+			}
+		})
+
+		diffActWnd.center().open();
+	}
+
+	// window for Difference button inside view data for sections
+	function OpenDiffData(od) {
+
+		diffSecWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+
+		diffSecTemplate = kendo.template($("#diff-sec-template").html());
+
+		var dti = this.dataItem($(od.currentTarget).closest("tr"));
+		console.log("Diff: ", dti);
+
+		var	dId = dti.Review_Section_Id;
+
+		console.log("Difference: ", dti);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: dId,
+				templateVar: from
+			},
+			success: function (es) {
+				console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffSecWnd.content(diffSecTemplate(objdiff));
+			},
+			error: function (er) {
+				console.log("Error: ", er);
+			}
+		})
+
+		diffSecWnd.center().open();
+	}
+
+     function downlaodrecord() {
+        var gridData = $("#grid").data("kendoGrid").dataSource.data();
+        var paramValue = JSON.stringify(gridData);
+          $.ajax({
+            url: '@Url.Action("PrictDoc", "Home")',
+            type: 'Post',
+              data: { doctext: paramValue },
+            success: function (data) {
+                        window.location = '@Url.Action("GenerateDoc", "Home")';
+            },
+              error: function () {
+                  showAlert('Ajax error!');
+            }
+        });
+    }
+
+    function submitrecord() {
+        alert("Submit");
+        var gridData = $("#grid").data("kendoGrid").dataSource.data();
+        var paramValue = JSON.stringify(gridData);
+          $.ajax({
+            url: '@Url.Action("SubmitReport", "Home")',
+            type: 'Post',
+              data: { doctext: paramValue },
+            success: function (data) {
+                       // window.location = '@Url.Action("GenerateDoc", "Home")';
+            },
+              error: function () {
+                  showAlert('Ajax error!');
+            }
+        });
+    }
+
+    function SubmitSecRecord(e) {
+          wnd = $("#k-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));       
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+
+    function SubmitActRecord(e) {
+         wnd = $("#ka-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#act-comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));        
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+</script>
+
+
+<script type="text/x-kendo-template" id="sec-comment-template">
+
+    <div style="display:none">
+
+        <div id="pro-sec-id">#= ProDoc_Section_Assignment_id #</div>
+        <div id="status">#= Status #</div>
+        <div id="template-content">#= Template_Content #</div>
+
+    </div>
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitSecRecordByUser()" />
+</script>
+
+
+<script type="text/x-kendo-template" id="act-comment-template">
+
+    <div style="display:none">
+
+        <div id="pro-act-id">#= ProDoc_Template_id #</div>
+        <div id="status">#= Status #</div>
+        <div id="template-content">#= Template_Content #</div>
+
+    </div>
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+</script>
+
+<script type="text/x-kendo-template" id="comment-template">
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="UpdateAcceptReject()" />
+</script>
+
+<script type="text/x-kendo-template" id="viewdata-template">
+
+</script>
+
+<script type="text/x-kendo-template" id="diff-sec-template">
+    @*<div id="data-grid"></div>*@
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="diff-act-template">
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+
+
+<div class="row">
+    <br />
+
+    <div class="col-sm-12 col-md-12">
+        Activity
+        <div id="act-grid"></div>
+    </div>
+
+    <div class="col-sm-12 col-md-12">
+        Section
+        <div id="grid"></div>
+    </div>
+
+
+    <div>
+        <button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary">Download Report</button>
+
+        <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary">Submit Report</button>
+    </div>
+
+    <div id="k-wnd"></div>
+
+    <div id="ka-wnd"></div>
+
+    <div id="k-dwnd">
+        <div id="data-grid"></div>
+    </div>
+
+    <div id="k-diffwnd">
+        <div id="diff-data-grid"></div>
+    </div>
+
+    <div id="k-dffwnd"></div>
+</div>
+

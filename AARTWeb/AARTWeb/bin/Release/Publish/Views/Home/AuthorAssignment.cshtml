@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewBag.Title = "Author Assignment";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+
+
+
+<style>
+    div.k-edit-form-container {
+        width: auto;
+        height: auto;
+    }
+
+    .k-edit-label {
+        width: 15% !important;
+        text-align: left !important;
+    }
+
+    .k-edit-field {
+        width: 80% !important;
+    }
+</style>
+
+<script>
+
+    function editCheck1(container, options) {
+        $('<input name="' + options.field + '" type="checkbox"/>')
+            .attr('checked', options.model.status === 'A')
+            .appendTo(container);
+    }
+
+    $(document).ready(function () {
+        var datasource = new kendo.data.DataSource({
+            schema: {
+                total: "",
+                model: {
+                    id: "pro_doct_template",
+                    fields: {
+                        Pro_doct_template: { type: 'number', editable: false },
+
+                        document_template_id: { type: 'number', editable: false },
+                        product_document_mapping_id: { type: 'number', editable: false },
+                        product_name: { type: 'string', editable: false },
+                        document_name: { type: 'string', editable: false },
+                        action: { type: 'string', editable: false },
+                        aggred_timeline: { type: 'date', editable: false },
+                        target_timeline: { type: 'date', editable: false },
+                        comment: { type: 'string', editable: false },
+                        status: { type: 'string', editable: false },
+                        edit_template: { type: 'string', editable: true }
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("GetProDocTemplate", "Home")',
+                    type: 'post',
+                    dataType: 'json'
+                },
+               update: {
+                    url: '@Url.Action("UpdateActivitySection", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        reload();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+            },
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: datasource,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "product_document_mapping_id", title: "Product Document Template ID" },
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document Name" },
+                { field: "action", title: "Action", width: "200px" },
+                { field: "target_timeline", title: "Target Timeline", format: "{0:MM/dd/yyyy}", width: "140px" },
+                { field: "edit_template", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
+                {
+                    command: "edit", width: "100px"}
+            ],
+            editable: "popup"
+        });
+
+        var secDatasource = new kendo.data.DataSource({
+            schema: {
+                total: "",
+                model: {
+                    id: "prodoc_section_assignment_id",
+                    fields: {
+                        product_name: { type: 'string', editable: false },
+                        document_name: { type: 'string', editable: false },
+                        section: { type: 'string', editable: false },
+                        template_content: { type: 'string', editable: true },
+                        target_date: { type: 'date', editable: false },
+                        status: { type: 'string', editable: false },
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home")',
+                    type: 'post',
+                    dataType: 'json'
+                },
+                update: {
+                    url: '@Url.Action("UpdateSection", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        reload();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+            },
+        });
+
+        $("#section_assignments_grid").kendoGrid({
+            dataSource: secDatasource,
+            sortable: true,
+            pageable: true,
+            //edit: addSubmitButton,
+            columns: [
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document Name" },
+                { field: "section", title: "Section", width: "150px"  },
+                { field: "template_content", title: "TemplateContent", encoded: false, editor: SectionEditor, width: "600px"  },
+                { field: "target_date", title: "Target Date", format: "{0:MM/dd/yyyy}", width: "140px" },
+                { command: {
+                        name: "edit",
+                        text: {
+                            update: "Update",
+                            cancel: "Cancel"
+                        }
+                    }, width: "100px"}
+            ],
+            editable: "popup"
+        });
+
+        function reload() {
+            window.location.reload();
+        }
+
+        function addSubmitButton(e) {
+            console.log("submitModel: ", e.model);
+            var tempId = e.model.prodoc_section_assignment_id;
+            var tempContent = e.model.template_content;
+            console.log("values : ", tempId + " " + tempContent);
+            $('<a class="k-button k-button-icontext k-grid-udpate custom-submit"><span class="k-icon k-grid-udpate"></span>Submit</a>').insertBefore(".k-grid-cancel");
+            $(".custom-submit").click(function () {
+                console.log("clicked")
+                $.ajax({
+                    url: '@Url.Action("SectionAssSubmit", "Home")',
+                    data: {
+                        models: JSON.parse(JSON.stringify({
+                            prodoc_section_assignment_id: tempId,
+                            template_content: tempContent
+                        }))
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function () {
+                        alert("succ");
+                    },
+                    error: function () {
+                        alert("fail")
+                    },
+                });
+            });
+        };
+
+
+
+        function SectionEditor(container, options) {
+            //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
+            $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+                resizable: { content: true, toolbar: true },
+                tools: [
+                {
+                    name: "fontName",
+                    items: [
+                        { text: "Andale Mono", value: "Andale Mono" },
+                        { text: "Arial", value: "Arial" },
+                        { text: "Arial Black", value: "Arial Black" },
+                        { text: "Book Antiqua", value: "Book Antiqua" },
+                        { text: "Calibri", value: "Calibri" },
+                        { text: "Comic Sans MS", value: "Comic Sans MS" },
+                        { text: "Courier New", value: "Courier New" },
+                        { text: "Georgia", value: "Georgia" },
+                        { text: "Helvetica", value: "Helvetica" },
+                        { text: "Impact", value: "Impact" },
+                        { text: "Symbol", value: "Symbol" },
+                        { text: "Tahoma", value: "Tahoma" },
+                        { text: "Terminal", value: "Terminal" },
+                        { text: "Times New Roman", value: "Times New Roman" },
+                        { text: "Trebuchet MS", value: "Trebuchet MS" },
+                        { text: "Verdana", value: "Verdana" },
+                        { text: "Webdings", value: "Webdings" },
+                        { text: "Wingdings", value: "Wingdings" }]
+                },
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "subscript",
+                "superscript",
+                "tableWizard",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "fontSize",
+                "foreColor",
+                "backColor",
+                "print"
+            ]
+            });
+        };
+    });
+
+
+</script>
+
+<div class="row">
+    <br />
+    <div>Activity Assigned</div>
+    <br />
+    <div id="grid" style="width:90%"></div>
+
+    <br />
+    <div>Section Assigned</div>
+    <br />
+
+    <div id="section_assignments_grid" style="width:90%"></div>
+</div>
+

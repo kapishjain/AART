@@ -1,0 +1,113 @@
+﻿@model AARTWeb.Models.UserModel
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+    <div class="row">
+        <div class="col-md-8">
+            <section id="adduser">
+                @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-group">
+
+                        @*<div>
+                            @Html.ActionLink("Home", "Index", "Home")
+                        </div>*@
+                        @if (Model != null)
+                        {
+                        <div>
+                            @if (Model.IsSuccess)
+                            {
+                                <span class="text-success">@Html.DisplayFor(m => m.Message)</span>
+                            }
+
+                        </div>
+
+                        <div>
+                            @if (Model.Warning)
+                            {
+                                <span class="text-danger">@Html.DisplayFor(m => m.Message)</span>
+                            }
+
+                        </div>
+                        }
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.UserName,
+                            new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.UserName,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Name,
+                            new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Name,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserPassword,
+                        new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.UserPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.UserPassword,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EmailId,
+                        new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.EmailId,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Phone,
+                        new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", Value = "", @maxLength=10 })
+                            @Html.ValidationMessageFor(m => m.Phone,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.IsStatus)
+                                @Html.LabelFor(m => m.Status)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.Locked)
+                                @Html.LabelFor(m => m.Is_Locked)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit"
+                                   value="Add User" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+

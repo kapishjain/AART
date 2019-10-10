@@ -1,0 +1,783 @@
+﻿@model AARTWeb.Models.ProductModel
+
+@{
+    ViewBag.Title = "Author";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">*@
+<link href="~/Themes/css/style.css" rel="stylesheet" />
+
+<style type="text/css">
+    /*.text-xs {
+    font-size: 17px;
+}*/
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .employee-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .employee-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .employee-details label {
+        display: inline-block;
+        width: 90px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+
+
+  
+    .red {
+        color: black;
+        background-color: #ea5757;
+    }
+    .blue {
+        background-color: #6495edb5;
+                color:black;
+    }
+
+    .orange {
+        background-color: #ffa500a6;
+                color:black;
+
+    }
+
+    .green {
+        background-color: #98d0627a;
+                color:black;
+
+    }
+
+    .white {
+        color: white;
+    } 
+</style>
+<script type="text/x-kendo-template" id="template">
+    <div class="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Activity Status
+            </li>
+            <li>
+                Section Assignment Status
+            </li>
+        </ul>
+        <div>
+            @*<div class="orders"></div>*@
+            <div id="gantt"></div>
+
+        </div>
+        <div>
+            <div class="gantt1"></div>
+        </div>
+
+    </div>
+
+</script>
+
+<script>
+    var data11;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetReportsByUser","Home")',
+            type: 'post',
+            async: false,
+            datatype: 'application/json',
+              success: successFunc,
+            error: errorFunc
+        });
+         $("#chart").kendoChart({
+         
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+            },
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+                {
+                    name: "To be initiated",
+                    data: [4, 7, 7, 6, 8],
+                    color: "#36b9cc"
+                }, {
+                    name: "OnGoing",
+                    data: [3, 7, 7, 9, 9],
+                    color: "#f6c23e"
+                }, {
+                    name: "Complete",
+                    data: [2, 3, 1, 5, 3],
+                    color: "#1cc88a"
+                }
+
+
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+
+
+
+            },
+            categoryAxis: {
+                categories: ['PBRER', 'PADER', 'PSUR', 'DSUR', 'ADHOC'],
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+
+        //  $("#chart1").kendoChart({
+         
+        //    legend: {
+        //        position: "top",
+        //        labels: {
+        //            //color: "#ffffff"
+        //        }
+
+        //    },
+        //    seriesDefaults: {
+        //        type: "column"
+        //    },
+        //    series: [
+        //        {
+        //            //name: "To be initiated",
+        //            data: [4],
+        //           // color: "#36b9cc"
+        //        }, {
+        //          //  name: "OnGoing",
+        //            data: [3],
+        //           // color: "#f6c23e"
+        //        }, {
+        //          //  name: "Complete",
+        //            data: [2],
+        //           // color: "#1cc88a"
+        //        }
+
+
+        //    ],
+
+        //    valueAxis: {
+        //        labels: {
+        //            format: "{0}",
+        //            //color: "#ffffff"
+        //        },
+        //        line: {
+        //            visible: false
+        //        },
+
+
+
+        //    },
+        //    categoryAxis: {
+        //        categories: ['PBRER', 'PADER', 'PSUR', 'DSUR', 'ADHOC'],
+        //        line: {
+        //            visible: true
+        //        },
+        //        labels: {
+        //            padding: { top: 1 },
+        //            //color: "#ffffff"
+        //        }
+        //    },
+        //    //panes: [
+        //    //    { name: "top-pane", background: "#000000" },
+        //    //    ],
+        //    tooltip: {
+        //        visible: true,
+        //        format: "{0}",
+        //        template: "#= series.name #: #= value #"
+        //    }
+        //});
+        $("#chart1").kendoChart({
+            //title: {
+            //    text: "Product count by document wise",
+            //    color: "#000000"
+
+            //},
+            legend: {
+                position: "top", labels: {
+                    //color: "#ffffff",
+                    //background: "blue"
+                    //border:"1px"
+                }
+            },
+            //chartArea: { background: "#63778B" },
+
+            seriesDefaults: {
+                labels: {
+                    template: "#= category # - #= kendo.format('{0:V}', value)#",
+                    position: "outsideEnd",
+                    visible: true,
+                    //color: "#ffffff",
+                    background: "transparent"
+                }
+            },
+            series: [{
+                type: "donut",
+                data: [{
+                    category: "PBRER",
+                    value: 35
+                }, {
+                    category: "PADER",
+                    value: 25
+                }, {
+                    category: "PSUR",
+                    value: 20
+                }, {
+                    category: "DSUR",
+                    value: 10
+                }, {
+                    category: "ADHOC",
+                    value: 10
+                }]
+            }],
+            //panes: [
+            //   { name: "top-pane", background: "#000000" },
+            //   ],
+            tooltip: {
+                visible: true,
+                template: "#= category # - #= kendo.format('{0:V}',value) #"
+            }
+        });
+
+ 
+
+
+        $("#chart2").kendoChart({
+            //title: {
+            //    text: "Total report",
+            //    color: "#000000"
+
+            //},
+            legend: {
+                position: "top", labels: {
+                    //color: "#ffffff"
+                }
+            },
+            //chartArea: {background:"#eaeaea"},
+
+
+            seriesDefaults: {
+                labels: {
+                    template: "#= category # - #= kendo.format('{0:V}', value)#",
+                    position: "outsideEnd",
+                    visible: true,
+                    //color: "#ffffff",
+                    background: "transparent"
+                }
+            },
+            series: [{
+                type: "pie",
+                data: [
+                    {
+                        category: "To be initiated",
+                        value: 4,
+                        color: "#36b9cc"
+                    }, {
+                        category: "On Going",
+                        value: 6,
+                        color: "#f6c23e"
+                    },
+                    {
+                        category: "Submitted",
+                        value: 4,
+                        color: "#1cc88a"
+                    }]
+            }],
+            //panes: [
+            //   { name: "top-pane", background: "#000000" },
+            //   ],
+            tooltip: {
+                visible: true,
+                template: "#= category # - #= kendo.format('{0:V}', value) #"
+                //template: "#= category #  - #= getCount(category) #"
+            }
+        });
+ 
+
+        function successFunc(data, status) {
+            var element = $("#grid").kendoGrid({
+                dataSource:
+                {
+                    data: JSON.parse(data),
+                    schema: {
+                        model: {
+
+                            fields: {
+                                pro_doc_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                                product_description: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                                document_name: { type: "string", editable: false, validation: { required: true } },
+                                fromDate: { type: "string", editable: false, validation: { required: true } },
+                                todate: { type: "string", editable: false, validation: { required: true } },
+                                status: { type: "string", editable: false, validation: { required: true } },
+                                progress: { type: "string", editable: false, validation: { required: true } },
+
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "product_description", title: "Product Name", width: "110px" },
+                    { field: "document_name", title: "Document Name" },
+                    { field: "fromDate", title: "Review from" },
+                    { field: "todate", title: "Review to", format: "{0:0}" },
+                    { field: "status", title: "Status", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" : status==\"To be initiated\"? \"blue\" : status==\"Submitted\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>' },
+                    { field: "status", title: "Review Report", template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Submitted\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#" }))">Review Report</a>' },
+                ],
+                sortable: true,
+                pageable: false,
+                detailTemplate: kendo.template($("#template").html()),
+                detailInit: detailInit,
+                dataBound: function (e) {
+                    $("#grid tbody tr .k-grid-edit").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "Submitted") {
+                            $(this).remove();
+                            //  $(this).addClass('blue');
+                        }
+                    })
+                    $("#grid tbody tr .k-hierarchy-cell").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "To be initiated") {
+                            $(this).empty();
+                            //  $(this).addClass('blue');
+                        }
+                    })
+                       $("#grid tbody tr td .white").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "To be initiated") {
+                            $(this).empty();
+                            //  $(this).addClass('blue');
+                        }
+                       })
+                //     $("#grid tbody tr").each(function () {
+                //         var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                //         //Check in the current dataItem if the row is editable
+                //         if (currentDataItem.progress == "Late") {
+                //       // $(this).remove();
+                //        $(this).addClass('red');
+                //    }
+                //})
+                }
+            });
+        }
+        function errorFunc() {
+            alert('error');
+        }
+
+    });
+     function confirmAssign(e, id) {
+        var text = e.innerText;
+        if (text == "Ongoing") {
+            if (confirm("Are you sure want to Reassign?")) {
+                var url = '@Url.Action("ReassignAssignment", "KickOffMeeting", new { pro_doc_id = "__id__" })';
+                window.location.href = url.replace("__id__", id);
+            }
+        } else if(text == "To be initiated") {
+            var url = '@Url.Action("Index", "KickOffMeeting", new { pro_doc_id = "__id__" })';
+            window.location.href = url.replace("__id__", id);
+        }
+      }
+     function detailInit(e)    {
+        var detailRow = e.detailRow;
+
+        detailRow.find(".tabstrip").kendoTabStrip({
+            animation: {
+                open: { effects: "fadeIn" }
+            }
+        });
+        detailRow.find("#gantt").kendoGantt({
+            dataSource: {
+                transport: {
+
+            read: {
+                url: '@Url.Action("GetProDocTemplateForChart", "Home")',
+                type: 'post',
+                dataType: "json"
+            },
+            //update: {
+            //    url: serviceRoot + "/GanttTasks/Update",
+            //    dataType: "jsonp"
+            //},
+            //destroy: {
+            //    url: serviceRoot + "/GanttTasks/Destroy",
+            //    dataType: "jsonp"
+            //},
+            //create: {
+            //    url: serviceRoot + "/GanttTasks/Create",
+            //    dataType: "jsonp"
+            //},
+            parameterMap: function (options, operation) {
+                if (operation !== "read") {
+                    return { models: kendo.stringify(options.models || [options]) };
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { from: "id", type: "number" },
+                    orderId: { from: "orderID", type: "number", validation: { required: true } },
+                    start: { from: "startDate", type: "date" },
+                    end: { from: "endDate", type: "date" },
+                    title: { from: "tittle", defaultValue: "", type: "string" },
+                    percentComplete: { from: "percentComplete", type: "number" },
+                    summary: { from: "summary", type: "boolean", template: "#=  summary == 'false' ? false : true" },
+                    expanded: { from: "expanded", type: "boolean", template: "#= expanded == 'false' ? false : true"  }
+                }
+            }
+        },
+        filter: { field: "pro_doc_id", operator: "eq", value: e.data.pro_doc_id }
+
+            },
+            //dependencies: dependenciesDataSource,
+            views: [
+                { type: "month", selected: false },
+                { type: "year", selected: true }
+              ],
+
+              height: 500,
+              editable: false,
+              showWorkHours: false,
+              showWorkDays: false,
+               columns: [
+                { field: "title", title: "Title", editable: true, sortable: true },
+                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
+                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
+              ],
+        }).data("kendoGantt");
+
+        detailRow.find(".gantt1").kendoGantt({
+            dataSource: {
+                transport: {
+
+                    read: {
+                        url: '@Url.Action("GetProDocSectionAssignmentForChart", "Home")',
+                        type: 'post',
+                        dataType: "json"
+                    },
+                    //update: {
+                    //    url: serviceRoot + "/GanttTasks/Update",
+                    //    dataType: "jsonp"
+                    //},
+                    //destroy: {
+                    //    url: serviceRoot + "/GanttTasks/Destroy",
+                    //    dataType: "jsonp"
+                    //},
+                    //create: {
+                    //    url: serviceRoot + "/GanttTasks/Create",
+                    //    dataType: "jsonp"
+                    //},
+                    parameterMap: function (options, operation) {
+                        if (operation !== "read") {
+                            return { models: kendo.stringify(options.models || [options]) };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { from: "id", type: "number" },
+                            title: { from: "title", type: "string" },
+                            parentId: { from: "parent_id", type: "number", defaultValue: null, validation: { required: true } },
+                            pro_doc_id: { from: "pro_doc_id", type: "number" },
+                            percentComplete: { from: "percentComplete", type: "number" },
+                            start: { from: "start", type: "date" },
+                            end: { from: "end", type: "date" },
+                            summary: { from: "summary", type: "boolean", template: '#if(summary === "false"){# false#} else {# true#} #' },
+                            expanded: { from: "expanded", type: "boolean", template: '#if(expanded === "false" ){# false#} else {# true#} #', defaultValue: true }
+                        }
+                    }
+                },
+                filter: { field: "pro_doc_id", operator: "eq", value: e.data.pro_doc_id }
+
+            },
+            //dependencies: dependenciesDataSource,
+            views: [
+                { type: "month", selected: false },
+                { type: "year", selected: true }
+            ],
+             columns: [
+                { field: "id", title: "ID", width: 40, editable: false, sortable: true },
+                { field: "title", title: "Title", editable: true, sortable: true },
+                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100 ,editable: true, sortable: true },
+                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width:100 ,editable: true, sortable: true }
+              ],
+            height: 500,
+            width: 1400,
+            editable: false,
+            showWorkHours: false,
+            showWorkDays: false,
+            snap: false
+
+        }).data("kendoGantt");
+    }
+</script>
+<div id="dashboard">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+        <h1 class="h1 mb-0 text-gray-800">Dashboard</h1>
+        @*Submition date
+        <div id="daterangepicker" title="daterangepicker"></div>
+        View
+        <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+    </div>
+
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+    
+        <div class="col-sm-5">
+            <div class="col-md-6 mb-4" id="doccount" style="cursor:pointer;">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Document Count</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+
+                            @*<div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class=" col-md-6 mb-4" id="Tobeinitiated" style="cursor:pointer;">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class=" col-md-6 mb-4" id="Ongoing" style="cursor:pointer;">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">On Going Report</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">200</div>
+                                    </div>
+                                    @*<div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>*@
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-md-6 mb-4" id="Submitted" style="cursor:pointer;">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Submitted Report</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Total report</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="">
+                            @*   <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>*@
+                            @*<canvas id="myPieChart" style="display: block; width: 486px; height: 245px;" width="486" height="245" class="chartjs-render-monitor"></canvas>*@
+                            <div id="chart2"></div>
+
+                        </div>
+                        @*<div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Referral
+                        </span>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 detal">
+            <div class="col-xl-12 col-lg-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Product count by document wise</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="">
+                            @*   <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>*@
+                            @*<canvas id="myPieChart" style="display: block; width: 486px; height: 245px;" width="486" height="245" class="chartjs-render-monitor"></canvas>*@
+                            <div id="chart1" style="height:300px;"></div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12">
+                <div class="card shadow mb-2">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Product Count by Document</h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div id="k-dropdownlist"></div>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="">
+                            @*   <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>*@
+                            @*<canvas id="myPieChart" style="display: block; width: 486px; height: 245px;" width="486" height="245" class="chartjs-render-monitor"></canvas>*@
+                            <div id="chart" style="height:300px;"></div>
+
+                        </div>
+                        @*<div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Referral
+                        </span>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+        <div class="row">
+            
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 ">
+        Assigned Documents
+        <div id="grid"></div>
+        @*<input type="button" value="Kick Off meeting" onclick="location.href='@Url.Action("Index", "KickOffMeeting")'" />*@
+    </div>
+
+</div>

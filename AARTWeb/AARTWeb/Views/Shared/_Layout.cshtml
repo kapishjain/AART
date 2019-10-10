@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - AART</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", false)
+    <style type="text/css">
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+/*body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}*/
+    </style>
+</head>
+<body >
+
+    <div class="container body-content">
+        @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("AART", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+
+                <div id="user-tools">
+                    Welcome,<strong>@Session["UserName"] </strong>.
+
+                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                    /
+                    @Html.ActionLink("Logout", "Login", "Account", new { area = "" })
+                </div>
+
+            </div>
+        </div>*@
+        @RenderBody()
+        <footer class="footer">
+            @*<p>&copy; @DateTime.Now.Year - AART</p>
+        <p>Product by <b>Ancla Consultancy Services</b></p>*@
+            <div >
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                    <p style="color:#57a8d7;">&copy; @DateTime.Now.Year - AART </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                    <p>Product by  <a href="careers"><b>Ancla Consultancy Services</b></a> </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

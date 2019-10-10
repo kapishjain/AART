@@ -1,0 +1,66 @@
+﻿using AARTWeb.Models;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
+namespace AARTWeb.Controllers
+{
+    public class AdminController : AARTBaseController
+    {
+        // GET: Admin
+        public ActionResult Admin()
+        {
+            AdminModel objadm = new AdminModel();
+            return View(objadm);
+        }
+        [HttpPost]
+        public JsonResult Admin(AdminModel adml)
+        {
+            AdminModel objadm = new AdminModel();
+            objadm.GetAllUsers();
+            objadm.GetAllRoles();
+            return Json(objadm, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Update(AdminModel.UsersModel models)
+        {
+            var model = new AdminModel();
+            var uData = model.UpdateUser(models);
+            //var error = model.ReturnErrorMessage;
+            //var status = model.ReturnStatus;
+            //TempData["Message"] = error;
+            //TempData["Status"] = status;
+            return Json(uData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Create(AdminModel.UsersModel models)
+        {
+            var model = new AdminModel();
+            var cData = model.AddUser(models);
+            //var error = model.ReturnErrorMessage;
+            //var status = model.ReturnStatus;
+            //TempData["Message"] = error;
+            //TempData["Status"] = status;
+            return Json(cData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CreateRole(AdminModel.RolesModel rModels)
+        {
+            var model = new AdminModel();
+            var roleData = model.AddRole(rModels);
+            var error = model.ReturnErrorMessage;
+            var status = model.ReturnStatus;
+            TempData["RoleMessage"] = error;
+            TempData["RoleStatus"] = status;
+            return Json(roleData, JsonRequestBehavior.AllowGet);
+        }
+    }
+}

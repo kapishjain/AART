@@ -1,0 +1,141 @@
+﻿@model AARTWeb.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Themes/css/aart_style.css" rel="stylesheet" />
+<style type="text/css">
+</style>
+@*<div class="row ">
+        <div class="col-md-8 login">
+            <section id="loginForm">
+                @if (Model != null)
+                {
+                    if (Model.error != null)
+                    {
+                        <div style="color:red;">@Model.error</div>
+                    }
+                }
+                @using (Html.BeginForm("Login", "Account",
+                FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.UserName,
+                            new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.UserName,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password,
+                        new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password,
+                            "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit"
+                                   value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
+                        </div>
+                    </div>
+                }
+            </section>
+
+        </div>
+    </div>*@
+<header class="header_area animated">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <!-- Menu Area Start -->
+            <div class="col-12 col-lg-10">
+                <div class="menu_area">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <!-- Logo -->
+                        <a class="navbar-brand" href="https://www.anclacorp.com/index"><img width="200px;" src="~/Themes/Images/ancla_logo-white-bg.png" /></a>
+                        <!-- Menu Area -->
+                     
+                    </nav>
+                </div>
+            </div>
+            <!-- Signup btn -->
+            <div class="col-12 col-lg-2">
+                <div class="sing-up-button d-none d-lg-block" >
+                    <a href="#" style="color:white;" >Help</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div id="container_demo">
+
+    <div style="display: flex;">
+        <div style="width: 50%;text-align: center;padding-top: 15%;">
+            <a href="https://www.anclacorp.com/index"><img width="400px;" src="~/Themes/Images/Unichem-logo.png" /></a>
+
+        </div>
+        <div id="wrapper" style="padding-top: 5%;">
+            <div id="login" class="animate form">
+                @using (Html.BeginForm("Login", "Account",
+                FormMethod.Post, new { role = "form" }))
+                {
+                    <h1>Log in</h1>
+                    if (Model != null)
+                    {
+                        if (Model.error != null)
+                        {
+                            <div style="color:red;">@Model.error</div>
+                        }
+                    }
+                    <p>
+                        <label for="username" class="uname" data-icon="u"> Your email or username </label>
+                        @Html.TextBoxFor(m => m.UserName,
+                                               new { @class = "" })
+                        @Html.ValidationMessageFor(m => m.UserName,
+                         "", new { @class = "text-danger" })
+                    </p>
+                    <p>
+                        <label for="password" class="youpasswd" data-icon="p"> Your password </label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "" })
+                        @Html.ValidationMessageFor(m => m.Password,
+                         "", new { @class = "text-danger" })
+                    </p>
+                    <p class="keeplogin">
+                        <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
+                        <label for="loginkeeping">Keep me logged in</label>
+                    </p>
+                    <p class="login button">
+                        <input type="submit" value="Login" />
+                    </p>
+                    <p class="change_link">
+                        @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
+
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

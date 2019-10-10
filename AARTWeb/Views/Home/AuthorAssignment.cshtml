@@ -1,0 +1,1106 @@
+﻿
+@{
+    ViewBag.Title = "Author Assignment";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">*@
+
+<link href="~/Themes/css/style.css" rel="stylesheet" />
+
+<style>
+    div.k-edit-form-container {
+        width: auto;
+        height: auto;
+    }
+
+    .k-edit-label {
+        width: 15% !important;
+        text-align: left !important;
+    }
+
+    .k-edit-field {
+        width: 80% !important;
+    }
+
+    .red {
+        color: black;
+        background-color: #ea5757;
+    }
+
+    .blue {
+        background-color: #6495edb5;
+        color: black;
+    }
+
+    .orange {
+        background-color: #ffa500a6;
+        color: black;
+    }
+
+    .green {
+        background-color: #98d0627a;
+        color: black;
+    }
+
+    .white {
+        color: white;
+    }
+
+    ins {
+        background-color: #cfc;
+        text-decoration: none;
+    }
+
+
+
+    del {
+        color: #999;
+        background-color: #FEC8C8;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#activitycount").click(function () {
+            //$("#divgrid").show();
+            //$("#dashboard").hide();
+
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("All");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#activityTobeinitiated").click(function () {
+
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("To be initiated");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#activityOngoing").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("In progress");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#activitySubmitted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("Submitted");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#activityReverted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("Reverted");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+
+        $("#sectioncount").click(function () {
+            //$("#divgrid").show();
+            //$("#dashboard").hide();
+
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("All");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#sectionTobeinitiated").click(function () {
+
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("To be initiated");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#sectionOngoing").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("In progress");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#sectionSubmitted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("Submitted");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+        $("#sectionReverted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("Reverted");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+            });
+        });
+    });
+    // submit functionality
+                                var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
+
+    function SubmitRecordByUser() {
+
+
+        Comment = $("#comment").val();
+        console.log("Update: ", Comment);
+
+        recId = $("#pro-sec-id").text();
+
+        recSection = $("#section").text();
+        console.log("sec: ", recSection);
+
+
+        recStatus = $("#status").text();
+        console.log("status: ", recStatus);
+        recTemp = $("#template-content").text();
+        console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitSecAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,
+                section: recSection,
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+                console.log(varJ);
+
+                console.log("Success: ", res);
+                alert(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                alert("Error occured");
+                console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
+
+    function SubmitActRecordByUser() {
+        Comment = $("#comment").val();
+        console.log("Update: ", Comment);
+
+        recId = $("#pro-act-id").text();
+
+        recStatus = $("#status").text();
+        console.log("status: ", recStatus);
+
+        recTemp = $("#template-content").text();
+        console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitActAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+                console.log(varJ);
+
+                console.log("Success: ", res);
+                alert(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                alert("Error occured");
+                console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
+
+    function editCheck1(container, options) {
+        $('<input name="' + options.field + '" type="checkbox"/>')
+            .attr('checked', options.model.status === 'A')
+            .appendTo(container);
+    }
+    function OpenData(e) {
+        var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        from = "Section"
+        Id = dataItem.ProDoc_Section_Assignment_id;
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                id: Id,
+                templateVar: from
+            },
+            success: function (rs) {
+                console.log(rs);
+                if (rs.Count < 0) {
+                    alert("Not commented Yet!")
+                    return
+                }
+                $("#data-grid").kendoGrid({
+                    dataSource: rs,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+
+
+        dataWnd = $("#k-dwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+    }
+    	// window for Difference button inside view data for activities
+	function OpenActDiffData(ae) {
+		diffActWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+
+		diffActTemp = kendo.template($("#diff-act-template").html());
+
+		var dItem = this.dataItem($(ae.currentTarget).closest("tr"));
+		console.log("Diff: ", dItem);
+		var aId = dItem.Review_Activity_Id;
+		console.log("Difference: ", aId);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: aId,
+				templateVar: from
+			},
+			success: function (es) {
+				console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffActWnd.content(diffActTemp(objdiff));
+			},
+			error: function (er) {
+				console.log("Error: ", er);
+			}
+		})
+
+		diffActWnd.center().open();
+    }
+    	// window for Difference button inside view data for sections
+	function OpenDiffData(od) {
+
+		diffSecWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+
+		diffSecTemplate = kendo.template($("#diff-sec-template").html());
+
+		var dti = this.dataItem($(od.currentTarget).closest("tr"));
+		console.log("Diff: ", dti);
+
+		var	dId = dti.Review_Section_Id;
+
+		console.log("Difference: ", dti);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: dId,
+				templateVar: from
+			},
+			success: function (es) {
+				console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffSecWnd.content(diffSecTemplate(objdiff));
+			},
+			error: function (er) {
+				console.log("Error: ", er);
+			}
+		})
+
+		diffSecWnd.center().open();
+	}
+    	function OpenActData(a) {
+
+        var dataItem = this.dataItem($(a.currentTarget).closest("tr"));
+            console.log(dataItem);
+		from = "Activity"
+		Id = dataItem.pro_doc_template;
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+				id: Id,
+				templateVar: from
+            },
+			success: function (r) {
+				console.log("View data window item length: ", r)
+				console.log(r.Count);
+				if (r.Count < 0) {
+					alert("Not commented Yet!");
+					return;
+				}
+                $("#diff-data-grid").kendoGrid({
+                    dataSource: r,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+
+
+        dataWnd = $("#k-diffwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+	}
+    function SubmitRecord(e) {
+         wnd = $("#k-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        console.log("Accept: ", dataItem);
+
+		Id = dataItem.ProDoc_Section_Assignment_id;
+		from = "Section";
+        Status = "S";
+        template = dataItem.Template_Content;
+
+        console.log("id + status: ", Id, Status);
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+    function SubmitActRecord(e) {
+         wnd = $("#ka-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#act-comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+   function getActivityGrid(val)
+    {
+          var datasource = new kendo.data.DataSource({
+            schema: {
+                total: "",
+                model: {
+                                        id: "pro_doc_template",
+
+                    fields: {
+                        pro_doc_template: { type: 'number', editable: false },
+
+                        document_template_id: { type: 'number', editable: false },
+                        //product_document_mapping_id: { type: 'number', editable: false },
+                        product_name: { type: 'string', editable: false },
+                        document_name: { type: 'string', editable: false },
+                        action: { type: 'string', editable: false },
+                        aggred_timeline: { type: 'string', editable: false },
+                        target_timeline: { type: 'string', editable: false },
+                        comment: { type: 'string', editable: false },
+                        status: { type: 'string', editable: false },
+                                                progress: { type: 'string', editable: false },
+
+                        template_content: { type: 'string', editable: true }
+                    }
+                }
+            },
+            transport: {
+                read: {
+                      url: '@Url.Action("GetProDocTemplate", "Home" , new {id = "ID"})'.replace("ID", val),                   
+                   // url: '@Url.Action("GetProDocTemplate", "Home")',
+                    type: 'post',
+                    dataType: 'json'
+                },
+               update: {
+                    url: '@Url.Action("UpdateActivitySection", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        reload();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+            },
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: datasource,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document Name" },
+                { field: "document_template_id", title: "Action Id" },
+                { field: "action", title: "Action", width: "200px" },
+                { field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
+                { field: "target_timeline", title: "Target Timeline",  width: "140px" },
+                //{ field: "status", title: "Status" },
+                { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be Review\"? \"orange\" :\"white\"#"">#=status#</a>' },
+
+                { field: "template_content", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
+                { command: ["edit", { name: "Submit", click: SubmitActRecord }], width: "100px" },
+                                { command: [ {name: "View comments", click: OpenActData} ], width: "100px" }
+
+                //{
+                //    command: "edit", width: "100px"
+                //}
+            ],
+            editable: "popup",
+            dataBound: function (e) {
+                $("#grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        $(this).remove();
+                    }
+                })
+                $("#grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        $(this).remove();
+                    }
+                })
+                 $("#grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be Review") {
+                        $(this).remove();
+                    }
+                })
+                $("#grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be Review") {
+                        $(this).remove();
+                    }
+                })
+            }
+        });
+    }
+    function getSectiongrid(val) {
+        var secDatasource = new kendo.data.DataSource({
+            schema: {
+                total: "",
+                model: {
+                    id: "prodoc_section_assignment_id",
+                    fields: {
+                        product_name: { type: 'string', editable: false },
+                        document_name: { type: 'string', editable: false },
+                        section: { type: 'string', editable: false },
+                        target_timeline: { type: 'string', editable: false },
+                        status: { type: 'string', editable: false },
+                        progress: { type: 'string', editable: false },
+
+                        template_content: { type: 'string', editable: true },
+
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home" , new {id = "ID"})'.replace("ID", val),
+
+                    //url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home")',
+                    type: 'post',
+                    dataType: 'json'
+                },
+                update: {
+                    url: '@Url.Action("UpdateSection", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        reload();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+            },
+        });
+
+        $("#section_assignments_grid").kendoGrid({
+            dataSource: secDatasource,
+            sortable: true,
+            pageable: true,
+            //edit: addSubmitButton,
+            columns: [
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document Name" },
+                { field: "section", title: "Section", width: "150px" },
+
+                { field: "target_timeline", title: "Target Date", width: "140px" },
+                //{ field: "status", title: "Status" },
+                                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be Review\"? \"orange\" :\"white\"#" )">#=status#</a>' },
+
+                { field: "template_content", title: "Template Content", encoded: false, editor: SectionEditor, width: "400px" },
+                { command: ["edit", { name: "Submit", click: SubmitRecord }], width: "100px" },
+                                                { command: [ {name: "View comments", click: OpenData} ], width: "100px" }
+
+
+                //{
+                //    command: {
+                //        name: "edit",
+                //        text: {
+                //            update: "Update",
+                //            cancel: "Cancel"
+                //        }
+                //    }, width: "100px"
+                //}
+            ],
+            editable: "popup",
+            dataBound: function (e) {
+                $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        $(this).remove();
+                        //  $(this).addClass('blue');
+                    }
+                })
+                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        $(this).remove();
+                    }
+                 })
+                 $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be Review") {
+                        $(this).remove();
+                        //  $(this).addClass('blue');
+                    }
+                })
+                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be Review") {
+                        $(this).remove();
+                    }
+                })
+                //$("#section_assignments_grid tbody tr").each(function () {
+                //    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                //    //Check in the current dataItem if the row is editable
+                //    if (currentDataItem.status == "Submitted") {
+                //        // $(this).remove();
+                //        $(this).addClass('green');
+                //    }
+                //})
+            },
+        });
+    }
+    //$(document).ready(function () {
+      
+
+    //});
+      function reload() {
+            window.location.reload();
+        }
+
+        function addSubmitButton(e) {
+            console.log("submitModel: ", e.model);
+            var tempId = e.model.prodoc_section_assignment_id;
+            var tempContent = e.model.template_content;
+            console.log("values : ", tempId + " " + tempContent);
+            $('<a class="k-button k-button-icontext k-grid-udpate custom-submit"><span class="k-icon k-grid-udpate"></span>Submit</a>').insertBefore(".k-grid-cancel");
+            $(".custom-submit").click(function () {
+                console.log("clicked")
+                $.ajax({
+                    url: '@Url.Action("SectionAssSubmit", "Home")',
+                    data: {
+                        models: JSON.parse(JSON.stringify({
+                            prodoc_section_assignment_id: tempId,
+                            template_content: tempContent
+                        }))
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function () {
+                        alert("succ");
+                    },
+                    error: function () {
+                        alert("fail")
+                    },
+                });
+            });
+        };
+
+
+        function SectionEditor(container, options) {
+            //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
+            $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+                resizable: { content: true, toolbar: true },
+                tools: [
+                {
+                    name: "fontName",
+                    items: [
+                        { text: "Andale Mono", value: "Andale Mono" },
+                        { text: "Arial", value: "Arial" },
+                        { text: "Arial Black", value: "Arial Black" },
+                        { text: "Book Antiqua", value: "Book Antiqua" },
+                        { text: "Calibri", value: "Calibri" },
+                        { text: "Comic Sans MS", value: "Comic Sans MS" },
+                        { text: "Courier New", value: "Courier New" },
+                        { text: "Georgia", value: "Georgia" },
+                        { text: "Helvetica", value: "Helvetica" },
+                        { text: "Impact", value: "Impact" },
+                        { text: "Symbol", value: "Symbol" },
+                        { text: "Tahoma", value: "Tahoma" },
+                        { text: "Terminal", value: "Terminal" },
+                        { text: "Times New Roman", value: "Times New Roman" },
+                        { text: "Trebuchet MS", value: "Trebuchet MS" },
+                        { text: "Verdana", value: "Verdana" },
+                        { text: "Webdings", value: "Webdings" },
+                        { text: "Wingdings", value: "Wingdings" }]
+                },
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "subscript",
+                "superscript",
+                "tableWizard",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "fontSize",
+                "foreColor",
+                "backColor",
+                "print"
+            ]
+            });
+        };
+
+</script>
+
+<script type="text/x-kendo-template" id="comment-template">
+
+    <div style="display:none">
+        <div id="pro-sec-id">#= id #</div>
+        <div id="product-name">#= product_name#</div>
+        <div id="document-name">#= document_name #</div>
+        <div id="section">#= section #</div>
+        <div id="target-timeline">#= target_timeline #</div>
+        <div id="status">#= status #</div>
+        <div id="template-content">#= template_content #</div>
+
+    </div>
+
+
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitRecordByUser()" />
+</script>
+
+
+
+<script type="text/x-kendo-template" id="act-comment-template">
+
+    <div style="display:none">
+
+        <div id="pro-act-id">#= pro_doc_template #</div>
+        <div id="status">#= status #</div>
+        <div id="template-content">#= template_content #</div>
+
+    </div>
+
+
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+</script>
+<script type="text/x-kendo-template" id="diff-sec-template">
+    @*<div id="data-grid"></div>*@
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="diff-act-template">
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+<div id="dashboard">
+    <div id="ActivityDashboard">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+            <h1 class="h1 mb-0 text-gray-800">Activity</h1>
+            @*Submition date
+                <div id="daterangepicker" title="daterangepicker"></div>
+                View
+                <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+        </div>
+
+        <div class="row justify-content-md-center">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:pointer;">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Activity Count</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:pointer;">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:pointer;">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">On Going</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">200</div>
+                                    </div>
+                                    @*<div class="col">
+                                            <div class="progress progress-sm mr-2">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:pointer;">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Submitted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:pointer;">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="SectionDashboard">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+            <h1 class="h1 mb-0 text-gray-800">Section</h1>
+            @*Submition date
+                <div id="daterangepicker" title="daterangepicker"></div>
+                View
+                <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+        </div>
+
+        <div class="row justify-content-md-center">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:pointer;">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Section Count</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:pointer;">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:pointer;">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">On Going</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">200</div>
+                                    </div>
+                                    @*<div class="col">
+                                            <div class="progress progress-sm mr-2">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:pointer;">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Submitted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:pointer;">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                            </div>
+                            @*<div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divgrid" >
+    <br />
+    <div class="col-sm-12 col-md-12 " id="divactivitygrid" style="display:none;">
+        Activity Assigned
+        <br />
+        <div id="grid"></div>
+    </div>
+    <br />
+    <div class="col-sm-12 col-md-12 " id="divsectiongrid" style="display:none;">
+        Section Assigned
+
+        <div id="section_assignments_grid"></div>
+
+    </div>
+    <br />
+    <div id="k-wnd"></div>
+
+    <div id="ka-wnd"></div>
+
+    <div id="k-dwnd">
+        <div id="data-grid"></div>
+    </div>
+
+    <div id="k-diffwnd">
+        <div id="diff-data-grid"></div>
+    </div>
+
+    <div id="k-dffwnd"></div>
+</div>
+

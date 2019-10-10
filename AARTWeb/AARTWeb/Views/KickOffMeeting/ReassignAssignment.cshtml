@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "ReassignAssignment";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+
+<style>
+    /*.w3-tab {
+        color: blue !important;
+    background-color: cornflowerblue;
+    }*/
+    .w3-button:hover {
+        color: blue !important;
+        background-color: darkgrey !important;
+        padding: 10px;
+    }
+
+    .w3-tab {
+        color: #000 !important;
+        background-color: #ccc !important;
+        padding: 10px;
+    }
+   
+</style>
+
+<script>
+
+    $(document).ready(function () {
+
+        var proDataSource = new kendo.data.DataSource({
+             schema: {
+                model: {
+                    id: "pro_doc_template",
+                    fields: {
+                        pro_doc_template: { type: "string", editable: false },
+                        document_template_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                        responsible_role_id: { type: "string", editable: false, validation: { required: true } },
+                        role_name: { type: "string", editable: false },
+                        user: { defaultValue: { user_id: 0, user_name: "Select User" }, validation: { required: true } },
+                        action: { type: "string", editable:false },
+                        aggred_timeline: { type: "date", editable: false },
+                        target_timeline: { type: "date", editable: false },
+                        comment: { type: "string", editable: false }
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("GetAssignedActivitybyProDocId","KickOffMeeting")',
+                    type: 'post',
+                    dataType: 'json',
+                },
+                update: {
+                    url: '@Url.Action("UpdateAssgnActPro", "KickOffMeeting")',
+                    type: 'post',
+                    dataType: "json",
+                    success: function (data) {
+                        refreshPage();
+                    },
+                    error: function (xhr, error) {
+                        refreshPage();
+                        console.debug(xhr); console.debug(error);
+                    }
+                }
+            },           
+            parameterMap: function (options, operation) {
+                if (operation != "read") {
+                    return { models: kendo.stringify( options.models ) };
+                }
+            }
+        });
+
+        $("#KOMTemplate").kendoGrid({
+            dataSource: proDataSource,
+            editable: "inline",
+            save: function (e) {
+                if (!e.model.isNew()) {
+                    if (!confirm("Are you really sure that you want to update the data ?")) {
+                        e.preventDefault();
+                    }
+                }
+            },
+            columns: [
+                //{ field: "document_template_id", Title: "Document Template ID" },
+                //{ field: "responsible_role_id", Title: "Responsible RoleID" },
+                //{ field: "user_id", Title: "UserID"},
+                { field: "role_name", title: "Role"},
+                { field: "user", title: "ReAssign To", editor: categoryDropDownEditor3, template: "#= user.user_name #"},
+                { field: "action", title: "Action", width: "150px" },
+                { field: "aggred_timeline", title: "Agreed Timeline", format: "{0:dd-MMM-yyyy}" },
+                { field: "target_timeline", title: "Target Timeline", format: "{0:dd-MMM-yyyy}" },
+                { field: "comment", title: "Comment" },
+                { command: ["edit"]}
+            ]
+        });
+
+        var secDataSource = new kendo.data.DataSource({
+             schema: {
+                model: {
+                    id: "pro_doc_section_assignment_id",
+                    fields: {
+                        pro_doc_section_assignment_id: { type: "string", editable: false },
+                        document_section_assignment_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                        role_id: { type: "string", editable: false, validation: { required: true } },
+                        sectionid: { type: "string", editable: false },
+                        sectionname: { type: "string", editable: false },
+                        role_name: { type: "string", editable: false },
+                        user_id: { defaultValue: { user_id: 0, user_name: "Select User" }, validation: { required: true } },                       
+                        target_date: { type: "date", editable: false },
+                        comment: { type: "string", editable: false }                        
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("GetAssignedSectionAssinmentByProDocId","KickOffMeeting")',
+                    type: 'post',
+                    dataType: 'json',
+                },
+                update: {
+                    url: '@Url.Action("UpdateAssgnActSec", "KickOffMeeting")',
+                    type: 'post',
+                    dataType: "json",
+                    success: function (data) {
+                        refreshPage();
+                    },
+                    error: function (xhr, error) {                        
+                        console.debug(xhr);
+                        console.debug(error);
+                        refreshPage();
+                    }
+                }
+            },           
+            parameterMap: function (options, operation) {
+                if (operation != "read") {
+                    return { sModels: options };
+                }
+            }
+        });
+
+        $("#KOMSection").kendoGrid({
+            dataSource: secDataSource,
+            editable: "inline",
+            save: function (e) {
+                if (!e.model.isNew()) {
+                    if (!confirm("Are you really sure that you want to update the data ?")) {
+                        e.preventDefault();
+                    }
+                }
+            },
+            columns: [
+                //{ field: "pro_doc_section_assignment_id", Title: "Product Document Section Assignment ID" },
+                //{ field: "document_section_assignment_id", Title: "Document Section Assignment ID" },
+                //{ field: "role_id", Title: "RoleID"},
+                //{ field: "user_id", Title: "UserID"},
+                { field: "role_name", title: "Role" }, 
+                { field: "sectionid", title: "Section ID" },
+                { field: "sectionname", title: "SectionName" },
+                { field: "user_id", title: "ReAssign To", editor: categoryDropDownEditor4, template: "#= user_id.user_name #" },               
+                { field: "target_date", title: "Target Timeline", format: "{0:dd-MMM-yyyy}"  },
+                { field: "comment", title: "Comment" },
+                { command: ["edit"] }                 
+            ]
+        });
+
+    });
+
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    function categoryDropDownEditor3(container, options) {        
+        $('<input required name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({                   
+                optionLabel: "Select User",
+                dataTextField: "user_name",
+                dataValueField: "user_name",               
+                dataSource: {
+                       transport: {
+                           read: {
+                               url: '@Url.Action("GetFilteredUserList", "Product")',
+                               data: {
+                                   id: options.model.responsible_role_id
+                               },
+                               type: 'post',
+                               dataType: 'json'
+                           }
+                       }
+                   }
+            });
+    }
+
+    function categoryDropDownEditor4(container, options) {        
+        $('<input required name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({               
+                optionLabel: "Select User",
+                dataTextField: "user_name",
+                dataValueField: "user_name",
+                dataSource: {
+                       transport: {
+                           read: {
+                               url: '@Url.Action("GetFilteredUserList", "Product")',
+                               data: {
+                                   id: options.model.role_id
+                               },
+                               type: 'post',
+                               dataType: 'json'
+                           }
+                       }
+                   }
+            });
+    }
+
+    function opentab(evt, tabid) {
+        var i, tablinks;
+        var x = document.getElementsByClassName("tabs");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-tab", "");
+        }
+        document.getElementById(tabid).style.display = "block";
+        evt.currentTarget.className += " w3-tab";
+    };
+
+</script>
+
+<div class="w3-bar" style="width: 33.5em;">
+    <button class="w3-bar-item w3-button btn tablink w3-tab" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
+    <button class="w3-bar-item w3-button btn tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
+</div>
+
+<div id="Activity_Assignments" class="w3-container tabs" style="height: 100%;">
+    <h2>Assignment & Timelines</h2>
+    <div id="KOMTemplate"></div>
+</div>
+
+<div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
+    <h2>Section Assignments</h2>
+    <div id="KOMSection"></div>
+</div>

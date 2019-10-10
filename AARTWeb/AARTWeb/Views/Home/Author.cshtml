@@ -1,0 +1,401 @@
+﻿@model AARTWeb.Models.ProductModel
+
+@{
+    ViewBag.Title = "Author";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">
+<style type="text/css">
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .employee-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .employee-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .employee-details label {
+        display: inline-block;
+        width: 90px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+
+
+    .red {
+        /*background-color:red;*/
+        -webkit-animation: argh-my-eyes 1s infinite; /* Safari 4+ */
+        -moz-animation: argh-my-eyes 1s infinite; /* Fx 5+ */
+        -o-animation: argh-my-eyes 1s infinite; /* Opera 12+ */
+        animation: argh-my-eyes 1s infinite; /* IE 10+, Fx 29+ */
+    }
+
+    @@-webkit-keyframes argh-my-eyes {
+        0% {
+            background-color: #fff;
+        }
+
+        49% {
+            background-color: #fff;
+        }
+
+        50% {
+            background-color: #ea5757;
+        }
+
+        99% {
+            background-color: #ea5757;
+        }
+
+        100% {
+            background-color: #fff;
+        }
+    }
+
+    @@-moz-keyframes argh-my-eyes {
+        0% {
+            background-color: #fff;
+        }
+
+        49% {
+            background-color: #fff;
+        }
+
+        50% {
+            background-color: #ea5757;
+        }
+
+        99% {
+            background-color: #ea5757;
+        }
+
+        100% {
+            background-color: #fff;
+        }
+    }
+
+    @@keyframes argh-my-eyes {
+        0% {
+            background-color: #fff;
+        }
+
+        49% {
+            background-color: #fff;
+        }
+
+        50% {
+            background-color: #ea5757;
+        }
+
+        99% {
+            background-color: #ea5757;
+        }
+
+        100% {
+            background-color: #fff;
+        }
+    }
+
+    .blue {
+        background-color: #6495edb5;
+    }
+
+    .orange {
+        background-color: #ffa500a6;
+    }
+
+    .green {
+        background-color: #98d0627a;
+    }
+
+    .white {
+        color: white;
+    }
+</style>
+<script type="text/x-kendo-template" id="template">
+    <div class="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Activity Status
+            </li>
+            <li>
+                Section Assignment Status
+            </li>
+        </ul>
+        <div>
+            @*<div class="orders"></div>*@
+            <div id="gantt"></div>
+
+        </div>
+        <div>
+            <div class="gantt1"></div>
+        </div>
+
+    </div>
+
+</script>
+
+<script>
+    var data11;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetReportsByUser","Home")',
+            type: 'post',
+            async: false,
+            datatype: 'application/json',
+              success: successFunc,
+            error: errorFunc
+        });
+        function successFunc(data, status) {
+            var element = $("#grid").kendoGrid({
+                dataSource:
+                {
+                    data: JSON.parse(data),
+                    schema: {
+                        model: {
+
+                            fields: {
+                                pro_doc_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                                product_description: { type: "string", editable: false, nullable: true, validation: { required: true } },
+                                document_name: { type: "string", editable: false, validation: { required: true } },
+                                fromDate: { type: "string", editable: false, validation: { required: true } },
+                                todate: { type: "string", editable: false, validation: { required: true } },
+                                status: { type: "string", editable: false, validation: { required: true } },
+                                progress: { type: "string", editable: false, validation: { required: true } },
+
+                            }
+                        }
+                    }
+                },
+                columns: [
+                    { field: "product_description", title: "Product Name", width: "110px" },
+                    { field: "document_name", title: "Document Name" },
+                    { field: "fromDate", title: "Review from" },
+                    { field: "todate", title: "Review to", format: "{0:0}" },
+                    { field: "status", title: "Status", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" : status==\"To be initiated\"? \"blue\" : status==\"Submitted\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>' },
+                    { field: "status", title: "Review Report", template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Submitted\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#" }))">Review Report</a>' },
+                ],
+                sortable: true,
+                pageable: false,
+                detailTemplate: kendo.template($("#template").html()),
+                detailInit: detailInit,
+                dataBound: function (e) {
+                    $("#grid tbody tr .k-grid-edit").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "Submitted") {
+                            $(this).remove();
+                            //  $(this).addClass('blue');
+                        }
+                    })
+                    $("#grid tbody tr .k-hierarchy-cell").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "To be initiated") {
+                            $(this).empty();
+                            //  $(this).addClass('blue');
+                        }
+                    })
+                       $("#grid tbody tr td .white").each(function () {
+                        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                        //Check in the current dataItem if the row is editable
+                        if (currentDataItem.status == "To be initiated") {
+                            $(this).empty();
+                            //  $(this).addClass('blue');
+                        }
+                       })
+                //     $("#grid tbody tr").each(function () {
+                //         var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                //         //Check in the current dataItem if the row is editable
+                //         if (currentDataItem.progress == "Late") {
+                //       // $(this).remove();
+                //        $(this).addClass('red');
+                //    }
+                //})
+                }
+            });
+        }
+        function errorFunc() {
+            alert('error');
+        }
+
+    });
+     function confirmAssign(e, id) {
+        var text = e.innerText;
+        if (text == "Ongoing") {
+            if (confirm("Are you sure want to Reassign?")) {
+                var url = '@Url.Action("ReassignAssignment", "KickOffMeeting", new { pro_doc_id = "__id__" })';
+                window.location.href = url.replace("__id__", id);
+            }
+        } else if(text == "To be initiated") {
+            var url = '@Url.Action("Index", "KickOffMeeting", new { pro_doc_id = "__id__" })';
+            window.location.href = url.replace("__id__", id);
+        }
+      }
+     function detailInit(e)    {
+        var detailRow = e.detailRow;
+
+        detailRow.find(".tabstrip").kendoTabStrip({
+            animation: {
+                open: { effects: "fadeIn" }
+            }
+        });
+        detailRow.find("#gantt").kendoGantt({
+            dataSource: {
+                transport: {
+
+            read: {
+                url: '@Url.Action("GetProDocTemplateForChart", "Home")',
+                type: 'post',
+                dataType: "json"
+            },
+            //update: {
+            //    url: serviceRoot + "/GanttTasks/Update",
+            //    dataType: "jsonp"
+            //},
+            //destroy: {
+            //    url: serviceRoot + "/GanttTasks/Destroy",
+            //    dataType: "jsonp"
+            //},
+            //create: {
+            //    url: serviceRoot + "/GanttTasks/Create",
+            //    dataType: "jsonp"
+            //},
+            parameterMap: function (options, operation) {
+                if (operation !== "read") {
+                    return { models: kendo.stringify(options.models || [options]) };
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { from: "id", type: "number" },
+                    orderId: { from: "orderID", type: "number", validation: { required: true } },
+                    start: { from: "startDate", type: "date" },
+                    end: { from: "endDate", type: "date" },
+                    title: { from: "tittle", defaultValue: "", type: "string" },
+                    percentComplete: { from: "percentComplete", type: "number" },
+                    summary: { from: "summary", type: "boolean", template: "#=  summary == 'false' ? false : true" },
+                    expanded: { from: "expanded", type: "boolean", template: "#= expanded == 'false' ? false : true"  }
+                }
+            }
+        },
+        filter: { field: "pro_doc_id", operator: "eq", value: e.data.pro_doc_id }
+
+            },
+            //dependencies: dependenciesDataSource,
+            views: [
+                { type: "month", selected: false },
+                { type: "year", selected: true }
+              ],
+
+              height: 500,
+              editable: false,
+              showWorkHours: false,
+              showWorkDays: false,
+               columns: [
+                { field: "title", title: "Title", editable: true, sortable: true },
+                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
+                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
+              ],
+        }).data("kendoGantt");
+
+        detailRow.find(".gantt1").kendoGantt({
+            dataSource: {
+                transport: {
+
+                    read: {
+                        url: '@Url.Action("GetProDocSectionAssignmentForChart", "Home")',
+                        type: 'post',
+                        dataType: "json"
+                    },
+                    //update: {
+                    //    url: serviceRoot + "/GanttTasks/Update",
+                    //    dataType: "jsonp"
+                    //},
+                    //destroy: {
+                    //    url: serviceRoot + "/GanttTasks/Destroy",
+                    //    dataType: "jsonp"
+                    //},
+                    //create: {
+                    //    url: serviceRoot + "/GanttTasks/Create",
+                    //    dataType: "jsonp"
+                    //},
+                    parameterMap: function (options, operation) {
+                        if (operation !== "read") {
+                            return { models: kendo.stringify(options.models || [options]) };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { from: "id", type: "number" },
+                            title: { from: "title", type: "string" },
+                            parentId: { from: "parent_id", type: "number", defaultValue: null, validation: { required: true } },
+                            pro_doc_id: { from: "pro_doc_id", type: "number" },
+                            percentComplete: { from: "percentComplete", type: "number" },
+                            start: { from: "start", type: "date" },
+                            end: { from: "end", type: "date" },
+                            summary: { from: "summary", type: "boolean", template: '#if(summary === "false"){# false#} else {# true#} #' },
+                            expanded: { from: "expanded", type: "boolean", template: '#if(expanded === "false" ){# false#} else {# true#} #', defaultValue: true }
+                        }
+                    }
+                },
+                filter: { field: "pro_doc_id", operator: "eq", value: e.data.pro_doc_id }
+
+            },
+            //dependencies: dependenciesDataSource,
+            views: [
+                { type: "month", selected: false },
+                { type: "year", selected: true }
+            ],
+             columns: [
+                { field: "id", title: "ID", width: 40, editable: false, sortable: true },
+                { field: "title", title: "Title", editable: true, sortable: true },
+                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100 ,editable: true, sortable: true },
+                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width:100 ,editable: true, sortable: true }
+              ],
+            height: 500,
+            width: 1400,
+            editable: false,
+            showWorkHours: false,
+            showWorkDays: false,
+            snap: false
+
+        }).data("kendoGantt");
+    }
+</script>
+<h2>Author Dashboard</h2>
+<div class="row">
+    <div class="col-sm-12 col-md-12 ">
+        Assigned Documents
+        <div id="grid"></div>
+        @*<input type="button" value="Kick Off meeting" onclick="location.href='@Url.Action("Index", "KickOffMeeting")'" />*@
+    </div>
+
+</div>

@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Author Review";
+}
+
+@{
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+
+<style>
+    div.k-edit-form-container {
+        width: auto;
+        height: auto;
+    }
+
+    .k-edit-label {
+        width: 15% !important;
+        text-align: left !important;
+    }
+
+    .k-edit-field {
+        width: 80% !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+         var datasource = new kendo.data.DataSource({
+            schema: {
+                total: "",
+                model: {
+                    id: "ProDoc_Section_Assignment_id",
+                    fields: {
+                        Section: { type: 'string', editable: false },
+                        Template_Content: { type: 'string', editable: true },
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: '@Url.Action("ProDocSecAssList", "Home")',
+                    type: 'post',
+                    dataType: 'json'
+                },
+                update: {
+                    url: '@Url.Action("UpdateProDocSecAss", "Home")',
+                    type: 'post',
+                    dataType: 'json',
+                    complete: function (e) {
+                        alert(e.responseJSON.info);
+                        $("#grid").data("kendoGrid").dataSource.read();
+                    }
+                },
+                parameterMap: function (options, operation) {
+                    if (operation != "read") {
+                        return { models: options }
+                    }
+                }
+            },
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: datasource,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "Section", title: "Section" },
+                { field: "Template_Content", title: "Template Content", width: "600px",encoded: false, editor: SectionEditor },
+                { command: "edit", width: "100px"}
+            ],
+            editable: "popup"
+        });
+    });
+
+    function SectionEditor(container, options) {
+            //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
+        $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+            resizable: { content: true, toolbar: true },
+            tools: [
+                {
+                    name: "fontName",
+                    items: [
+                        { text: "Andale Mono", value: "Andale Mono" },
+                        { text: "Arial", value: "Arial" },
+                        { text: "Arial Black", value: "Arial Black" },
+                        { text: "Book Antiqua", value: "Book Antiqua" },
+                        { text: "Calibri", value: "Calibri" },
+                        { text: "Comic Sans MS", value: "Comic Sans MS" },
+                        { text: "Courier New", value: "Courier New" },
+                        { text: "Georgia", value: "Georgia" },
+                        { text: "Helvetica", value: "Helvetica" },
+                        { text: "Impact", value: "Impact" },
+                        { text: "Symbol", value: "Symbol" },
+                        { text: "Tahoma", value: "Tahoma" },
+                        { text: "Terminal", value: "Terminal" },
+                        { text: "Times New Roman", value: "Times New Roman" },
+                        { text: "Trebuchet MS", value: "Trebuchet MS" },
+                        { text: "Verdana", value: "Verdana" },
+                        { text: "Webdings", value: "Webdings" },
+                        { text: "Wingdings", value: "Wingdings" }]
+                },
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "subscript",
+                "superscript",
+                "tableWizard",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "fontSize",
+                "foreColor",
+                "backColor",
+                "print"
+            ]
+        });
+    };
+     function downloadreport() {
+        var gridData = $("#grid").data("kendoGrid").dataSource.data();
+        var paramValue = JSON.stringify(gridData);
+          $.ajax({
+            url: '@Url.Action("PrictDoc", "Home")',
+            type: 'Post',
+              data: { doctext: paramValue },
+            success: function (data) {
+                        window.location = '@Url.Action("GenerateDoc", "Home")';
+            },
+              error: function () {
+                  showAlert('Ajax error!');
+            }
+        });
+    }
+</script>
+
+<div class="row">
+    <div id="grid"></div>
+</div>
+<div>
+    <button id="submitbyn" onclick="downloadreport();" class="k-content btn k-primary">Download Report</button>
+</div>
