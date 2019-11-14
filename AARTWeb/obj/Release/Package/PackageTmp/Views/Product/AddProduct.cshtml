@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "AddProduct";
+    ViewBag.Title = "Adhoc Reprot";
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
 
@@ -8,7 +8,6 @@
 <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
 <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
 <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
 <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
 <link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
@@ -16,176 +15,247 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        var dataSource = new kendo.data.DataSource({
-            pageSize: 20,
+	var selectedDate;
+	var selectedLeadAuthor;
+	var selectedCoAuthor;
+	var filteredCoAuthList;
 
-            autoSync: true,
-            schema: {
-                model: {
-                    id: "ProductID",
-                    fields: {
-                        DocumentType: { defaultValue: { document_code: "Select Doc type", document_name: "Select Doc type" }, validation: { required: true } },
-                        MainAuthor: { defaultValue: { user: "Select main Author", name: "Select main Author" }, validation: { required: true } },
-                        ReviewPeriod: { type: "date", format: "MM/dd/yyyy", validation: { required: true } },
-                        DLP: { type: "date", format: "MM/dd/yyyy", validation: { required: true } }
+    $(document).ready(function () {		
+
+        $("#productname").kendoDropDownList({
+            optionLabel: "Select Product",
+            dataTextField: "product_description",
+            dataValueField: "product_id",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetAllProductList", "Product")',
+                        type: 'post',
+                        dataType: 'json'
                     }
                 }
             }
         });
 
+		var dataSource = new kendo.data.DataSource({
+			pageSize: 20,
+			autoSync: true,
+			schema: {
+				model: {
+					id: "ProductID",
+					fields: {
+						DocumentType: { defaultValue: { document_code: "Select Doc type", document_name: "Select Doc type" } },
+						MainAuthor: {
+							defaultValue: { user_name: "Select main Author", user_id: 0 },
+						},
+						CoAuthor: {
+							defaultValue: { user_name: "Select CoAuthor", user_id: 0 }							
+						},
+                        Complexity: { defaultValue: { document_complexity_id: "Select Complexity", complexity_description: "Select Complexity" }},
+						ReviewPeriodFrom: {
+							type: "date", format: "dd-MMM-yyyy", validation: {
+								required: true,								
+							}							
+						},
+						ReviewPeriodTo: {
+							type: "date", format: "dd-MMM-yyyy", validation: {
+								required: true,								
+							}							
+						}
+                    }
+                }
+            }       
+        });
+
         $("#grid").kendoGrid({
             dataSource: dataSource,
             pageable: true,
-            height: 550,
-            toolbar: [{ name: "create", text: "Add New Document" }],
+			toolbar: [{ name: "create", text: "Add New Document" }],			
             columns: [
                 { field: "DocumentType", title: "Document Name", width: "180px", editor: categoryDropDownEditor, template: "#=DocumentType.document_name#" },
-                { field: "MainAuthor", title: "Main Author", width: "180px", editor: categoryDropDownEditor1, template: "#=MainAuthor.name#" },
-                { field: "ReviewPeriod", title: "Review period", format: "{0:MM/dd/yyyy 23:59:00}", width: "130px" },
-                { field: "DLP", title: "DLP", format: "{0:MM/dd/yyyy  23:59:00}", width: "130px" },
+                { field: "MainAuthor", title: "Main Author", width: "180px", editor: categoryDropDownEditor1, template: "#=MainAuthor.user_name#" },
+                { field: "CoAuthor", title: "Co Author", editor: coAuthorCategory, template: "#=CoAuthor.user_name#" },
+				{ field: "Complexity", title: "Complexity", editor: complexityCategory, template: "#=Complexity.complexity_description#" },
+				{ field: "ReviewPeriodFrom", title: "Review From", editor: startDateEditor ,format: "{0:dd-MMM-yyyy}", width: "130px" },
+				{
+					field: "ReviewPeriodTo", title: "Review To", editor: endDateEditor ,format: "{0:dd-MMM-yyyy}", width: "130px"
+				},
                 { command: "destroy", title: " ", width: "150px" }],
-            editable: true
+             editable: {
+                createAt: "top"
+            },
         });
     });
 
     function categoryDropDownEditor(container, options) {
-        $('<input required name="' + options.field + '"/>')
+        $('<input name="' + options.field + '"/>')
             .appendTo(container)
             .kendoDropDownList({
                 autoBind: false,
                 dataTextField: "document_code",
                 dataValueField: "document_name",
-                dataSource: doctype
-                //{
-                //    type: "Get",
-                //    transport: {
-                //        read: "http://192.168.1.81:9810/api/DocumentType/GetallDocType"
-                //    }
-                //}
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetAllDocType", "Product")',
+							type: 'post',
+							dataType: 'json'
+						}
+					}
+				}
+			});
+	}
+
+
+	 function coAuthorCategory(container, options) {
+        $('<input id="coAuthorData" name="' + options.field + '"/>')
+            .appendTo(container)
+			.kendoDropDownList({
+				optionLabel: "Select CoAuthor",
+				dataTextField: "user_name",
+				dataValueField: "user_id",
+				dataSource: filteredCoAuthList, 								
             });
-    }
+	};
+
     function categoryDropDownEditor1(container, options) {
-        $('<input required name="' + options.field + '"/>')
+        $('<input name="' + options.field + '"/>')
+            .appendTo(container)
+			.kendoDropDownList({
+				optionLabel: "Select LeadAuthor",
+				dataTextField: "user_name",
+				dataValueField: "user_id",
+				dataSource: {
+					transport: {
+						read: {
+							url: '@Url.Action("GetUsersForLeadAuthor", "Home")',
+							type: 'post',
+							dataType: 'json',							
+						}
+					}
+				},
+				select: function (e) {
+					selectedLeadAuthor = e.dataItem.user_name;
+					$.ajax({
+						url: '@Url.Action("GetFilteredCoAuthors", "Home")',
+						type: 'post',
+						dataType: 'json',
+						data: {
+							selectedItem: selectedLeadAuthor
+						},
+						success: function (res) {							
+							filteredCoAuthList = res;							
+						},
+						error: function (err) {
+							swal(err);
+						}
+					});
+				}
+            });
+	};
+
+	function startDateEditor(container, options) {
+		$('<input onkeydown="return false;" id="start-date" name="' + options.field + '"/>')
+			.appendTo(container)
+			.kendoDatePicker({
+				change: function () {
+					var value = this.value();
+					selectedDate = value;					
+				}
+			});
+	}	
+
+	function endDateEditor(container, options) {		
+		$('<input onkeydown="return false;" name="' + options.field + '"/>')
+			.appendTo(container)
+			.kendoDatePicker({
+				value: selectedDate,
+				min: selectedDate
+			});
+	}
+
+     function complexityCategory(container, options) {
+        $('<input name="' + options.field + '"/>')
             .appendTo(container)
             .kendoDropDownList({
-                autoBind: false,
-                dataTextField: "user_name",
-                dataValueField: "name",
-                dataSource: alluser
-                //{
-                //    type: "Get",
-                //    transport: {
-                //        read: "http://192.168.1.81:9810/api/DocumentType/GetallDocType"
-                //    }
-                //}
+                optionLabel: "Select Complexity",
+                dataTextField: "complexity_description",
+                dataValueField: "document_complexity_id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetAllComplexity", "Product")',
+                            type: 'post',
+                            dataType: 'json'
+                        }
+                    }
+                }
             });
-    }
-    var doctype = [
-        {
-            "document_code": "PSUR",
-            "document_name": "PSUR"
-        },
-        {
-            "document_code": "PADER",
-            "document_name": "PADER"
-        },
-        {
-            "document_code": "PBRER",
-            "document_name": "PBRER"
-        },
-        {
-            "document_code": "DSUR",
-            "document_name": "DSUR"
-        },
-        {
-            "document_code": "RMP",
-            "document_name": "RMP"
-        },
-        {
-            "document_code": "REMS",
-            "document_name": "REMS"
-        }
-    ];
-    var alluser = [
-        {
-            "user_name": "S YSADMIN",
-            "name": "SuperUser",
-            "status": "Active",
-            "email_id": "sysadmin@ancla@ancla.com",
-            "phone_number": 9898989898,
-            "is_locked": "UnLocked"
-        },
-        {
-            "user_name": "Manager",
-            "name": "Manager",
-            "status": "Active",
-            "email_id": "ancla@ancla.com",
-            "phone_number": 9898989898,
-            "is_locked": "UnLocked"
-        },
-        {
-            "user_name": "ManualUser",
-            "name": "Manual",
-            "status": "In-Active",
-            "email_id": "manual@gmail.com",
-            "phone_number": 9874562103,
-            "is_locked": "UnLocked"
-        },
-        {
-            "user_name": "Author",
-            "name": "Author",
-            "status": "In-Active",
-            "email_id": "author@ancla.com",
-            "phone_number": 1212121212,
-            "is_locked": "UnLocked"
-        }
-    ];
+	};
 
     function submitrecord() {
-        // alert("hi");
-        var docgrid = $("#grid").data("kendoGrid").dataSource.data();
-          console.log(docgrid);
-        //          alert(docgrid[0].DocumentType.document_code);
+        var protext = $("#productname").data("kendoDropDownList").text();
+        if (protext == null || protext == "Select Product") {
+            swal("Please select Product.");
+            return ;
+		}
 
-        //  //alert(data1);
-        ////  alert(JSON.stringify(data1));
-                  console.log(JSON.stringify(docgrid));
+		var docatten = $("#grid").data("kendoGrid").dataSource.data();
+		//console.log("grid-data: ", docatten);
+		 if (docatten.length  < 1) {
+            swal("Please Add New Document");
+            return;
+		}
 
-        var doc;
-        for (var i = 0; i < docgrid.length; i++) {
-            if (doc == null) {
-                doc = "DocumentType :" + docgrid[i].DocumentType.document_code + "," + "MainAuthor:" + docgrid[i].MainAuthor.user_name + "," + "ReviewPeriod:" + docgrid[i].ReviewPeriod + "," + "DLP:" + docgrid[i].DLP;
-            }
-            else {
-                doc = doc + "#^#" + "DocumentType :" + docgrid[i].DocumentType.document_code + "," + "MainAuthor:" + docgrid[i].MainAuthor.user_name + "," + "ReviewPeriod:" + docgrid[i].ReviewPeriod + "," + "DLP:" + docgrid[i].DLP;
-            }
+		//console.log("selectedCoauthor: ", selectedCoAuthor);			
 
-            //alert(doc); 
-        }
+		for (var i = 0; i < docatten.length; i++) {
+			//console.log("Doc:",docatten[i].DocumentType.document_name);
+			if (docatten[i].DocumentType.document_name == "Select Doc type") {
+				swal("Please Select Document Type");
+				return;
+			} else if (docatten[i].MainAuthor.user_name == "Select main Author") {
+				swal("Please Select Main Author");
+				return;
+			} else if (docatten[i].Complexity.complexity_description == "Select Complexity") {
+				swal("Please Select Complexity");
+				return;
+			} else if (Date.parse(docatten[i].ReviewPeriodTo) == Date.parse(docatten[i].ReviewPeriodFrom)) {
+				swal("Both From and to Date can't be same.")
+				return;
+			} else if (docatten[i].MainAuthor.user_name == docatten[i].CoAuthor.user_name) {
+				swal("Both MainAuthor and LeadAuthor can't be same.")
+				return;
+			}
+		}
 
-        //alert(data[0].DocumentType.document_code);
-        var serviceURL = 'http://localhost/AARTweb/Product/AddPrdctAndDoc';
-
-        $.ajax({
-            type: "POST",
-            url: serviceURL,
-            // data: JSON.stringify(data1),
-            //data: { doc: doc },
-            data: JSON.stringify({ productname: $('#productname').val(), productdesc: $('#productdesc').val(), docdtls: doc }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: successFunc,
-            error: errorFunc
+        //var json = JSON.stringify(docatten);
+        ////swal(docatten.length);
+        //if (docatten.length  < 1) {
+        //    swal("Select document Type");
+        //    return;
+        //}
+		$.ajax({
+			url: '@Url.Action("InsertAdhocReport","Product")',
+			type: 'POST',
+			datatype: "application/json",
+			data: { models: JSON.parse(JSON.stringify(docatten)), protext: protext },
+			success: function (response) {
+				if (response.responseText.includes("Inserted")) {
+					swal(response.responseText);
+					window.location = '@Url.Action("Manager", "Home")';
+				}
+				else {
+					var err = JSON.parse(response.responseText);
+					swal(err.error);
+				}
+             },
+             error: function (err) {
+                 swal(response.responseText);
+                // console.log(err);
+             }
         });
 
-        function successFunc(data, status) {
-            alert("Records Inserted.");
-        }
-
-        function errorFunc() {
-            alert('error');
-        }
     }
 
 </script>
@@ -195,13 +265,17 @@
 
 
     <div>
-        Product Name:- <input type="text" class="k-content" name="Product Name" placeholder="Product Name" id="productname"></br>
-        Product Description:- <input type="text" class="k-content" name="Product Desc" placeholder="Product Desc" id="productdesc">
+        Product Name:- <input type="text" class="k-content" name="Product Name" placeholder="Product Name" id="productname">
+        @*Product Description:- <input type="text" class="k-content" name="Product Desc" placeholder="Product Desc" id="productdesc">*@
 
         <span></span>
     </div>
 
+    <br />
+
     <div id="grid"></div>
-    <button id="submitbyn" onclick="submitrecord();" class="k-content k-primary">Submit</button>
+    <br />
+
+    <button id="submitbyn" onclick="submitrecord();" class="k-content k-primary btn">Submit</button>
 
 </body>

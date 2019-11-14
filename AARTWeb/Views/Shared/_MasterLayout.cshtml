@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AART</title>
-
+    <link rel="icon" type="image/png" href="~/Themes/Images/favicon.png">
     @*<link href="~/Themes/css/aart_style.css" rel="stylesheet" />*@
     <script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
     <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
@@ -15,67 +15,90 @@
     <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
     <style type="text/css">
         #page-container {
-  position: relative;
-  min-height: 100vh;
-}
-
-#content-wrap {
-  padding-bottom: 2.5rem;    /* Footer height */
-}
-
-.footer {
-  /*position: absolute;*/
-  bottom: 0;
-  width: 99%;
-  height: 0.5rem;            /* Footer height */
-}
-           .k-grid-header th.k-header {
-            background-color:#1a5087;
+            position: relative;
+            min-height: 100vh;
         }
-     .k-grid td {
-                    /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
-                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0.15)));
-                    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
-                    background: -o-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
-                    background: -ms-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
-                    background: linear-gradient(to bottom,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);*/
-                    padding: 10px;
-                                        color:black;
 
-                }
-                .k-grid .k-alt td {
-                    /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
-                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0.1)));
-                    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
-                    background: -o-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
-                    background: -ms-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
-                    background: linear-gradient(to bottom,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);*/
-                    background: rgba(183, 215, 213, 0.88);
-                                        padding: 10px;
-                    color:black;
-                }
-                .k-grid .k-alt {
-    background-color: #566a69e0  !important;
-}
-                .k-grid tr:hover {
+        #content-wrap {
+            padding-bottom: 2.5rem; /* Footer height */
+        }
 
-    background-color:#629fea !important;
+        .footer {
+            /*position: absolute;*/
+            bottom: 0;
+            width: 99%;
+            height: 0.5rem; /* Footer height */
+        }
 
-}
-    .k-grid-header th.k-header > .k-link {
-        color: white !important;
-    }
-    .k-detail-cell .k-tabstrip .k-content {
-        padding: 0.2em;
-    }
+        .k-grid-header th.k-header {
+            background-color: #1a5087 !important;
+        }
+
+        .k-grid-header th.k-header {
+            white-space: initial !important;
+        }
+
+        .k-grid td {
+            /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
+                            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0.15)));
+                            background: -webkit-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            background: -o-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            background: -ms-linear-gradient(top,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            background: linear-gradient(to bottom,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);*/
+            padding: 10px;
+            color: black;
+        }
+
+        .k-grid .k-alt td {
+            /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
+                            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0.1)));
+                            background: -webkit-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                            background: -o-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                            background: -ms-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                            background: linear-gradient(to bottom,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);*/
+            background: rgba(183, 215, 213, 0.88);
+            padding: 10px;
+            color: black;
+        }
+
+        .k-alt td {
+            background-color: #f1f1f1 !important;
+        }
+
+        .k-autocomplete, .k-block, .k-button-group .k-tool, .k-content, .k-dropdown-wrap, .k-dropzone-active, .k-editable-area, .k-editor-dialog .k-tabstrip-items, .k-filter-row > th, .k-footer-template td, .k-grid td, .k-grid td.k-state-selected, .k-grid-content-locked, .k-grid-footer, .k-grid-footer-locked, .k-grid-footer-wrap, .k-grid-header, .k-grid-header-locked, .k-grid-header-wrap, .k-group, .k-group-footer td, .k-grouping-header, .k-grouping-header .k-group-indicator, .k-header, .k-input, .k-pager-refresh, .k-pager-wrap, .k-pager-wrap .k-link, .k-panel > .k-item > .k-link, .k-panelbar .k-content, .k-panelbar .k-panel, .k-panelbar > .k-item > .k-link, .k-popup.k-align .k-list .k-item:last-child, .k-separator, .k-slider-track, .k-splitbar, .k-state-default, .k-state-default .k-select, .k-state-disabled, .k-textbox, .k-textbox > input, .k-tiles, .k-toolbar, .k-tooltip, .k-treemap-tile, .k-upload-files, .k-widget {
+            border-color: #d5d5d5;
+        }
+
+        .k-autocomplete, .k-draghandle, .k-dropdown-wrap, .k-grid-header, .k-grouping-header, .k-header, .k-numeric-wrap, .k-pager-wrap, .k-panelbar .k-tabstrip-items .k-item, .k-picker-wrap, .k-progressbar, .k-state-highlight, .k-tabstrip-items .k-item, .k-textbox, .k-toolbar {
+            background-image: url(textures/highlight.png);
+            background-image: none,linear-gradient(to bottom,rgba(255,255,255,.4) 0,rgba(255,255,255,0) 100%);
+            background-position: 50% 50%;
+            color: #242323 !important;
+            /*background-color: #e0e0e0;*/
+        }
+            /*.k-grid .k-alt {
+            background-color: #566a69e0  !important;
+        }*/
+            /*.k-grid tr:hover {background-color:#629fea !important;}*/
+            .k-grid-header th.k-header > .k-link {
+                color: white !important;
+                font-size: initial;
+            }
+
+        .k-detail-cell .k-tabstrip .k-content {
+            padding: 0.2em;
+        }
+
         .navbar-inverse {
-         background-color: white;
-border-color: white;
+            background-color: white;
+            border-color: white;
         }
 
         .forgot-password-btn, .change-password-layout, #adduser {
@@ -95,94 +118,158 @@ border-color: white;
             padding: 10px;
         }
         /*.footer {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          padding: 1rem;
-          background-color: #efefef;
-          /*text-align: center;
-        }
-        body {
-          position: relative;
-          margin: 0;
-          padding-bottom: 6rem;
-          min-height: 100%;
-          font-family: "Helvetica Neue", Arial, sans-serif;
-        }*/
+                  position: absolute;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  padding: 1rem;
+                  background-color: #efefef;
+                  /*text-align: center;
+                }
+                body {
+                  position: relative;
+                  margin: 0;
+                  padding-bottom: 6rem;
+                  min-height: 100%;
+                  font-family: "Helvetica Neue", Arial, sans-serif;
+                }*/
         .avatar {
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
 
         .dropbtn {
-  /*background-color: #1a5087;*/
-  color: #1a5087;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  display:inline-block;
+            /*background-color: #1a5087;*/
+            color: #1a5087;
+            /*padding: 16px;*/
+            font-size: 16px;
+            border: none;
+            display: inline-block;
+        }
+
+
+
+        .dropdown-content {
+            display: none;
+            background-color: white;
+            min-width:200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            position: fixed;
+            top:52px;
+        }
+
+
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                    color:black !important;
+                }
+
+
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navigation ul {
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .navigation li {
+            list-style-type: none;
+            padding: 0px;
+            height: 24px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            display: inline;
+        }
+
+            .navigation li a {
+                color: #1a5087;
+                font-size: 16px;
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                text-decoration: none;
+                line-height: 70px;
+                padding: 5px 15px;
+                opacity: 0.7;
+            }
+             .navigation li :active {
+                color: red !important; 
+              
+            }
+            .navigation li :hover {
+                color: orangered !important;
+            }
+        .navbar-inverse .navbar-nav > .active > a {
+                            color: orangered !important;
+                            background-color:#ffffff !important;
+                            text-decoration: underline !important;
+        }
+        .navbar-inverse .navbar-nav > li > a {
+            color: #265690 !important;
+            font-size: large !important;
+            padding-top: 25% !important;
+        }
 }
-
- 
-
-.dropdown-content {
-  display: none;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  position: fixed;
-}
-
- 
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
- 
-
-.dropdown-content a:hover {background-color: #ddd;}
-
- 
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.navigation ul {
-  padding: 0px;
-  margin: 0px;
-  text-align: center;
-  display:inline-block;
-  vertical-align:top;
-}
-.navigation li {
-  list-style-type: none;
-  padding: 0px;
-  height: 24px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  display: inline;
-}
-.navigation li a {
-  color: #1a5087;
-  font-size: 16px;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  text-decoration: none;
-  line-height: 70px;
-  padding: 5px 15px;
-  opacity: 0.7;
-}
-.navigation li :hover {
-color :orangered;
-}
+        #footer {
+            height: 35px;
+            width: 100%;
+        }
     </style>
+    <script>
 
+        // Window load event used just in case window height is dependant upon images
+        $(window).bind("load", function () {
+
+            var footerHeight = 0,
+                footerTop = 0,
+                $footer = $("#footer");
+
+            positionFooter();
+
+            function positionFooter() {
+
+                footerHeight = $footer.height();
+                footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
+
+                if (($(document.body).height() + footerHeight) < $(window).height()) {
+                    $footer.css({
+                        position: "absolute"
+                    }).animate({
+                        top: footerTop
+                    })
+                } else {
+                    $footer.css({
+                        position: "static"
+                    })
+                }
+
+            }
+
+            $(window)
+                .scroll(positionFooter)
+                .resize(positionFooter)
+
+        });
+
+
+    </script>
 </head>
 <body style="background-color: #e0e2ea59;">
     @*#ACCFF29C,#f8f9fc*@
@@ -193,45 +280,127 @@ color :orangered;
             <div class="">
                 <div class="navbar-header" style="display:inline-flex;">
                     @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>*@
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>*@
                     @*<img style="width: 200px;" src="~/Themes/Images/AART.png" />*@
                     @*<img style="width: 200px;" src="~/Themes/Images/aart-new-logo.jpg" />*@
-                    <img style="width: 200px;" src="~/Themes/Images/AART-NEW-COLOR-LOGO.png" />
+                    <a href="@Url.Action("Login", "Account")" title="Dashboard" class="links">
+                        <img alt="Widget View" style="width: 200px;" src="@Url.Content("~/Themes/Images/AART-NEW-COLOR-LOGO.png")">
 
-                    <ul class="navigation">
-                        @*<li><a href="#">Dash Board</a></li>
+                    </a>
+                    @*<img style="width: 200px;" src="~/Themes/Images/AART-NEW-COLOR-LOGO.png" />*@
+
+                <ul class="nav navbar-nav">
+                    @*<li><a href="#">Dash Board</a></li>
         <li><a href="#">Add Product</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Audit Trail</a></li>
         <li><a href="#">Help</a></li>*@
-                        @if (HttpContext.Current.Session["role"].ToString() == "Administrator")
+                    @if (HttpContext.Current.Session["role"] != null)
+                    {
+                        if (HttpContext.Current.Session["role"].ToString() == "Administrator")
                         {
-                            <li class="navigation">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>
-                            <li class="navigation">@Html.ActionLink("Add Report", "Index", "Product")</li>
-                            <li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>
-                            <li class="navigation">@Html.ActionLink("Help", "Help", "Help")</li>
+                            @*<li class="navigation">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Admin" ? "active" : "")">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>
+
+                            @*<li class="navigation">@Html.ActionLink("Add Report", "Index", "Product")</li>*@
+                            @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
+                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                <li class="navigation">
+                    <a href="@Url.Action("Help", "Help")"
+                       type="submit"
+                       target="_blank">
+                        Help
+                    </a>
+                </li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                                <a href="@Url.Action("Help", "Help")"
+                                   type="submit"
+                                   target="_blank">
+                                    Help
+                                </a>
+                            </li>
                         }
                         else if (HttpContext.Current.Session["role"].ToString() == "Manager")
                         {
-                            <li class="navigation">@Html.ActionLink("Dashboard", "Manager", "Home")</li>
-                            <li class="navigation">@Html.ActionLink("Add Report", "Index", "Product")</li>
-                            <li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>
-                            <li class="navigation">@Html.ActionLink("Help", "Help", "Help")</li>
+                            @*<li class="active">@Html.ActionLink("Dashboard", "Manager", "Home")</li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Manager" ? "active" : "")">@Html.ActionLink("Dashboard", "Manager", "Home")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Add Report", "Index", "Product")</li>
+                            @*<li>@Html.ActionLink("Add Report", "Index", "Product")</li>*@
+                            @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
+                            @*<li>@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("UsersStatus", "UsersStatus", "Home")</li>
+
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 3%">
+                                <a href="@Url.Action("Help", "Help")"
+                                   type="submit"
+                                   target="_blank">
+                                    Help
+                                </a>
+                            </li>
+
+                            @*<li>
+                    <a href="@Url.Action("Help", "Help")"
+                       type="submit"
+                       target="_blank">
+                        Help
+                    </a>
+                </li>*@
                         }
                         else if (HttpContext.Current.Session["role"].ToString() == "Author")
                         {
-                            <li class="navigation">@Html.ActionLink("Dashboard", "Manager", "Home")</li>
-                            <li class="navigation">@Html.ActionLink("Help", "Help", "Help")</li>
+                            @*<li class="navigation">@Html.ActionLink("Dashboard", "Author", "Home")</li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Author" ? "active" : "")">@Html.ActionLink("Dashboard", "Author", "Home")</li>
+
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                                <a href="@Url.Action("Help", "Help")"
+                                   type="submit"
+                                   target="_blank">
+                                    Help
+                                </a>
+                            </li>
+                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                <li class="navigation">
+                    <a href="@Url.Action("Help", "Help")"
+                       type="submit"
+                       target="_blank">
+                        Help
+                    </a>
+                </li>*@
                         }
                         else
                         {
-                            <li class="navigation">@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                            <li class="navigation">@Html.ActionLink("Help", "Help", "Help")</li>
+                            @*<li class="navigation">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>*@
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "AuthorAssignment" ? "active" : "")">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>
+
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                                <a href="@Url.Action("Help", "Help")"
+                                   type="submit"
+                                   target="_blank">
+                                    Help
+                                </a>
+                            </li>
+                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                <li class="navigation">
+                    <a href="@Url.Action("Help", "Help")"
+                       type="submit"
+                       target="_blank">
+                        Help
+                    </a>
+                </li>*@
                         }
-                    </ul>
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Account/Login");
+                    }
+                </ul>
                     @*<h1 style="color: wheat;font-family: initial;position: fixed;left: 14%;top: 3%;">Manager Dashboard</h1>*@
 
                     @*@Html.ActionLink(, "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })*@
@@ -249,47 +418,54 @@ color :orangered;
 
 
                     @*<img src="img_avatar.png" alt="Avatar" class="avatar">S*@
-                    <div class="dropdown">
+                    <div class="col-sm-9 mns-avt">
+                        <div class="dropdown">
 
-                        <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
-                        <b class="dropbtn"> @Session["UserName"] </b>
+                            <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
+                           
+                                <b class="dropbtn"> @Session["Name"]</b>
+                                <span class="userinfo">(@Session["role"])</span>
+                            
 
 
 
 
-                        <div class="dropdown-content">
-                            @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                            @Html.ActionLink("Logout", "Logout", "Account")
+                            <div class="dropdown-content">
+                                @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                                @Html.ActionLink("Logout", "Logout", "Account")
+                            </div>
+                            @*Hi,<strong> @Session["UserName"] </strong>
+
+
+
+                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                    |
+                    @Html.ActionLink("Logout", "Logout", "Account")*@
                         </div>
-                        @*Hi,<strong> @Session["UserName"] </strong>
 
 
 
-                @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                |
-                @Html.ActionLink("Logout", "Logout", "Account")*@
                     </div>
-
-
-
                 </div>
             </div>
         </div>
-        <div style="margin-top:5%;" id="page-container">
-            @RenderBody()
+        <div class="container-fluid">
+            <div id="page-container">
+                @RenderBody()
+            </div>
         </div>
-        <footer class="footer">
+       <div id="footer">
             @*<p>&copy; @DateTime.Now.Year - AART</p>
                 <p>Product by <b>Ancla Consultancy Services</b></p>*@
             <div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                    <p style="color:#57a8d7;">&copy; @DateTime.Now.Year - AART </p>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
+                    <p>&copy; @DateTime.Now.Year - AART </p>
                 </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                    <p>Product by  <a href="careers"><b>Ancla Consultancy Services</b></a> </p>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
+                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank"><b>Ancla Technology Solutions India Private Limited</b></a> </p>
                 </div>
             </div>
-        </footer>
+        </div>
 
 
     </div>

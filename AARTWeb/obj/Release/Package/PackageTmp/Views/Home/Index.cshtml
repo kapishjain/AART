@@ -5,7 +5,7 @@
 @{
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
-<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
 <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
 <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
@@ -13,7 +13,7 @@
 <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
 <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
 <link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">*@
 <script>
   $(document).ready(function () {
         $.ajax({
@@ -54,7 +54,7 @@
             });
         }
         function errorFunc() {
-            alert('error');
+            swal('error');
         }
 
     });

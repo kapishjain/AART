@@ -14,6 +14,8 @@ namespace AARTWeb.Models
 {
     public class ProductModel : BaseModel
     {
+        Auth Auth = new Auth();
+
         public Int32 productcount { get; set; }
         public Int32 documentcount { get; set; }
         public String getallproduct { get; set; }
@@ -24,6 +26,8 @@ namespace AARTWeb.Models
         public List<GetProDocTemplateForChartModel> getroDocTemplateForChart { get; set; }
         public List<GetProDocSectionAssignmentForChartModel> getProDocSectionAssignmentForChart { get; set; }
         public List<ProductDetails> productListDetails { get; set; }
+        public List<AuthorProductDetails> authorproductListDetails { get; set; }
+
         public List<UsersByRole> leadAuthorList { get; set; }
         public List<UsersByRole> coAuthorList { get; set; }
         public List<TemplateSectionVo> getProDocSecAssList { get; set; }
@@ -32,6 +36,8 @@ namespace AARTWeb.Models
         public List<ComplexityList> getAllComplexityList { get; set; }
         public string newtemplate { get; set; }
         public string oldtemplate { get; set; }
+        public List<DashBoardDetails> getDashBoardDetails { get; set; }
+        public List<ManagerDashBoardDetails> getMangrDashBoardDetails { get; set; }
 
         public Int32 AddProduct(String prdctname, String prdctdesc)
         {
@@ -43,7 +49,7 @@ namespace AARTWeb.Models
                     {
                         httpClient.BaseAddress = new Uri(WebURL + "product/AddProduct");
 
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
@@ -79,6 +85,8 @@ namespace AARTWeb.Models
                                 {
                                     error = data.error;
                                     Message = data.error;
+                                    InsertAudit("Add new Product", Message, "Failed");
+
                                     return 0;
                                 }
                                 else if (value.Contains("warning"))
@@ -86,12 +94,16 @@ namespace AARTWeb.Models
                                     Warning = true;
                                     error = data.warning;
                                     Message = data.warning;
+                                    InsertAudit("Add new Product", Message, "Failed");
+
                                     return 0;
                                 }
                                 else
                                 {
                                     IsSuccess = true;
                                     Message = data.prodctid;
+                                    InsertAudit("Add new Product", Message, "Success");
+
                                     return Convert.ToInt32(data.prodctid);
                                 }
                             }
@@ -102,6 +114,8 @@ namespace AARTWeb.Models
                 catch (Exception ex)
                 {
                     error = ex.Message;
+                    InsertAudit("Add new Product", error, "Failed");
+
                     return 0;
                 }
             }
@@ -118,7 +132,7 @@ namespace AARTWeb.Models
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.BaseAddress = new Uri(WebURL);
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
 
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -181,7 +195,7 @@ namespace AARTWeb.Models
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(WebURL);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var rt = client.GetAsync("Product/GetProductCount");
                 rt.Wait();
@@ -210,7 +224,7 @@ namespace AARTWeb.Models
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(WebURL);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var rt = client.GetAsync("DocumentType/GetDocumentCount");
                 rt.Wait();
@@ -241,7 +255,7 @@ namespace AARTWeb.Models
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(WebURL);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductDetails");
                 responseTask.Wait();
@@ -268,7 +282,7 @@ namespace AARTWeb.Models
                             //resultList = data.result;
                             //result = res;
                             //productListDetails;                           
-                            getallproduct = Convert.ToString(data.result);
+                            getallproduct = Convert.ToString(data.userarr);
                             productListDetails = JsonConvert.DeserializeObject<List<ProductDetails>>(getallproduct);
                         }
 
@@ -284,7 +298,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Role/GetUserByRoleID?Roleid=" + 3);
                 responseTask.Wait();
@@ -306,7 +320,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Role/GetUserByRoleID?Roleid=" + 3);
                 responseTask.Wait();
@@ -319,20 +333,21 @@ namespace AARTWeb.Models
                         rData.Wait();
                         coAuthorList = rData.Result;
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         _ = e.InnerException;
                     }
-                    
+
                 }
             }
             return coAuthorList;
         }
-        public void GetReportsByUser()
+        public List<AuthorProductDetails> GetReportsByUser()
         {
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(WebURL);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetReportsByUser?userid=" + HttpContext.Current.Session["UserID"]);
                 responseTask.Wait();
@@ -355,8 +370,9 @@ namespace AARTWeb.Models
                         }
                         else
                         {
+                            //getreportsbyuser = Convert.ToString(data.result);
                             getreportsbyuser = Convert.ToString(data.result);
-
+                            authorproductListDetails = JsonConvert.DeserializeObject<List<AuthorProductDetails>>(getreportsbyuser);
 
                         }
 
@@ -365,13 +381,15 @@ namespace AARTWeb.Models
 
                 }
             }
+            return authorproductListDetails;
+
         }
         public void GetProDocByUser()
         {
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(WebURL);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProDocByUser?user_id=" + HttpContext.Current.Session["UserID"]);
                 responseTask.Wait();
@@ -399,14 +417,14 @@ namespace AARTWeb.Models
                     }
                 }
             }
-        }        
+        }
         public List<UsersByRole> GetUsersLi()
         {
             List<UsersByRole> getUserLi = new List<UsersByRole>();
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(WebURL);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var rt = client.GetAsync("role/GetUserByRole");
                 rt.Wait();
@@ -431,7 +449,7 @@ namespace AARTWeb.Models
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(WebURL);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var rt = client.GetAsync("role/GetUserByRole");
                 rt.Wait();
@@ -467,14 +485,14 @@ namespace AARTWeb.Models
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(WebURL);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var rt = client.GetAsync("Role/GetAllRoles");
                 rt.Wait();
                 var result = rt.Result;
                 if (result.IsSuccessStatusCode == true)
                 {
-                                        string res = "";
+                    string res = "";
                     using (HttpContent content = result.Content)
                     {
                         // ... Read the string.
@@ -505,9 +523,9 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var responseTask = httpClient.GetAsync("Product/GetActivityByUser?user_id=" + HttpContext.Current.Session["UserID"] );
+                var responseTask = httpClient.GetAsync("Product/GetActivityByUser?user_id=" + HttpContext.Current.Session["UserID"]);
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -523,7 +541,7 @@ namespace AARTWeb.Models
 
         /*
          * This method is used to get users sections list (logged in as user)
-         */ 
+         */
         public List<ProDocSectionByUserModel> GetProDocSectionAssignmentByUser()
         {
             using (var httpClient = new HttpClient())
@@ -531,9 +549,9 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var responseTask = httpClient.GetAsync("Product/GetSectionAssignmentByUser?user_id=" + HttpContext.Current.Session["UserID"] );
+                var responseTask = httpClient.GetAsync("Product/GetSectionAssignmentByUser?user_id=" + HttpContext.Current.Session["UserID"]);
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -550,7 +568,7 @@ namespace AARTWeb.Models
                     catch (Exception e) {
                         _ = e.InnerException;
                     }
-                    
+
                 }
             }
             return getSecAssUserList;
@@ -562,7 +580,7 @@ namespace AARTWeb.Models
         //        var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
         //        httpClient.BaseAddress = new Uri(url);
-        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
         //        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
@@ -592,76 +610,96 @@ namespace AARTWeb.Models
         public string UpdateActivityByUser(ProDocActivityVo objprovo)
         {
             TemplateSectionVo sectionVo = new TemplateSectionVo();
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-                sectionVo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                sectionVo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
-                sectionVo.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                sectionVo.Template_Content = objprovo.Template_Content;
-                sectionVo.ProDoc_Template_id = Convert.ToInt32(objprovo.Pro_doc_template);
-                sectionVo.Status = "I";
-                //var str=
-                var jsonSerialiser = new JavaScriptSerializer();
-                var json = jsonSerialiser.Serialize(sectionVo);
-                var responseTask = httpClient.PutAsJsonAsync("Product/UpdateActivityRecordByUser", sectionVo);
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                    sectionVo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    sectionVo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
+                    sectionVo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    sectionVo.Template_Content = objprovo.Template_Content;
+                    sectionVo.ProDoc_Template_id = Convert.ToInt32(objprovo.Pro_doc_template);
+                    sectionVo.Status = "O";
+                    //var str=
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json = jsonSerialiser.Serialize(sectionVo);
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateActivityRecordByUser", sectionVo);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Update actvity ", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Update actvity ", ex.Message, "Error");
+                return null;
+
+            }
         }
         public string UpdateSecAssUser(TemplateSectionVo sectionVo)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-                sectionVo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                sectionVo.Last_Modified_By = Convert.ToString(11);
-                sectionVo.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                sectionVo.Status = "I";
-                var responseTask = httpClient.PutAsJsonAsync("Product/UpdateSecAsignRecordByUser", sectionVo);
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                    sectionVo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    sectionVo.Last_Modified_By = Convert.ToString(11);
+                    sectionVo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    sectionVo.Status = "O";
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateSecAsignRecordByUser", sectionVo);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Update section ", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Update section ", ex.Message, "Success");
+                return null;
+
+            }
         }
         public List<GetProDocTemplateForChartModel> GetProDocTemplateForChart()
         {
@@ -670,7 +708,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductActivityDtls");
                 responseTask.Wait();
@@ -692,7 +730,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductSectionAssignmentDtls");
                 responseTask.Wait();
@@ -709,56 +747,45 @@ namespace AARTWeb.Models
         }
         public string UpdateProDocRole(ProductDetails product)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + Convert.ToInt32(product.leadAuthor) + "&coauserid=" + Convert.ToInt32(product.co_author), "");
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + Convert.ToInt32(product.leadAuthor.user_id) + "&coauserid=" + Convert.ToInt32(product.co_author.user_id), "");
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data.info);
+                            InsertAudit("Update Author or co-author for document", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Update Author or co-author for document", ex.Message, "Error");
+                return null;
+
+            }
         }
 
-        //public List<ProDocActivityVo> GetProDocActvity(int prodocmapid)
-        //{
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-        //        httpClient.BaseAddress = new Uri(url);
-        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-        //        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid);
-        //        responseTask.Wait();
-        //        var result = responseTask.Result;
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            var rData = result.Content.ReadAsAsync<List<ProDocActivityVo>>();
-        //            rData.Wait();
-
-        //            getProductDocList = rData.Result;
-        //        }
-        //    }
-        //    return getProductDocList;
-        //}
+   
         public List<TemplateSectionVo> GetProDocActvity(int prodocmapid)
         {
             using (var httpClient = new HttpClient())
@@ -766,7 +793,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid);
                 responseTask.Wait();
@@ -786,7 +813,7 @@ namespace AARTWeb.Models
                     catch (Exception e) {
                         _ = e.InnerException;
                     }
-                    
+
                 }
             }
             return getProDocSecAssList;
@@ -798,7 +825,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductDocumentAuthoring?prodocmapid=" + prodocmapid);
                 responseTask.Wait();
@@ -819,79 +846,99 @@ namespace AARTWeb.Models
                     catch (Exception e) {
                         _ = e.InnerException;
                     }
-                    
+
                 }
             }
             return getProDocSecAssList;
         }
         public string UpdateProDocSecAss(TemplateSectionVo templateSection)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                templateSection.Status = "I";
-                //List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
-                //tList.Add(templateSection);
-                var responseTask = httpClient.PutAsJsonAsync("Product/UpdateSecAsignRecordByUser", templateSection);
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    templateSection.Status = "O";
+                    //List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
+                    //tList.Add(templateSection);
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateSecAsignRecordByUser", templateSection);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Update section ", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Update section ", ex.Message, "Error");
+                return null;
+
+            }
         }
         public string UpdateProDocActAss(TemplateSectionVo templateSection)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                templateSection.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                templateSection.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
-                templateSection.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                templateSection.Status = "I";
-                //  List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
-                // tList.Add(templateSection);
-                var jsonSerialiser = new JavaScriptSerializer();
-                var json = jsonSerialiser.Serialize(templateSection);
-                var responseTask = httpClient.PutAsJsonAsync("Product/UpdateActivityRecordByUser", templateSection);
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    templateSection.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    templateSection.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
+                    templateSection.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    templateSection.Status = "O";
+                    //  List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
+                    // tList.Add(templateSection);
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json = jsonSerialiser.Serialize(templateSection);
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateActivityRecordByUser", templateSection);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Update actvity ", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Update actvity ", ex.Message, "Error");
+                return null;
+
+            }
         }
         public List<UsersByRole> GetFilteredUsersList(int id) {
             using (var httpClient = new HttpClient())
@@ -899,7 +946,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Role/GetUserByRoleID?Roleid=" + id);
                 responseTask.Wait();
@@ -916,8 +963,8 @@ namespace AARTWeb.Models
                     }
                     catch (Exception e) {
                         _ = e.InnerException;
-                    } 
-                    
+                    }
+
                 }
             }
             return leadAuthorList;
@@ -930,7 +977,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetAllProduct");
                 responseTask.Wait();
@@ -959,7 +1006,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("DocumentType/GetAllDoctype");
                 responseTask.Wait();
@@ -988,7 +1035,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("DocumentType/GetDocumentComplexity");
                 responseTask.Wait();
@@ -1035,16 +1082,16 @@ namespace AARTWeb.Models
                         vo.Status = "I";
                         vo.Dlp = item.ReviewPeriodTo;
                         vo.CreatedBy = Convert.ToInt32(HttpContext.Current.Session["UserID"]); ;
-                        vo.CreatedDate = DateTime.Now.ToString("dd/MM/yyyy");
+                        vo.CreatedDate = DateTime.Now.ToString("dd/MMM/yyyy");
                         vo.LastModifiedBy = HttpContext.Current.Session["UserID"].ToString();
-                        vo.LastModifiedDate = DateTime.Now.ToString("dd/MM/yyyy");
+                        vo.LastModifiedDate = DateTime.Now.ToString("dd/MMM/yyyy");
                         lstpdm.Add(vo);
                     }
 
                     var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                     httpClient.BaseAddress = new Uri(url);
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     var responseTask = httpClient.PostAsJsonAsync("Product/InsertAdhocReport", lstpdm);
                     responseTask.Wait();
@@ -1057,12 +1104,14 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
 
-                             value = Convert.ToString(data);
+                            value = Convert.ToString(data);
 
                             if (value.Contains("info"))
-                            value = Convert.ToString(data.info);
-                           
+                            {
+                                value = Convert.ToString(data.info);
+                                InsertAudit("Insert new product", value, "Success");
 
+                            }
                             return value;
                         }
 
@@ -1070,7 +1119,10 @@ namespace AARTWeb.Models
                 }
                 catch (Exception ex)
                 {
+                    InsertAudit("Insert new product", ex.Message, "Error");
+
                     return ex.Message;
+
                 }
                 return null;
             }
@@ -1080,69 +1132,79 @@ namespace AARTWeb.Models
 
             //var restClient = new RestClient(WebURL);
             //RestRequest request = new RestRequest("", Method.POST);
-            //request.AddParameter("Authorization", string.Format("Bearer " + Auth.result), ParameterType.HttpHeader);
+            //request.AddParameter("Authorization", string.Format("Bearer " + HttpContext.Current.Session["token"].ToString()), ParameterType.HttpHeader);
 
             ReviewCommentVO commentVO = new ReviewCommentVO();
-
-            using (var httpClient = new HttpClient())
+            try
             {
-                httpClient.BaseAddress = new Uri(WebURL);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                if (templateVar == "Section")
-                    commentVO.Pro_Doc_Section_Assignment_Id = Convert.ToString(id);
-                else
-                    commentVO.Pro_Doc_Template = Convert.ToString(id);
-                commentVO.Pro_Doc_Mapping_Id = Convert.ToString(prodocId);
-                commentVO.Status = status;
-                commentVO.Reviewer_Datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                commentVO.Review_Comment = comment;
-                commentVO.Newtemplate = template;
-                commentVO.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
-                commentVO.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                commentVO.User_id = HttpContext.Current.Session["UserID"].ToString();
-                var jsonSerialiser = new JavaScriptSerializer();
-                var json = jsonSerialiser.Serialize(commentVO);
-                if (templateVar == "Section")
+                using (var httpClient = new HttpClient())
                 {
-                    var responseTask = httpClient.PostAsJsonAsync("Product/InsUpdtProDocSectionReview", commentVO);
-                    responseTask.Wait();
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
+                    httpClient.BaseAddress = new Uri(WebURL);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    if (templateVar == "Section")
+                        commentVO.Pro_Doc_Section_Assignment_Id = Convert.ToString(id);
+                    else
+                        commentVO.Pro_Doc_Template = Convert.ToString(id);
+                    commentVO.Pro_Doc_Mapping_Id = Convert.ToString(prodocId);
+                    commentVO.Status = status;
+                    commentVO.Reviewer_Datetime = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    commentVO.Review_Comment = comment;
+                    commentVO.Newtemplate = template;
+                    commentVO.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
+                    commentVO.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    commentVO.User_id = HttpContext.Current.Session["UserID"].ToString();
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json = jsonSerialiser.Serialize(commentVO);
+                    if (templateVar == "Section")
                     {
-                        using (HttpContent content = result.Content)
+                        var responseTask = httpClient.PostAsJsonAsync("Product/InsUpdtProDocSectionReview", commentVO);
+                        responseTask.Wait();
+                        var result = responseTask.Result;
+                        if (result.IsSuccessStatusCode)
                         {
-                            Task<string> result1 = content.ReadAsStringAsync();
-                            var rs = result1.Result;
-                            dynamic data = JsonConvert.DeserializeObject(rs);
-                            string value = Convert.ToString(data);
+                            using (HttpContent content = result.Content)
+                            {
+                                Task<string> result1 = content.ReadAsStringAsync();
+                                var rs = result1.Result;
+                                dynamic data = JsonConvert.DeserializeObject(rs);
+                                string value = Convert.ToString(data);
+                                InsertAudit("Accept or Revert section ", value, "Success");
 
-                            return value;
+                                return value;
+                            }
+
                         }
+                    }
+                    else
+                    {
+                        var responseTask = httpClient.PostAsJsonAsync("Product/InsUpdtActivityReview", commentVO);
+                        responseTask.Wait();
+                        var result = responseTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = result.Content)
+                            {
+                                Task<string> result1 = content.ReadAsStringAsync();
+                                var rs = result1.Result;
+                                dynamic data = JsonConvert.DeserializeObject(rs);
+                                string value = Convert.ToString(data);
+                                InsertAudit("Accept or Revert actvity ", value, "Success");
 
+                                return value;
+                            }
+
+                        }
                     }
                 }
-                else {
-                    var responseTask = httpClient.PostAsJsonAsync("Product/InsUpdtActivityReview", commentVO);
-                    responseTask.Wait();
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        using (HttpContent content = result.Content)
-                        {
-                            Task<string> result1 = content.ReadAsStringAsync();
-                            var rs = result1.Result;
-                            dynamic data = JsonConvert.DeserializeObject(rs);
-                            string value = Convert.ToString(data);
-
-                            return value;
-                        }
-
-                    }
-                }                                 
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Accept or Revert Section ", ex.Message, "Error");
+                return "";
+            }
         }
         public List<ReviewCommentVO> GetViewData(int id, string from)
         {
@@ -1152,7 +1214,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 if (from == "Section")
@@ -1194,8 +1256,8 @@ namespace AARTWeb.Models
 
                     }
                 }
-               
-                
+
+
             }
             return getViewDat;
         }
@@ -1209,7 +1271,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 if (from == "Section")
@@ -1252,8 +1314,8 @@ namespace AARTWeb.Models
                         }
 
                     }
-                } 
-                
+                }
+
             }
             return reviewComment;
         }
@@ -1265,7 +1327,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid);
                 responseTask.Wait();
@@ -1281,114 +1343,144 @@ namespace AARTWeb.Models
                     }
                     catch (Exception e) {
                         _ = e.InnerException;
-                    } 
-                    
+                    }
+
                 }
             }
             return sectionVos;
         }
         public string SubmitReport(int prodocid)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //   templateSection.Status = "O";
-                TemplateSectionVo tList = new TemplateSectionVo();
-                //  tList.Add(templateSection);
-                var responseTask = httpClient.GetAsync("Product/submitreport?prodocid=" + prodocid + "&user_id=" + HttpContext.Current.Session["UserID"]);
-
-             //   var responseTask = httpClient.GetAsync("Product/SubmitReport?prodoc_map_id=" + prodocid + ")";
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    //   templateSection.Status = "O";
+                    TemplateSectionVo tList = new TemplateSectionVo();
+                    //  tList.Add(templateSection);
+                    var responseTask = httpClient.GetAsync("Product/submitreport?prodocid=" + prodocid + "&user_id=" + HttpContext.Current.Session["UserID"] + "&comments= Work Done");
+
+                    //   var responseTask = httpClient.GetAsync("Product/SubmitReport?prodoc_map_id=" + prodocid + ")";
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Submit complete report", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
+
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Submit complete report", ex.Message, "Error");
+                return "";
+
+            }
         }
         public string SubmitRecordByUser(TemplateSectionVo vo) {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                vo.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                vo.Status = "O";
-                var responseTask = httpClient.PutAsJsonAsync("Product/SubmitSecAsignRecordByUser", vo);
-
-                
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    vo.Status = "I";
+                    var responseTask = httpClient.PutAsJsonAsync("Product/SubmitSecAsignRecordByUser", vo);
+
+
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Submit section", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Submit section", ex.Message, "Error");
+                return null;
+            }
         }
 
         public string SubmitActRecordByUser(TemplateSectionVo vo)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-
-                httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                vo.Status = "O";
-                vo.Last_Modified_Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-                var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
-
-
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    using (HttpContent content = result.Content)
-                    {
-                        Task<string> result1 = content.ReadAsStringAsync();
-                        var rs = result1.Result;
-                        dynamic data = JsonConvert.DeserializeObject(rs);
-                        string value = Convert.ToString(data);
+                    var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
-                        return value;
+                    httpClient.BaseAddress = new Uri(url);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    vo.Status = "I";
+                    vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+
+                    var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
+
+
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (HttpContent content = result.Content)
+                        {
+                            Task<string> result1 = content.ReadAsStringAsync();
+                            var rs = result1.Result;
+                            dynamic data = JsonConvert.DeserializeObject(rs);
+                            string value = Convert.ToString(data);
+                            InsertAudit("Submit activity", value, "Success");
+
+                            return value;
+                        }
                     }
                 }
+                return "";
             }
-            return "";
+            catch (Exception ex)
+            {
+                InsertAudit("Submit activity", ex.Message, "Error");
+                return null;
+
+            }
         }
 
         public string SubmitAuthRevSecRecordByUser(TemplateSectionVo vo)
@@ -1398,13 +1490,14 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                vo.Status = "I";
+                vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
 
-
-                vo.Status = "O";
                 var responseTask = httpClient.PutAsJsonAsync("Product/SubmitSecAsignRecordByUser", vo);
-
+                
 
                 responseTask.Wait();
                 var result = responseTask.Result;
@@ -1417,6 +1510,7 @@ namespace AARTWeb.Models
                         var rs = result1.Result;
                         dynamic data = JsonConvert.DeserializeObject(rs);
                         string value = Convert.ToString(data);
+                        InsertAudit("Submit section", value, "Success");
 
                         return value;
                     }
@@ -1432,16 +1526,280 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
 
-
-                vo.Status = "O";
+                vo.Status = "I";
                 var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
 
 
                 responseTask.Wait();
                 var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = result.Content)
+                    {
+                        Task<string> result1 = content.ReadAsStringAsync();
+                        var rs = result1.Result;
+                        dynamic data = JsonConvert.DeserializeObject(rs);
+                        string value = Convert.ToString(data);
+                        InsertAudit("Submit activity", value, "Success");
+
+                        return value;
+                    }
+                }
+            }
+            return "";
+        }
+
+        /*
+         * Representation of Dashboard values in AuthorReview page
+         */
+        public List<DashBoardDetails> GetDashBoardDetails() {
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetCountActivitySectionByUser?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<DashBoardDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        getDashBoardDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return getDashBoardDetails;
+        }
+        /*
+         * Representation of Manager DashBoard values in Manager Page
+         */
+        public List<ManagerDashBoardDetails> GetManagerDashBoardDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetProductCountByUser?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<ManagerDashBoardDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        getMangrDashBoardDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return getMangrDashBoardDetails;
+        }
+
+        /*
+         * Getting chart data for manager
+         */
+        public List<UserChartDetails> GetUserChartDetails() {
+            List<UserChartDetails> chartDetails = new List<UserChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/ProductWiseCount?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<UserChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return chartDetails;
+        }
+        public List<UserChartDetails> GetUserReportChartDetails()
+        {
+            List<UserChartDetails> chartDetails = new List<UserChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetTotalCount?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<UserChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return chartDetails;
+        }
+
+        public List<UserChartDetails> GetUserDocumentChartDetails()
+        {
+            List<UserChartDetails> chartDetails = new List<UserChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetDetailsDocWiseCount?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<UserChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return chartDetails;
+        }
+        public List<ChartDetails> GetUserCountdetailsActivity()
+        {
+            List<ChartDetails> chartDetails = new List<ChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetUserCountdetailsActivity?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<ChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return chartDetails;
+        }
+        public List<ChartDetails> GetUserCountdetailsSection()
+        {
+            List<ChartDetails> chartDetails = new List<ChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                var id = HttpContext.Current.Session["UserId"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("Product/GetUserCountdetailsSection?userid=" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<ChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+                }
+            }
+            return chartDetails;
+        }
+        public string CheckTemplateavailability(string id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var responseTask = httpClient.GetAsync("Product/CheckTemplateByProDocMapId?prodocmapid=" + id);
+
+
+
+
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+
 
                 if (result.IsSuccessStatusCode)
                 {
@@ -1458,8 +1816,179 @@ namespace AARTWeb.Models
             }
             return "";
         }
+        public string CheckRoleAvailability(string id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
 
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+
+                var responseTask = httpClient.GetAsync("Product/CheckUsersForAllRole?prodocmapid=" + id);
+
+
+
+
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+
+
+                if (result.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = result.Content)
+                    {
+                        Task<string> result1 = content.ReadAsStringAsync();
+                        var rs = result1.Result;
+                        dynamic data = JsonConvert.DeserializeObject(rs);
+                        string value = Convert.ToString(data);
+
+
+
+                        return value;
+                    }
+                }
+            }
+            return "";
+        }
+        public List<DashBoardDetails> GetUsersData(string id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync(""); ;
+                if (id == "0")
+                {
+                    responseTask = httpClient.GetAsync("Product/GetCountActivitySectionAllUser");
+                }
+                else
+                {
+                    responseTask = httpClient.GetAsync("Product/GetCountActivitySectionByUser?userid=" + id);
+                }
+
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<DashBoardDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        getDashBoardDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+
+
+                }
+            }
+            return getDashBoardDetails;
+        }
+        public List<ChartDetails> GetUserActivityChartDetails(string id)
+        {
+            List<ChartDetails> chartDetails = new List<ChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("");
+                if (id == "0")
+                {
+                    responseTask = httpClient.GetAsync("Product/GetAllUserCountdetailsActivity");
+                }
+                else
+                {
+                    responseTask = httpClient.GetAsync("Product/GetUserCountdetailsActivity?userid=" + id);
+                }
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<ChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+
+
+                }
+            }
+            return chartDetails;
+        }
+        public List<ChartDetails> GetUserSectionChartDetails(string id)
+        {
+            List<ChartDetails> chartDetails = new List<ChartDetails>();
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseTask = httpClient.GetAsync("");
+                if (id == "0")
+                {
+                    responseTask = httpClient.GetAsync("Product/GetAllUserCountdetailsSection");
+                }
+                else
+                {
+                    responseTask = httpClient.GetAsync("Product/GetUserCountdetailsSection?userid=" + id);
+                }
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var rData = result.Content.ReadAsAsync<List<ChartDetails>>();
+                    try
+                    {
+                        rData.Wait();
+                        chartDetails = rData.Result;
+                    }
+                    catch (Exception e)
+                    {
+                        _ = e.InnerException;
+                    }
+
+
+
+                }
+            }
+            return chartDetails;
+        }
+        public class ManagerDashBoardDetails {
+            public int documentCount { get; set; }
+            public int toBeInitatedCount { get; set; }
+            public int onGoingCount { get; set; }
+            public int CompletedCount { get; set; }
+        }
         public class ProDocTemplateByUserModel
         {
             public int document_template_id { get; set; }
@@ -1517,12 +2046,41 @@ namespace AARTWeb.Models
             public string document_name { get; set; }
             public string fromDate { get; set; }
             public string todate { get; set; }
+        //   public string leadAuthor { get; set; }
+            public int leadAuthorid { get; set; }
+          //  public string co_author { get; set; }
+            public int co_authorid { get; set; }
+            public string status { get; set; }
+            public string progress { get; set; }
+            public string reporting_interval { get; set; }
+            public string completion_date { get; set; }
+            public string cutoff_date { get; set; }
+            public string comments { get; set; }
+            public leadAuthor1 leadAuthor { get; set; }
+
+            public co_author1 co_author { get; set; }
+
+        }
+        public class AuthorProductDetails
+        {
+            public int pro_doc_id { get; set; }
+            public string product_description { get; set; }
+            public string document_name { get; set; }
+            public string fromDate { get; set; }
+            public string todate { get; set; }
             public string leadAuthor { get; set; }
             public int leadAuthorid { get; set; }
             public string co_author { get; set; }
             public int co_authorid { get; set; }
             public string status { get; set; }
             public string progress { get; set; }
+            public string reporting_interval { get; set; }
+            public string completion_date { get; set; }
+            public string cutoff_date { get; set; }
+            public string comments { get; set; }
+            //public leadAuthor1 leadAuthor { get; set; }
+
+            //public co_author1 co_author { get; set; }
 
         }
         public class UsersByRole
@@ -1530,6 +2088,16 @@ namespace AARTWeb.Models
             public string user_id { get; set; }
             public string user_name { get; set; }
             public string role_id { get; set; }
+        }
+        public class leadAuthor1
+        {
+            public string user_id { get; set; }
+            public string user_name { get; set; }
+        }
+        public class co_author1
+        {
+            public string user_id { get; set; }
+            public string user_name { get; set; }
         }
         public class InsertProducts
         {
@@ -1555,6 +2123,39 @@ namespace AARTWeb.Models
             public string document_complexity_id { get; set; }
             public string complexity_description { get; set; }
             public string kom_days { get; set; }
+        }
+        public class DashBoardDetails {
+            public string name { get; set; }
+            public int total { get; set; }
+            public int ToBeInitiated { get; set; }
+            public int onGoing { get; set; }
+            public int submited { get; set; }
+            public int reverted { get; set; }
+            public int toBeRevied { get; set; }
+        }
+
+        public class UserChartDetails
+        {
+            public string product_name { get; set; }
+            public int total_Count { get; set; }
+            public string document_code { get; set; }            
+            public int tobeinitated { get; set; }
+            public int onGoing { get; set; }
+            public int Completed { get; set; }
+            public string status { get; set; }
+            public int count { get; set; }
+
+           
+        }
+        public class ChartDetails
+        {
+            public string product_name { get; set; }
+            public string document_name { get; set; }
+            public int Tobeinitiated { get; set; }
+            public int OnGoing { get; set; }
+            public int SubmittedForReview { get; set; }
+            public string Reverted { get; set; }
+            public int Accepted { get; set; }
         }
         public string ResMessage {
             get {

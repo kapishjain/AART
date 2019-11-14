@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -16,6 +17,7 @@ namespace AARTWeb.Models
 {
     public class BaseModel
     {
+
         private static String _apiurl;
         public static String WebURL
         {
@@ -40,15 +42,20 @@ namespace AARTWeb.Models
         {
             WebURL= ConfigurationManager.AppSettings["WEBAPIURL"];
         }
-        public string InsertAudit(string module, string message)
+        public string InsertAudit(string module, string message,string status, string username = "",string changes="")
         {
             AuditVO auditvo = new AuditVO();
             auditvo.Description = message;
             auditvo.Module = module;
-            auditvo.IpAddress = GetIp();
-            auditvo.Modified_Date = DateTime.Now.ToString();
+            auditvo.Ip_Address = GetIp();
+            auditvo.Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss").ToString();
+            auditvo.Status = status;
+            auditvo.Changes = changes;
             //auditvo.User_id = Convert.ToInt32(System.Web.HttpContext.Current.Session["userid"].ToString());
-            auditvo.User_id = 1;
+            if (System.Web.HttpContext.Current.Session["UserID"] == null)
+                auditvo.User = username;
+            else
+                auditvo.User = System.Web.HttpContext.Current.Session["UserName"].ToString();
 
             string value = "";
             using (var httpClient = new HttpClient())
@@ -58,7 +65,9 @@ namespace AARTWeb.Models
 
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                Auth Auth = new Auth();
+
+               // httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var result = httpClient.PostAsync("Audit/InsertAuditTrail", new StringContent(new JavaScriptSerializer().Serialize(auditvo), Encoding.UTF8, "application/json")).Result;
                 if (result.IsSuccessStatusCode)
@@ -70,27 +79,22 @@ namespace AARTWeb.Models
                         dynamic data = JsonConvert.DeserializeObject(rs);
                         value = Convert.ToString(data);
 
-
-
                         if (value.Contains("error"))
                         {
                             Warning = true;
                             IsSuccess = false;
-                            Message = data.error;
-
-
-
+                         //   Message = data.error;
                         }
                         else if (value.Contains("warning"))
                         {
                             Warning = true;
                             IsSuccess = false;
-                            Message = data.warning;
+                           // Message = data.warning;
                         }
                         else
                         {
                             IsSuccess = true;
-                            Message = data.info;
+                          //  Message = data.info;
                         }
                     }
                 }
@@ -99,20 +103,23 @@ namespace AARTWeb.Models
         }
         public string GetIp()
         {
-            string strHostName = "";
-            strHostName = System.Net.Dns.GetHostName();
+           
 
 
-
-            IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
-
-
-
-            IPAddress[] addr = ipEntry.AddressList;
-
-
-
-            return addr[addr.Length - 1].ToString();
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+            //string strHostName = "";
+            //strHostName = System.Net.Dns.GetHostName();
+            //IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
+            //IPAddress[] addr = ipEntry.AddressList;
+            //return addr[addr.Length - 1].ToString();
         }
     }
 }

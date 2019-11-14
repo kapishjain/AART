@@ -1,8 +1,10 @@
-﻿
+﻿@model AARTWeb.Models.ProductModel
+
 @{
     ViewBag.Title = "Author Assignment";
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
+
 @*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
     <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
     <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
@@ -16,6 +18,7 @@
 <link href="~/Themes/css/style.css" rel="stylesheet" />
 
 <style>
+
     div.k-edit-form-container {
         width: auto;
         height: auto;
@@ -36,18 +39,24 @@
     }
 
     .blue {
-        background-color: #6495edb5;
+        background-color: #8db0ee;
         color: black;
     }
 
     .orange {
-        background-color: #ffa500a6;
+        background-color: #ffc459;
         color: black;
     }
 
     .green {
-        background-color: #98d0627a;
+        background-color: #c6e1ad;
         color: black;
+    }
+
+    .greenwithcur {
+        background-color: #c6e1ad;
+        color: black;
+        cursor: default;
     }
 
     .white {
@@ -65,10 +74,98 @@
         color: #999;
         background-color: #FEC8C8;
     }
-</style>
 
+    .border-left-black {
+        border-left: .25rem solid #828181 !important;
+    }
+
+    .disablebutton {
+        background-color: gray !important;
+        cursor: not-allowed !important;
+    }
+      .page-template {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .page-template .header {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+
+            border-bottom: 1px solid #888;
+
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .page-template .footer {
+            position: absolute;
+            bottom: 30px;
+            color:#333;
+            /*left: 30px;
+            right: 60px;*/
+        }
+</style>
+<script type="x/kendo-template" id="page-template">
+    <div class="page-template">
+        <div class="header">
+            <p style="font-size: 22px;">Dashboard</p>
+            <div style="float: right; font-size: 16px;">#: getcurrentdate() #</div>
+        </div>
+    </div>
+</script>
 <script>
+      function getcurrentdate() {
+        var d = new Date(),
+            minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
+            hours = d.getHours().toString().length == 1 ? '0' + d.getHours() : d.getHours(),
+            ampm = d.getHours() >= 12 ? 'pm' : 'am',
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + hours + ':' + minutes + ampm;
+    }
     $(document).ready(function () {
+        $("#printToFile").click(function () {
+            // Convert the DOM element to a drawing using kendo.drawing.drawDOM
+            //kendo.drawing.drawDOM($("#downloaddashbaord"))
+            //    .then(function (group) {
+            //        // Render the result as a PDF file
+            //        return kendo.drawing.exportPDF(group, {
+            //            paperSize: "auto",
+            //            margin: { left: "1cm", top: "1cm", right: "1cm", bottom: "1cm" }
+            //        });
+            //    })
+            //    .done(function (data) {
+            //        // Save the PDF file
+            //        kendo.saveAs({
+            //            dataURI: data,
+            //            fileName: "Manager Dashboard.pdf",
+            //            proxyURL: "https://demos.telerik.com/kendo-ui/service/export"
+            //        });
+            //    });
+            kendo.drawing.drawDOM($("#downloaddashbaord"), {
+                paperSize: ["800mm", "400mm"],
+                margin: { left: "0cm", top: "4cm", right: "0cm", bottom: "0cm" },
+                template: $("#page-template").html()
+            }).then(function (group) {
+                // Render the result as a PDF file
+                return kendo.drawing.exportPDF(group);
+            }).done(function (data) {
+                // Save the PDF file
+                kendo.saveAs({
+                    dataURI: data,
+                    fileName: "Dashboard.pdf",
+                    proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
+                });
+
+            });
+        });
+
         $("#activitycount").click(function () {
             //$("#divgrid").show();
             //$("#dashboard").hide();
@@ -79,8 +176,13 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#dashboardrow").hide();
+
+                $("#divchart").hide();
+
             });
         });
+
         $("#activityTobeinitiated").click(function () {
 
             $("#divactivitygrid").slideDown("slow", function () {
@@ -89,15 +191,33 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#activityOngoing").click(function () {
             $("#divactivitygrid").slideDown("slow", function () {
-                getActivityGrid("In progress");
+                getActivityGrid("OnGoing");
                 $("#divactivitygrid").show();
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#actvitysubmtreviewReverted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("To be reviewed");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#activitySubmitted").click(function () {
@@ -107,6 +227,9 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#activityReverted").click(function () {
@@ -116,6 +239,9 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
 
@@ -129,6 +255,9 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#sectionTobeinitiated").click(function () {
@@ -139,15 +268,33 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#sectionOngoing").click(function () {
             $("#divsectiongrid").slideDown("slow", function () {
-                getSectiongrid("In progress");
+                getSectiongrid("OnGoing");
                 $("#divsectiongrid").show();
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionsubmtreviewReverted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("To be reviewed");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#sectionSubmitted").click(function () {
@@ -157,6 +304,9 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
         $("#sectionReverted").click(function () {
@@ -166,9 +316,13 @@
             });
             $("#dashboard").slideDown("slow", function () {
                 $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
             });
         });
     });
+    
     // submit functionality
                                 var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
 
@@ -176,17 +330,17 @@
 
 
         Comment = $("#comment").val();
-        console.log("Update: ", Comment);
+        //console.log("Update: ", Comment);
 
         recId = $("#pro-sec-id").text();
 
         recSection = $("#section").text();
-        console.log("sec: ", recSection);
+        //console.log("sec: ", recSection);
 
 
         recStatus = $("#status").text();
-        console.log("status: ", recStatus);
-        recTemp = $("#template-content").text();
+        //console.log("status: ", recStatus);
+        recTemp = $("#template-content").html();
         console.log("template: ", recTemp);
 
         $.ajax({
@@ -202,15 +356,15 @@
             success: function (res) {
 
                 varJ = JSON.parse(res);
-                console.log(varJ);
+                //console.log(varJ);
 
-                console.log("Success: ", res);
-                alert(varJ.info);
+                //console.log("Success: ", res);
+                swal(varJ.info);
                 wnd.center().close();
             },
             error: function (err) {
-                alert("Error occured");
-                console.log("Error: ",err);
+                swal("Error occured");
+               // console.log("Error: ", err);
                 wnd.center().close();
             }
         });
@@ -218,15 +372,14 @@
 
     function SubmitActRecordByUser() {
         Comment = $("#comment").val();
-        console.log("Update: ", Comment);
-
+        //console.log("Update: ", Comment);
         recId = $("#pro-act-id").text();
 
         recStatus = $("#status").text();
-        console.log("status: ", recStatus);
+        //console.log("status: ", recStatus);
 
-        recTemp = $("#template-content").text();
-        console.log("template: ", recTemp);
+        recTemp = $("#template-content").html();
+       // console.log("template: ", recTemp);
 
         $.ajax({
             url: '@Url.Action("SubmitActAsignRecordByUser", "Home")',
@@ -240,15 +393,15 @@
             success: function (res) {
 
                 varJ = JSON.parse(res);
-                console.log(varJ);
+               // console.log(varJ);
 
-                console.log("Success: ", res);
-                alert(varJ.info);
+                //console.log("Success: ", res);
+                swal(varJ.info);
                 wnd.center().close();
             },
             error: function (err) {
-                alert("Error occured");
-                console.log("Error: ",err);
+                swal("Error occured");
+                //console.log("Error: ",err);
                 wnd.center().close();
             }
         });
@@ -259,13 +412,228 @@
             .attr('checked', options.model.status === 'A')
             .appendTo(container);
     }
+
+		$.ajax({
+			url: "@Url.Action("GetUserCountdetailsSection", "Product")",
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+			//	console.log(data);
+    //            //DocumentChart(seccount);
+    //            var seccount = {
+    //                ToBeInitiated: data[1].ToBeInitiated,
+    //                onGoing: data[1].onGoing,
+    //                reverted: data[1].reverted,
+    //                submited: data[1].submited,
+    //                toBeRevied: data[1].toBeRevied
+
+    //            };
+                                DocumentSecChart(data);
+
+			},
+			error: function (err) {
+
+			}
+		});
+
+    function DocumentSecChart(tData) {
+		$("#SectionChart").kendoChart({
+            //title: {
+            //    text: "Document wise Product",
+            //    color: "#000000"
+
+            //},
+            //chartArea: {background:"#02075D"},
+
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+			 },
+			 dataSource: {
+				data: tData
+			},
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+				{
+					field: "Tobeinitiated",
+					name: "To be initiated",
+					categoryField: "document_name",
+                    color: "#36b9cc"
+				}, {
+					field: "OnGoing",
+					name: "OnGoing",
+					categoryField: "document_name",
+                    color: "#4e73df"
+				}, {
+					field: "SubmittedForReview",
+					name: "Submitted for review",
+					categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+					field: "Accepted",
+					name: "Accepted",
+					categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+					field: "Reverted",
+					name: "Reverted",
+					categoryField: "document_name",
+                    color: "#e74a3b"
+				}
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+				labels: {
+					rotation: -90
+				},
+				majorGridLines: {
+					visible: true
+				},
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+	}
+    $.ajax({
+			url: "@Url.Action("GetUserCountdetailsActivity", "Product")",
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+				//console.log(data);
+				ActivityChart(data);
+			},
+			error: function (err) {
+
+			}
+		});
+    function ActivityChart(dData) {
+       // console.log("middle",dData);
+		 $("#ActivityChart").kendoChart({
+            //title: {
+            //    text: "Document wise Product",
+            //    color: "#000000"
+
+            //},
+            //chartArea: {background:"#02075D"},
+
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+			 },
+			 dataSource: {
+				data: dData
+			},
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+				{
+					field: "Tobeinitiated",
+					name: "To be initiated",
+					categoryField: "document_name",
+                    color: "#36b9cc"
+				}, {
+					field: "OnGoing",
+					name: "OnGoing",
+					categoryField: "document_name",
+                    color: "#4e73df"
+				}, {
+					field: "SubmittedForReview",
+					name: "Submitted for review",
+					categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+					field: "Accepted",
+					name: "Accepted",
+					categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+					field: "Reverted",
+					name: "Reverted",
+					categoryField: "document_name",
+                    color: "#e74a3b"
+				}
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+				labels: {
+					rotation: -90
+				},
+				majorGridLines: {
+					visible: true
+				},
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+	}
     function OpenData(e) {
         var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
 
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                  //  console.log(dataItem);
 
         from = "Section"
-        Id = dataItem.ProDoc_Section_Assignment_id;
+        Id = dataItem.prodoc_section_assignment_id;
+
+
+
 
         $.ajax({
             url: '@Url.Action("GetViewData", "Home")',
@@ -276,9 +644,9 @@
                 templateVar: from
             },
             success: function (rs) {
-                console.log(rs);
+                //console.log(rs);
                 if (rs.Count < 0) {
-                    alert("Not commented Yet!")
+                    swal("Not commented Yet!")
                     return
                 }
                 $("#data-grid").kendoGrid({
@@ -296,7 +664,7 @@
                 }).data("kendoGrid");
             },
             error: function (err) {
-                alert(err);
+                swal(err);
             }
         });
 
@@ -323,9 +691,9 @@
 		diffActTemp = kendo.template($("#diff-act-template").html());
 
 		var dItem = this.dataItem($(ae.currentTarget).closest("tr"));
-		console.log("Diff: ", dItem);
+		//console.log("Diff: ", dItem);
 		var aId = dItem.Review_Activity_Id;
-		console.log("Difference: ", aId);
+		//console.log("Difference: ", aId);
 
 		$.ajax({
 			url: '@Url.Action("GetDifferenceData", "Home")',
@@ -335,12 +703,12 @@
 				templateVar: from
 			},
 			success: function (es) {
-				console.log("Success: ", es);
+				//console.log("Success: ", es);
 				var objdiff = { diff: es };
 				diffActWnd.content(diffActTemp(objdiff));
 			},
 			error: function (er) {
-				console.log("Error: ", er);
+				//console.log("Error: ", er);
 			}
 		})
 
@@ -356,15 +724,16 @@
 			visible: false,
 			modal: true
 		}).data("kendoWindow");
+        		from = "Section"
 
 		diffSecTemplate = kendo.template($("#diff-sec-template").html());
 
 		var dti = this.dataItem($(od.currentTarget).closest("tr"));
-		console.log("Diff: ", dti);
+		//console.log("Diff: ", dti);
 
 		var	dId = dti.Review_Section_Id;
 
-		console.log("Difference: ", dti);
+		//console.log("Difference: ", dti);
 
 		$.ajax({
 			url: '@Url.Action("GetDifferenceData", "Home")',
@@ -374,12 +743,12 @@
 				templateVar: from
 			},
 			success: function (es) {
-				console.log("Success: ", es);
+				//console.log("Success: ", es);
 				var objdiff = { diff: es };
 				diffSecWnd.content(diffSecTemplate(objdiff));
 			},
 			error: function (er) {
-				console.log("Error: ", er);
+				//console.log("Error: ", er);
 			}
 		})
 
@@ -388,7 +757,7 @@
     	function OpenActData(a) {
 
         var dataItem = this.dataItem($(a.currentTarget).closest("tr"));
-            console.log(dataItem);
+            //console.log(dataItem);
 		from = "Activity"
 		Id = dataItem.pro_doc_template;
 
@@ -401,10 +770,10 @@
 				templateVar: from
             },
 			success: function (r) {
-				console.log("View data window item length: ", r)
-				console.log(r.Count);
+				//console.log("View data window item length: ", r)
+				//console.log(r.Count);
 				if (r.Count < 0) {
-					alert("Not commented Yet!");
+					swal("Not commented Yet!");
 					return;
 				}
                 $("#diff-data-grid").kendoGrid({
@@ -422,7 +791,7 @@
                 }).data("kendoGrid");
             },
             error: function (err) {
-                alert(err);
+                swal(err);
             }
         });
 
@@ -450,14 +819,14 @@
 
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
-        console.log("Accept: ", dataItem);
+        //console.log("Accept: ", dataItem);
 
 		Id = dataItem.ProDoc_Section_Assignment_id;
 		from = "Section";
-        Status = "S";
+        Status = "I";
         template = dataItem.Template_Content;
 
-        console.log("id + status: ", Id, Status);
+       // console.log("id + status: ", Id, Status);
 
         wnd.content(detailsTemplate(dataItem));
         wnd.center().open();
@@ -508,7 +877,7 @@
             },
             transport: {
                 read: {
-                      url: '@Url.Action("GetProDocTemplate", "Home" , new {id = "ID"})'.replace("ID", val),                   
+                      url: '@Url.Action("GetProDocTemplate", "Home", new { id = "ID" })'.replace("ID", val),
                    // url: '@Url.Action("GetProDocTemplate", "Home")',
                     type: 'post',
                     dataType: 'json'
@@ -518,7 +887,7 @@
                     type: 'post',
                     dataType: 'json',
                     complete: function (e) {
-                        alert(e.responseJSON.info);
+                        swal(e.responseJSON.info);
                         reload();
                     }
                 },
@@ -532,8 +901,11 @@
 
         $("#grid").kendoGrid({
             dataSource: datasource,
+             height: 750,
+            reorderable: true,
             sortable: true,
             pageable: true,
+            resizable: true,
             columns: [
                 { field: "product_name", title: "Product Name" },
                 { field: "document_name", title: "Document Name" },
@@ -542,7 +914,7 @@
                 { field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
                 { field: "target_timeline", title: "Target Timeline",  width: "140px" },
                 //{ field: "status", title: "Status" },
-                { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be Review\"? \"orange\" :\"white\"#"">#=status#</a>' },
+                { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#"">#=status#</a>' },
 
                 { field: "template_content", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
                 { command: ["edit", { name: "Submit", click: SubmitActRecord }], width: "100px" },
@@ -558,28 +930,42 @@
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
-                        $(this).remove();
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
+
                     }
                 })
                 $("#grid tbody tr .k-grid-Submit").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
-                        $(this).remove();
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+                        //$("input").prop('disabled', true);
                     }
                 })
                  $("#grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be Review") {
-                        $(this).remove();
+                    if (currentDataItem.status == "To be reviewed") {
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+
                     }
                 })
                 $("#grid tbody tr .k-grid-Submit").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be Review") {
-                        $(this).remove();
+                    if (currentDataItem.status == "To be reviewed") {
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+
                     }
                 })
             }
@@ -606,7 +992,7 @@
             },
             transport: {
                 read: {
-                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home" , new {id = "ID"})'.replace("ID", val),
+                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home", new { id = "ID" })'.replace("ID", val),
 
                     //url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home")',
                     type: 'post',
@@ -617,7 +1003,7 @@
                     type: 'post',
                     dataType: 'json',
                     complete: function (e) {
-                        alert(e.responseJSON.info);
+                        swal(e.responseJSON.info);
                         reload();
                     }
                 },
@@ -631,8 +1017,11 @@
 
         $("#section_assignments_grid").kendoGrid({
             dataSource: secDatasource,
+             height: 750,
+            reorderable: true,
             sortable: true,
             pageable: true,
+            resizable: true,
             //edit: addSubmitButton,
             columns: [
                 { field: "product_name", title: "Product Name" },
@@ -641,7 +1030,7 @@
 
                 { field: "target_timeline", title: "Target Date", width: "140px" },
                 //{ field: "status", title: "Status" },
-                                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be Review\"? \"orange\" :\"white\"#" )">#=status#</a>' },
+                                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#" )">#=status#</a>' },
 
                 { field: "template_content", title: "Template Content", encoded: false, editor: SectionEditor, width: "400px" },
                 { command: ["edit", { name: "Submit", click: SubmitRecord }], width: "100px" },
@@ -664,7 +1053,9 @@
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
-                        $(this).remove();
+                       // $(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
                         //  $(this).addClass('blue');
                     }
                 })
@@ -672,22 +1063,28 @@
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
-                        $(this).remove();
+                        //$(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
                     }
                  })
                  $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be Review") {
-                        $(this).remove();
+                    if (currentDataItem.status == "To be reviewed") {
+                        //$(this).remove();
                         //  $(this).addClass('blue');
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
                     }
                 })
                  $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be Review") {
-                        $(this).remove();
+                    if (currentDataItem.status == "To be reviewed") {
+                        //$(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
                     }
                 })
                 //$("#section_assignments_grid tbody tr").each(function () {
@@ -702,7 +1099,7 @@
         });
     }
     //$(document).ready(function () {
-      
+
 
     //});
       function reload() {
@@ -710,13 +1107,13 @@
         }
 
         function addSubmitButton(e) {
-            console.log("submitModel: ", e.model);
+            //console.log("submitModel: ", e.model);
             var tempId = e.model.prodoc_section_assignment_id;
             var tempContent = e.model.template_content;
-            console.log("values : ", tempId + " " + tempContent);
+            //console.log("values : ", tempId + " " + tempContent);
             $('<a class="k-button k-button-icontext k-grid-udpate custom-submit"><span class="k-icon k-grid-udpate"></span>Submit</a>').insertBefore(".k-grid-cancel");
             $(".custom-submit").click(function () {
-                console.log("clicked")
+               // console.log("clicked")
                 $.ajax({
                     url: '@Url.Action("SectionAssSubmit", "Home")',
                     data: {
@@ -728,10 +1125,10 @@
                     type: 'post',
                     dataType: 'json',
                     success: function () {
-                        alert("succ");
+                        swal("succ");
                     },
                     error: function () {
-                        alert("fail")
+                        swal("fail")
                     },
                 });
             });
@@ -840,8 +1237,6 @@
 
     </div>
 
-
-
     <div id="section-comment">
         <input type="text" id="comment" class="form-control" />
     </div>
@@ -849,7 +1244,9 @@
     <br />
 
     <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+
 </script>
+
 <script type="text/x-kendo-template" id="diff-sec-template">
     @*<div id="data-grid"></div>*@
     <div class='content'>
@@ -862,228 +1259,610 @@
         #= diff #
     </div>
 </script>
-<div id="dashboard">
-    <div id="ActivityDashboard">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="align-items-center justify-content-between mb-4" id="dashboardrow" style="display: flex;">
 
-            <h1 class="h1 mb-0 text-gray-800">Activity</h1>
-            @*Submition date
-                <div id="daterangepicker" title="daterangepicker"></div>
-                View
-                <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
-        </div>
+    <h1 class="h1 mb-0 text-gray-800">Dashboard</h1>
+    @*Submition date
+        <div id="daterangepicker" title="daterangepicker"></div>
+        View*@
+    <a href="#" id="printToFile" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>
+</div>
+<div id="downloaddashbaord">
 
-        <div class="row justify-content-md-center">
+    <div id="dashboard">
+        @if (Model != null)
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                <div id="ActivityDashboard">
+                    <div class="d-sm-flex align-items-center">
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:pointer;">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Activity Count</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
+                        <h1 class="h1 mb-0 text-gray-800">Activity</h1>
+
+
+                        @*Submition date
+                            <div id="daterangepicker" title="daterangepicker"></div>
+                            View
+                            <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
                     </div>
-                </div>
-            </div>
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:pointer;">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <div class="row">
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:pointer;">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">On Going</div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">200</div>
-                                    </div>
-                                    @*<div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].total != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:pointer;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].total</div>
                                             </div>
-                                        </div>*@
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:default;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].ToBeInitiated != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:pointer;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
 
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:pointer;">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Submitted</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].ToBeInitiated</div>
+
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].ToBeInitiated</div>
+
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].onGoing != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:pointer;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[0].toBeRevied != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="actvitysubmtreviewReverted" style="cursor:pointer;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="actvitysubmtreviewReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Pending Requests Card Example -->
+                        @if (Model.getDashBoardDetails[0].submited != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:pointer;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[0].reverted != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:pointer;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:pointer;">
-                <div class="card border-left-danger shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+            }
+            for (int i = 1; i < Model.getDashBoardDetails.Count; i++)
+            {
+                <div id="SectionDashboard">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+                        <h1 class="h1 mb-0 text-gray-800">Section</h1>
+                        @*Submition date
+                            <div id="daterangepicker" title="daterangepicker"></div>
+                            View
+                            <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].total != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:pointer;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].total</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].ToBeInitiated != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:pointer;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].ToBeInitiated</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].ToBeInitiated</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].onGoing != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:pointer;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].toBeRevied != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionsubmtreviewReverted" style="cursor:pointer;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted For Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionsubmtreviewReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted For Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].submited != 0)
+                        {
+                            <!-- Pending Requests Card Example -->
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:pointer;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].reverted != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:pointer;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-            </div>
-        </div>
+            }
+        }
+
+
+
     </div>
-    <div id="SectionDashboard">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-            <h1 class="h1 mb-0 text-gray-800">Section</h1>
-            @*Submition date
-                <div id="daterangepicker" title="daterangepicker"></div>
-                View
-                <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+
+    <div id="divchart">
+        <div class="col-xl-6 col-lg-5">
+            <div class="shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Document Activity Wise Count</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div id="k-dropdownlist"></div>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        <div id="ActivityChart"></div>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
-
-        <div class="row justify-content-md-center">
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:pointer;">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Section Count</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
+        <div class="col-xl-6 col-lg-5">
+            <div class="shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Document Section Wise Count</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        @*<div id="k-dropdownlist"></div>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>*@
                     </div>
                 </div>
-            </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        <div id="SectionChart"></div>
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:pointer;">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:pointer;">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">On Going</div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">200</div>
-                                    </div>
-                                    @*<div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>*@
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:pointer;">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Submitted</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:pointer;">
-                <div class="card border-left-danger shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
-                            </div>
-                            @*<div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>*@
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div id="divgrid" >
+<div id="divgrid">
     <br />
     <div class="col-sm-12 col-md-12 " id="divactivitygrid" style="display:none;">
-        Activity Assigned
-        <br />
+        <h2>Activity Assigned</h2>
+       
         <div id="grid"></div>
     </div>
     <br />
     <div class="col-sm-12 col-md-12 " id="divsectiongrid" style="display:none;">
-        Section Assigned
+        <h2>Section Assigned</h2>
 
         <div id="section_assignments_grid"></div>
 
@@ -1103,4 +1882,3 @@
 
     <div id="k-dffwnd"></div>
 </div>
-

@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewBag.Title = "Adhoc Reprot";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#productname").kendoDropDownList({
+            optionLabel: "Select Product",
+            dataTextField: "product_description",
+            dataValueField: "product_id",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetAllProductList", "Product")',
+                        type: 'post',
+                        dataType: 'json'
+                    }
+                }
+            }
+        });
+
+
+        var dataSource = new kendo.data.DataSource({
+            pageSize: 20,
+
+            autoSync: true,
+            schema: {
+                model: {
+                    id: "ProductID",
+                    fields: {
+                        DocumentType: { defaultValue: { document_code: "Select Doc type", document_name: "Select Doc type" } },
+                        MainAuthor: { defaultValue: { user_name: "Select main Author", user_id: "Select main Author" } },
+                        CoAuthor: { defaultValue: { user_name: "Select CoAuthor", user_id: 0 } },
+                        Complexity: {
+                            defaultValue: { document_complexity_id: "Select Complexity", complexity_description: "Select Complexity" }},
+                        ReviewPeriodFrom: { type: "date", format: "MM/dd/yyyy" },
+                        ReviewPeriodTo: { type: "date", format: "MM/dd/yyyy" }
+                    }
+                }
+            }
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: dataSource,
+            pageable: true,
+            toolbar: [{ name: "create", text: "Add New Document" }],
+            columns: [
+                { field: "DocumentType", title: "Document Name", width: "180px", editor: categoryDropDownEditor, template: "#=DocumentType.document_name#" },
+                { field: "MainAuthor", title: "Main Author", width: "180px", editor: categoryDropDownEditor1, template: "#=MainAuthor.user_name#" },
+                { field: "CoAuthor", title: "Co Author", editor: coAuthorCategory, template: "#=CoAuthor.user_name#" },
+                { field: "Complexity", title: "Complexity", editor: complexityCategory, template: "#=Complexity.complexity_description#" },
+                { field: "ReviewPeriodFrom", title: "Review From", format: "{0:dd-MMM-yyyy}", width: "130px" },
+                { field: "ReviewPeriodTo", title: "Review To", format: "{0:dd-MMM-yyyy}", width: "130px" },
+                { command: "destroy", title: " ", width: "150px" }],
+            editable: true
+        });
+    });
+
+    function categoryDropDownEditor(container, options) {
+        $('<input name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataTextField: "document_code",
+                dataValueField: "document_name",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetAllDocType", "Product")',
+                            type: 'post',
+                            dataType: 'json'
+                        }
+                    }
+                }
+            });
+    }
+
+    function categoryDropDownEditor1(container, options) {
+        $('<input name="' + options.field + '"/>')
+            .appendTo(container)
+			.kendoDropDownList({
+				optionLabel: "Select LeadAuthor",
+				dataTextField: "user_name",
+				dataValueField: "user_id",
+				dataSource: {
+					transport: {
+						read: {
+							url: '@Url.Action("GetUsersForLeadAuthor", "Home")',
+							type: 'post',
+							dataType: 'json'
+						}
+					}
+				},
+				select: function (e) {
+					var item = e.item;
+					var text = item.text();
+
+					var grid = $("grid").data("kendoGrid");
+					
+					$('<input name="' + options.field + '"/>')
+						.appendTo(container)
+						.kendoDropDownList({
+							optionLabel: "Select CoAuthor",
+							dataTextField: "user_name",
+							dataValueField: "user_id",
+							dataSource: {
+								transport: {
+									read: {
+										url: '@Url.Action("GetFilteredCoAuthors", "Home")',
+										data: { selectedItem: text },
+										type: 'post',
+										dataType: 'json'
+									}
+								}
+							}
+						});
+				}
+            });
+    };
+
+    function coAuthorCategory(container, options) {
+        $('<input name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                optionLabel: "Select CoAuthor",
+                dataTextField: "user_name",
+                dataValueField: "user_id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetUsersForLeadAuthor", "Home")',
+                            type: 'post',
+                            dataType: 'json'
+                        }
+                    }
+                }
+            });
+    };
+
+     function complexityCategory(container, options) {
+        $('<input name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                optionLabel: "Select Complexity",
+                dataTextField: "complexity_description",
+                dataValueField: "document_complexity_id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetAllComplexity", "Product")',
+                            type: 'post',
+                            dataType: 'json'
+                        }
+                    }
+                }
+            });
+    };
+
+
+
+
+    function submitrecord() {
+        var protext = $("#productname").data("kendoDropDownList").text();
+        if (protext == null || protext == "Select Product") {
+            swal("Please select Product.");
+            return ;
+		}
+
+		var docatten = $("#grid").data("kendoGrid").dataSource.data();
+		console.log("grid-data: ", docatten);
+		 if (docatten.length  < 1) {
+            swal("Please Add New Document");
+            return;
+        }
+
+		for (var i = 0; i < docatten.length; i++) {
+			console.log("Doc:",docatten[i].DocumentType.document_name);
+			if (docatten[i].DocumentType.document_name == "Select Doc type") {
+				swal("Please Select Document Type");
+				return;
+			} else if (docatten[i].MainAuthor.user_name == "Select main Author") {
+				swal("Please Select Main Author");
+				return;
+			} else if (docatten[i].Complexity.complexity_description == "Select Complexity") {
+				swal("Please Select Complexity");
+				return;
+			}
+		}
+
+        //var json = JSON.stringify(docatten);
+        ////swal(docatten.length);
+        //if (docatten.length  < 1) {
+        //    swal("Select document Type");
+        //    return;
+        //}
+		$.ajax({
+			url: '@Url.Action("InsertAdhocReport","Product")',
+			type: 'POST',
+			datatype: "application/json",
+			data: { models: JSON.parse(JSON.stringify(docatten)), protext: protext },
+			success: function (response) {
+				if (response.responseText.includes("Inserted")) {
+					swal(response.responseText);
+					window.location = '@Url.Action("Login", "Account")';
+				}
+				else {
+					var err = JSON.parse(response.responseText);
+					swal(err.error);
+				}
+             },
+             error: function (err) {
+                 swal(response.responseText);
+                // console.log(err);
+             }
+        });
+
+    }
+
+</script>
+
+<body>
+    <h2>AddProduct</h2>
+
+
+    <div>
+        Product Name:- <input type="text" class="k-content" name="Product Name" placeholder="Product Name" id="productname">
+        @*Product Description:- <input type="text" class="k-content" name="Product Desc" placeholder="Product Desc" id="productdesc">*@
+
+        <span></span>
+    </div>
+
+    <br />
+
+    <div id="grid"></div>
+    <br />
+
+    <button id="submitbyn" onclick="submitrecord();" class="k-content k-primary btn">Submit</button>
+
+</body>

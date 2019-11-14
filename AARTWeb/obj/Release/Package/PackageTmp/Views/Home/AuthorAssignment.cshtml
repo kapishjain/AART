@@ -1,21 +1,24 @@
-﻿
+﻿@model AARTWeb.Models.ProductModel
+
 @{
     ViewBag.Title = "Author Assignment";
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
-<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">*@
 
+<link href="~/Themes/css/style.css" rel="stylesheet" />
 
 <style>
+
     div.k-edit-form-container {
         width: auto;
         height: auto;
@@ -29,9 +32,321 @@
     .k-edit-field {
         width: 80% !important;
     }
+
+    .red {
+        color: black;
+        background-color: #ea5757;
+    }
+
+    .blue {
+        background-color: #8db0ee;
+        color: black;
+    }
+
+    .orange {
+        background-color: #ffc459;
+        color: black;
+    }
+
+    .green {
+        background-color: #c6e1ad;
+        color: black;
+    }
+
+    .greenwithcur {
+        background-color: #c6e1ad;
+        color: black;
+        cursor: default;
+    }
+
+    .white {
+        color: white;
+    }
+
+    ins {
+        background-color: #cfc;
+        text-decoration: none;
+    }
+
+
+
+    del {
+        color: #999;
+        background-color: #FEC8C8;
+    }
+
+    .border-left-black {
+        border-left: .25rem solid #828181 !important;
+    }
+
+    .disablebutton {
+        background-color: gray !important;
+        cursor: not-allowed !important;
+    }
 </style>
 
 <script>
+    $(document).ready(function () {
+        $("#printToFile").click(function () {
+            // Convert the DOM element to a drawing using kendo.drawing.drawDOM
+            kendo.drawing.drawDOM($("#downloaddashbaord"))
+                .then(function (group) {
+                    // Render the result as a PDF file
+                    return kendo.drawing.exportPDF(group, {
+                        paperSize: "auto",
+                        margin: { left: "1cm", top: "1cm", right: "1cm", bottom: "1cm" }
+                    });
+                })
+                .done(function (data) {
+                    // Save the PDF file
+                    kendo.saveAs({
+                        dataURI: data,
+                        fileName: "Manager Dashboard.pdf",
+                        proxyURL: "https://demos.telerik.com/kendo-ui/service/export"
+                    });
+                });
+        });
+
+        $("#activitycount").click(function () {
+            //$("#divgrid").show();
+            //$("#dashboard").hide();
+
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("All");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#dashboardrow").hide();
+
+                $("#divchart").hide();
+
+            });
+        });
+
+        $("#activityTobeinitiated").click(function () {
+
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("To be initiated");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#activityOngoing").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("OnGoing");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#actvitysubmtreviewReverted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("To be reviewed");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#activitySubmitted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("Submitted");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#activityReverted").click(function () {
+            $("#divactivitygrid").slideDown("slow", function () {
+                getActivityGrid("Reverted");
+                $("#divactivitygrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+
+        $("#sectioncount").click(function () {
+            //$("#divgrid").show();
+            //$("#dashboard").hide();
+
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("All");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionTobeinitiated").click(function () {
+
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("To be initiated");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionOngoing").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("OnGoing");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionsubmtreviewReverted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("To be reviewed");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionSubmitted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("Submitted");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+        $("#sectionReverted").click(function () {
+            $("#divsectiongrid").slideDown("slow", function () {
+                getSectiongrid("Reverted");
+                $("#divsectiongrid").show();
+            });
+            $("#dashboard").slideDown("slow", function () {
+                $("#dashboard").hide();
+                $("#divchart").hide();
+                $("#dashboardrow").hide();
+
+            });
+        });
+    });
+    
+    // submit functionality
+                                var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
+
+    function SubmitRecordByUser() {
+
+
+        Comment = $("#comment").val();
+        //console.log("Update: ", Comment);
+
+        recId = $("#pro-sec-id").text();
+
+        recSection = $("#section").text();
+        //console.log("sec: ", recSection);
+
+
+        recStatus = $("#status").text();
+        //console.log("status: ", recStatus);
+        recTemp = $("#template-content").html();
+        console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitSecAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,
+                section: recSection,
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+                //console.log(varJ);
+
+                //console.log("Success: ", res);
+                swal(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                swal("Error occured");
+               // console.log("Error: ", err);
+                wnd.center().close();
+            }
+        });
+    }
+
+    function SubmitActRecordByUser() {
+        Comment = $("#comment").val();
+        //console.log("Update: ", Comment);
+        recId = $("#pro-act-id").text();
+
+        recStatus = $("#status").text();
+        //console.log("status: ", recStatus);
+
+        recTemp = $("#template-content").html();
+       // console.log("template: ", recTemp);
+
+        $.ajax({
+            url: '@Url.Action("SubmitActAsignRecordByUser", "Home")',
+            type: 'post',
+            data: {
+                id: recId,
+                status: recStatus,
+                comment: Comment,
+                templateContent: recTemp,
+            },
+            success: function (res) {
+
+                varJ = JSON.parse(res);
+               // console.log(varJ);
+
+                //console.log("Success: ", res);
+                swal(varJ.info);
+                wnd.center().close();
+            },
+            error: function (err) {
+                swal("Error occured");
+                //console.log("Error: ",err);
+                wnd.center().close();
+            }
+        });
+    }
 
     function editCheck1(container, options) {
         $('<input name="' + options.field + '" type="checkbox"/>')
@@ -39,31 +354,472 @@
             .appendTo(container);
     }
 
-    $(document).ready(function () {
-        var datasource = new kendo.data.DataSource({
+		$.ajax({
+			url: "@Url.Action("GetUserCountdetailsSection", "Product")",
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+			//	console.log(data);
+    //            //DocumentChart(seccount);
+    //            var seccount = {
+    //                ToBeInitiated: data[1].ToBeInitiated,
+    //                onGoing: data[1].onGoing,
+    //                reverted: data[1].reverted,
+    //                submited: data[1].submited,
+    //                toBeRevied: data[1].toBeRevied
+
+    //            };
+                                DocumentSecChart(data);
+
+			},
+			error: function (err) {
+
+			}
+		});
+
+    function DocumentSecChart(tData) {
+		$("#SectionChart").kendoChart({
+            //title: {
+            //    text: "Document wise Product",
+            //    color: "#000000"
+
+            //},
+            //chartArea: {background:"#02075D"},
+
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+			 },
+			 dataSource: {
+				data: tData
+			},
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+				{
+					field: "Tobeinitiated",
+					name: "To be initiated",
+					categoryField: "document_name",
+                    color: "#36b9cc"
+				}, {
+					field: "OnGoing",
+					name: "OnGoing",
+					categoryField: "document_name",
+                    color: "#4e73df"
+				}, {
+					field: "SubmittedForReview",
+					name: "Submitted for review",
+					categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+					field: "Accepted",
+					name: "Accepted",
+					categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+					field: "Reverted",
+					name: "Reverted",
+					categoryField: "document_name",
+                    color: "#e74a3b"
+				}
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+				labels: {
+					rotation: -90
+				},
+				majorGridLines: {
+					visible: true
+				},
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+	}
+    $.ajax({
+			url: "@Url.Action("GetUserCountdetailsActivity", "Product")",
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+				//console.log(data);
+				ActivityChart(data);
+			},
+			error: function (err) {
+
+			}
+		});
+    function ActivityChart(dData) {
+       // console.log("middle",dData);
+		 $("#ActivityChart").kendoChart({
+            //title: {
+            //    text: "Document wise Product",
+            //    color: "#000000"
+
+            //},
+            //chartArea: {background:"#02075D"},
+
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+			 },
+			 dataSource: {
+				data: dData
+			},
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+				{
+					field: "Tobeinitiated",
+					name: "To be initiated",
+					categoryField: "document_name",
+                    color: "#36b9cc"
+				}, {
+					field: "OnGoing",
+					name: "OnGoing",
+					categoryField: "document_name",
+                    color: "#4e73df"
+				}, {
+					field: "SubmittedForReview",
+					name: "Submitted for review",
+					categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+					field: "Accepted",
+					name: "Accepted",
+					categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+					field: "Reverted",
+					name: "Reverted",
+					categoryField: "document_name",
+                    color: "#e74a3b"
+				}
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+				labels: {
+					rotation: -90
+				},
+				majorGridLines: {
+					visible: true
+				},
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+	}
+    function OpenData(e) {
+        var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                  //  console.log(dataItem);
+
+        from = "Section"
+        Id = dataItem.prodoc_section_assignment_id;
+
+
+
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                id: Id,
+                templateVar: from
+            },
+            success: function (rs) {
+                //console.log(rs);
+                if (rs.Count < 0) {
+                    swal("Not commented Yet!")
+                    return
+                }
+                $("#data-grid").kendoGrid({
+                    dataSource: rs,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+
+
+        dataWnd = $("#k-dwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+    }
+    	// window for Difference button inside view data for activities
+	function OpenActDiffData(ae) {
+		diffActWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+
+		diffActTemp = kendo.template($("#diff-act-template").html());
+
+		var dItem = this.dataItem($(ae.currentTarget).closest("tr"));
+		//console.log("Diff: ", dItem);
+		var aId = dItem.Review_Activity_Id;
+		//console.log("Difference: ", aId);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: aId,
+				templateVar: from
+			},
+			success: function (es) {
+				//console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffActWnd.content(diffActTemp(objdiff));
+			},
+			error: function (er) {
+				//console.log("Error: ", er);
+			}
+		})
+
+		diffActWnd.center().open();
+    }
+    	// window for Difference button inside view data for sections
+	function OpenDiffData(od) {
+
+		diffSecWnd = $("#k-dffwnd").kendoWindow({
+			width: 800,
+			height: 500,
+			title: "Difference",
+			visible: false,
+			modal: true
+		}).data("kendoWindow");
+        		from = "Section"
+
+		diffSecTemplate = kendo.template($("#diff-sec-template").html());
+
+		var dti = this.dataItem($(od.currentTarget).closest("tr"));
+		//console.log("Diff: ", dti);
+
+		var	dId = dti.Review_Section_Id;
+
+		//console.log("Difference: ", dti);
+
+		$.ajax({
+			url: '@Url.Action("GetDifferenceData", "Home")',
+			type: 'post',
+			data: {
+				id: dId,
+				templateVar: from
+			},
+			success: function (es) {
+				//console.log("Success: ", es);
+				var objdiff = { diff: es };
+				diffSecWnd.content(diffSecTemplate(objdiff));
+			},
+			error: function (er) {
+				//console.log("Error: ", er);
+			}
+		})
+
+		diffSecWnd.center().open();
+	}
+    	function OpenActData(a) {
+
+        var dataItem = this.dataItem($(a.currentTarget).closest("tr"));
+            //console.log(dataItem);
+		from = "Activity"
+		Id = dataItem.pro_doc_template;
+
+        $.ajax({
+            url: '@Url.Action("GetViewData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+				id: Id,
+				templateVar: from
+            },
+			success: function (r) {
+				//console.log("View data window item length: ", r)
+				//console.log(r.Count);
+				if (r.Count < 0) {
+					swal("Not commented Yet!");
+					return;
+				}
+                $("#diff-data-grid").kendoGrid({
+                    dataSource: r,
+                    sortable: true,
+                    pageable: false,
+                    columns: [
+                        { field: "Name", title: "Name" },
+                        { field: "Reviewer_Datetime", title: "Date/Time" },
+                        { field: "Status", title: "Status" },
+                        { field: "Review_Comment", title: "Comment" },
+                        { command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
+                    ],
+                    editable: false
+                }).data("kendoGrid");
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+
+
+        dataWnd = $("#k-diffwnd").kendoWindow({
+            width: 1000,
+            title: "Details",
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+
+        dataWnd.center().open();
+	}
+    function SubmitRecord(e) {
+         wnd = $("#k-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        //console.log("Accept: ", dataItem);
+
+		Id = dataItem.ProDoc_Section_Assignment_id;
+		from = "Section";
+        Status = "I";
+        template = dataItem.Template_Content;
+
+       // console.log("id + status: ", Id, Status);
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+    function SubmitActRecord(e) {
+         wnd = $("#ka-wnd").kendoWindow({
+             width: 500,
+             height: 200,
+             title: "Comments",
+             actions: ["Close"],
+             visible: false,
+             modal: true,
+         }).data("kendoWindow");
+
+        detailsTemplate = kendo.template($("#act-comment-template").html());
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+   function getActivityGrid(val)
+    {
+          var datasource = new kendo.data.DataSource({
             schema: {
                 total: "",
                 model: {
-                    id: "pro_doct_template",
+                                        id: "pro_doc_template",
+
                     fields: {
-                        Pro_doct_template: { type: 'number', editable: false },
+                        pro_doc_template: { type: 'number', editable: false },
 
                         document_template_id: { type: 'number', editable: false },
-                        product_document_mapping_id: { type: 'number', editable: false },
+                        //product_document_mapping_id: { type: 'number', editable: false },
                         product_name: { type: 'string', editable: false },
                         document_name: { type: 'string', editable: false },
                         action: { type: 'string', editable: false },
-                        aggred_timeline: { type: 'date', editable: false },
-                        target_timeline: { type: 'date', editable: false },
+                        aggred_timeline: { type: 'string', editable: false },
+                        target_timeline: { type: 'string', editable: false },
                         comment: { type: 'string', editable: false },
                         status: { type: 'string', editable: false },
-                        edit_template: { type: 'string', editable: true }
+                                                progress: { type: 'string', editable: false },
+
+                        template_content: { type: 'string', editable: true }
                     }
                 }
             },
             transport: {
                 read: {
-                    url: '@Url.Action("GetProDocTemplate", "Home")',
+                      url: '@Url.Action("GetProDocTemplate", "Home", new { id = "ID" })'.replace("ID", val),
+                   // url: '@Url.Action("GetProDocTemplate", "Home")',
                     type: 'post',
                     dataType: 'json'
                 },
@@ -72,7 +828,7 @@
                     type: 'post',
                     dataType: 'json',
                     complete: function (e) {
-                        alert(e.responseJSON.info);
+                        swal(e.responseJSON.info);
                         reload();
                     }
                 },
@@ -86,21 +842,77 @@
 
         $("#grid").kendoGrid({
             dataSource: datasource,
+             height: 750,
+            reorderable: true,
             sortable: true,
             pageable: true,
+            resizable: true,
             columns: [
-                { field: "product_document_mapping_id", title: "Product Document Template ID" },
                 { field: "product_name", title: "Product Name" },
                 { field: "document_name", title: "Document Name" },
+                { field: "document_template_id", title: "Action Id" },
                 { field: "action", title: "Action", width: "200px" },
-                { field: "target_timeline", title: "Target Timeline", format: "{0:MM/dd/yyyy}", width: "140px" },
-                { field: "edit_template", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
-                {
-                    command: "edit", width: "100px"}
-            ],
-            editable: "popup"
-        });
+                { field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
+                { field: "target_timeline", title: "Target Timeline",  width: "140px" },
+                //{ field: "status", title: "Status" },
+                { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#"">#=status#</a>' },
 
+                { field: "template_content", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
+                { command: ["edit", { name: "Submit", click: SubmitActRecord }], width: "100px" },
+                                { command: [ {name: "View comments", click: OpenActData} ], width: "100px" }
+
+                //{
+                //    command: "edit", width: "100px"
+                //}
+            ],
+            editable: "popup",
+            dataBound: function (e) {
+                $("#grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
+
+                    }
+                })
+                $("#grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+                        //$("input").prop('disabled', true);
+                    }
+                })
+                 $("#grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be reviewed") {
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+
+                    }
+                })
+                $("#grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be reviewed") {
+                       // $(this).remove();
+                        $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+
+
+                    }
+                })
+            }
+        });
+    }
+    function getSectiongrid(val) {
         var secDatasource = new kendo.data.DataSource({
             schema: {
                 total: "",
@@ -110,15 +922,20 @@
                         product_name: { type: 'string', editable: false },
                         document_name: { type: 'string', editable: false },
                         section: { type: 'string', editable: false },
-                        template_content: { type: 'string', editable: true },
-                        target_date: { type: 'date', editable: false },
+                        target_timeline: { type: 'string', editable: false },
                         status: { type: 'string', editable: false },
+                        progress: { type: 'string', editable: false },
+
+                        template_content: { type: 'string', editable: true },
+
                     }
                 }
             },
             transport: {
                 read: {
-                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home")',
+                    url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home", new { id = "ID" })'.replace("ID", val),
+
+                    //url: '@Url.Action("GetProDocSectionAssignmentByUser", "Home")',
                     type: 'post',
                     dataType: 'json'
                 },
@@ -127,7 +944,7 @@
                     type: 'post',
                     dataType: 'json',
                     complete: function (e) {
-                        alert(e.responseJSON.info);
+                        swal(e.responseJSON.info);
                         reload();
                     }
                 },
@@ -141,38 +958,103 @@
 
         $("#section_assignments_grid").kendoGrid({
             dataSource: secDatasource,
+             height: 750,
+            reorderable: true,
             sortable: true,
             pageable: true,
+            resizable: true,
             //edit: addSubmitButton,
             columns: [
                 { field: "product_name", title: "Product Name" },
                 { field: "document_name", title: "Document Name" },
-                { field: "section", title: "Section", width: "150px"  },
-                { field: "template_content", title: "TemplateContent", encoded: false, editor: SectionEditor, width: "600px"  },
-                { field: "target_date", title: "Target Date", format: "{0:MM/dd/yyyy}", width: "140px" },
-                { command: {
-                        name: "edit",
-                        text: {
-                            update: "Update",
-                            cancel: "Cancel"
-                        }
-                    }, width: "100px"}
-            ],
-            editable: "popup"
-        });
+                { field: "section", title: "Section", width: "150px" },
 
-        function reload() {
+                { field: "target_timeline", title: "Target Date", width: "140px" },
+                //{ field: "status", title: "Status" },
+                                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#" )">#=status#</a>' },
+
+                { field: "template_content", title: "Template Content", encoded: false, editor: SectionEditor, width: "400px" },
+                { command: ["edit", { name: "Submit", click: SubmitRecord }], width: "100px" },
+                                                { command: [ {name: "View comments", click: OpenData} ], width: "100px" }
+
+
+                //{
+                //    command: {
+                //        name: "edit",
+                //        text: {
+                //            update: "Update",
+                //            cancel: "Cancel"
+                //        }
+                //    }, width: "100px"
+                //}
+            ],
+            editable: "popup",
+            dataBound: function (e) {
+                $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                       // $(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+                        //  $(this).addClass('blue');
+                    }
+                })
+                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "Submitted") {
+                        //$(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+                    }
+                 })
+                 $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be reviewed") {
+                        //$(this).remove();
+                        //  $(this).addClass('blue');
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+                    }
+                })
+                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //Check in the current dataItem if the row is editable
+                    if (currentDataItem.status == "To be reviewed") {
+                        //$(this).remove();
+                          $(this).prop('disabled', true);
+                                                $(this).addClass("disablebutton");
+                    }
+                })
+                //$("#section_assignments_grid tbody tr").each(function () {
+                //    var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                //    //Check in the current dataItem if the row is editable
+                //    if (currentDataItem.status == "Submitted") {
+                //        // $(this).remove();
+                //        $(this).addClass('green');
+                //    }
+                //})
+            },
+        });
+    }
+    //$(document).ready(function () {
+
+
+    //});
+      function reload() {
             window.location.reload();
         }
 
         function addSubmitButton(e) {
-            console.log("submitModel: ", e.model);
+            //console.log("submitModel: ", e.model);
             var tempId = e.model.prodoc_section_assignment_id;
             var tempContent = e.model.template_content;
-            console.log("values : ", tempId + " " + tempContent);
+            //console.log("values : ", tempId + " " + tempContent);
             $('<a class="k-button k-button-icontext k-grid-udpate custom-submit"><span class="k-icon k-grid-udpate"></span>Submit</a>').insertBefore(".k-grid-cancel");
             $(".custom-submit").click(function () {
-                console.log("clicked")
+               // console.log("clicked")
                 $.ajax({
                     url: '@Url.Action("SectionAssSubmit", "Home")',
                     data: {
@@ -184,15 +1066,14 @@
                     type: 'post',
                     dataType: 'json',
                     success: function () {
-                        alert("succ");
+                        swal("succ");
                     },
                     error: function () {
-                        alert("fail")
+                        swal("fail")
                     },
                 });
             });
         };
-
 
 
         function SectionEditor(container, options) {
@@ -258,21 +1139,690 @@
             ]
             });
         };
-    });
-
 
 </script>
 
-<div class="row">
-    <br />
-    <div>Activity Assigned</div>
-    <br />
-    <div id="grid" style="width:90%"></div>
+<script type="text/x-kendo-template" id="comment-template">
+
+    <div style="display:none">
+        <div id="pro-sec-id">#= id #</div>
+        <div id="product-name">#= product_name#</div>
+        <div id="document-name">#= document_name #</div>
+        <div id="section">#= section #</div>
+        <div id="target-timeline">#= target_timeline #</div>
+        <div id="status">#= status #</div>
+        <div id="template-content">#= template_content #</div>
+
+    </div>
+
+
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
 
     <br />
-    <div>Section Assigned</div>
+
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitRecordByUser()" />
+</script>
+
+
+
+<script type="text/x-kendo-template" id="act-comment-template">
+
+    <div style="display:none">
+
+        <div id="pro-act-id">#= pro_doc_template #</div>
+        <div id="status">#= status #</div>
+        <div id="template-content">#= template_content #</div>
+
+    </div>
+
+    <div id="section-comment">
+        <input type="text" id="comment" class="form-control" />
+    </div>
+
     <br />
 
-    <div id="section_assignments_grid" style="width:90%"></div>
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+
+</script>
+
+<script type="text/x-kendo-template" id="diff-sec-template">
+    @*<div id="data-grid"></div>*@
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="diff-act-template">
+    <div class='content'>
+        #= diff #
+    </div>
+</script>
+<div class="align-items-center justify-content-between mb-4" id="dashboardrow" style="display: flex;">
+
+    <h1 class="h1 mb-0 text-gray-800">Dashboard</h1>
+    @*Submition date
+        <div id="daterangepicker" title="daterangepicker"></div>
+        View*@
+    <a href="#" id="printToFile" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>
 </div>
+<div id="downloaddashbaord">
 
+    <div id="dashboard">
+        @if (Model != null)
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                <div id="ActivityDashboard">
+                    <div class="d-sm-flex align-items-center">
+
+                        <h1 class="h1 mb-0 text-gray-800">Activity</h1>
+
+
+                        @*Submition date
+                            <div id="daterangepicker" title="daterangepicker"></div>
+                            View
+                            <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].total != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:pointer;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitycount" style="cursor:default;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].ToBeInitiated != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:pointer;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].ToBeInitiated</div>
+
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].ToBeInitiated</div>
+
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[0].onGoing != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:pointer;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[0].toBeRevied != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="actvitysubmtreviewReverted" style="cursor:pointer;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="actvitysubmtreviewReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Pending Requests Card Example -->
+                        @if (Model.getDashBoardDetails[0].submited != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:pointer;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[0].reverted != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:pointer;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            for (int i = 1; i < Model.getDashBoardDetails.Count; i++)
+            {
+                <div id="SectionDashboard">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+                        <h1 class="h1 mb-0 text-gray-800">Section</h1>
+                        @*Submition date
+                            <div id="daterangepicker" title="daterangepicker"></div>
+                            View
+                            <a href="#" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Dashbaord</a>*@
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].total != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:pointer;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectioncount" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].total</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].ToBeInitiated != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:pointer;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].ToBeInitiated</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionTobeinitiated" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].ToBeInitiated</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Earnings (Monthly) Card Example -->
+                        @if (Model.getDashBoardDetails[1].onGoing != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:pointer;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionOngoing" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].onGoing</div>
+                                                    </div>
+                                                    @*<div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].toBeRevied != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionsubmtreviewReverted" style="cursor:pointer;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted For Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionsubmtreviewReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted For Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].submited != 0)
+                        {
+                            <!-- Pending Requests Card Example -->
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:pointer;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionSubmitted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].submited</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.getDashBoardDetails[1].reverted != 0)
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:pointer;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xl-2 col-md-6 mb-3" id="sectionReverted" style="cursor:default;pointer-events: none;">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].reverted</div>
+                                            </div>
+                                            @*<div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+
+
+    </div>
+
+
+    <div id="divchart">
+        <div class="col-xl-6 col-lg-5">
+            <div class="shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Document Activity Wise Count</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div id="k-dropdownlist"></div>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        <div id="ActivityChart"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-5">
+            <div class="shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Document Section Wise Count</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        @*<div id="k-dropdownlist"></div>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header">Dropdown Header:</div>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>*@
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        <div id="SectionChart"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divgrid">
+    <br />
+    <div class="col-sm-12 col-md-12 " id="divactivitygrid" style="display:none;">
+        <h2>Activity Assigned</h2>
+       
+        <div id="grid"></div>
+    </div>
+    <br />
+    <div class="col-sm-12 col-md-12 " id="divsectiongrid" style="display:none;">
+        <h2>Section Assigned</h2>
+
+        <div id="section_assignments_grid"></div>
+
+    </div>
+    <br />
+    <div id="k-wnd"></div>
+
+    <div id="ka-wnd"></div>
+
+    <div id="k-dwnd">
+        <div id="data-grid"></div>
+    </div>
+
+    <div id="k-diffwnd">
+        <div id="diff-data-grid"></div>
+    </div>
+
+    <div id="k-dffwnd"></div>
+</div>

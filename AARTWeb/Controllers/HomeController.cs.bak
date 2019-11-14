@@ -179,12 +179,19 @@ namespace AARTWeb.Controllers
             objprmdl.GetProductCount();
             objprmdl.GetDocumentCount();
             objprmdl.GetProductDetails();
+            objprmdl.GetManagerDashBoardDetails();
 
             return View(objprmdl);
         }
-        public ActionResult GetAllProduts()
+        public ActionResult GetAllProduts(string id)
         {
-            var productDetails =objprmdl.GetProductDetails();
+            var productDetails = objprmdl.GetProductDetails();
+            if (id != "All")
+            {
+                var product = productDetails.Where(item => item.status == id);
+                return Json(product, JsonRequestBehavior.AllowGet);
+
+            }
             return Json(productDetails, JsonRequestBehavior.AllowGet);
 
             //return Json(objprmdl.getallproduct);
@@ -194,25 +201,33 @@ namespace AARTWeb.Controllers
             //Auth cl = new Auth();
             //cl.CallApi();
             //objprmdl.GetProductCount();
-           // objprmdl.GetDocumentCount();
+            // objprmdl.GetDocumentCount();
             //objprmdl.GetProductDetails();
-            return View("Author");
+            objprmdl.GetManagerDashBoardDetails();
+            return View(objprmdl);
         }
         
-              public ActionResult AuthorAssignment()
+        public ActionResult AuthorAssignment()
         {
             //Auth cl = new Auth();
             //cl.CallApi();
             //objprmdl.GetProductCount();
             // objprmdl.GetDocumentCount();
             //objprmdl.GetProductDetails();
-            return View("AuthorAssignment");
+            objprmdl.GetDashBoardDetails();
+            return View("AuthorAssignment", objprmdl);
         }
-        public ActionResult GetReportsByUser()
+        public ActionResult GetReportsByUser(string id)
         {
-            objprmdl.GetReportsByUser();
+         //   objprmdl.GetReportsByUser();
+            var productDetails = objprmdl.GetReportsByUser();
+            if (id != "All")
+            {
+                var product = productDetails.Where(item => item.status == id);
+                return Json(product, JsonRequestBehavior.AllowGet);
 
-            return Json(objprmdl.getreportsbyuser);
+            }
+            return Json(productDetails, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult GetProDocByUser()
@@ -227,22 +242,38 @@ namespace AARTWeb.Controllers
             return View("AuthorAssignment");
         }
         [HttpPost]
-        public JsonResult GetProDocTemplate()
+        public JsonResult GetProDocStructure()
         {
-            var model = objprmdl.GetProDocTemplateByUser();
-            return Json(model, JsonRequestBehavior.AllowGet);
+            var model = new KickOffMeetingModel();
+            model.GetProDocDetails(prodocid);
+            model.GetProDocTemplate(prodocid);
+            model.GetProDocSecAssignment(prodocid);
+            return Json(model);
         }
         [HttpPost]
-        public JsonResult ProDocActList()
+        public JsonResult GetProDocTemplate(string id)
         {
-            var proDocSecAssList = objprmdl.GetProDocActAss(prodocid);
-            return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
+            var productDetails = objprmdl.GetProDocTemplateByUser();
+            if (id != "All")
+            {
+                var product = productDetails.Where(item => item.status == id);
+                return Json(product, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(productDetails, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
-        public JsonResult GetProDocSectionAssignmentByUser()
+        public JsonResult GetProDocSectionAssignmentByUser(string id)
         {
-            var model = objprmdl.GetProDocSectionAssignmentByUser();
-            return Json(model, JsonRequestBehavior.AllowGet);
+            var productDetails = objprmdl.GetProDocSectionAssignmentByUser();
+            if (id != "All")
+            {
+                var product = productDetails.Where(item => item.status == id);
+                return Json(product, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(productDetails, JsonRequestBehavior.AllowGet);
         }
     
         [ValidateInput(false)]
@@ -263,6 +294,7 @@ namespace AARTWeb.Controllers
         public JsonResult GetProDocTemplateForChart()
         {
             var model = objprmdl.GetProDocTemplateForChart();
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -309,6 +341,13 @@ namespace AARTWeb.Controllers
             return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult ProDocActList()
+        {
+            var proDocSecAssList = objprmdl.GetProDocActAss(prodocid);
+            return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
+        }
+
         [ValidateInput(false)]
         [HttpPost]
         public string UpdateProDocSecAss(TemplateSectionVo models)
@@ -317,12 +356,57 @@ namespace AARTWeb.Controllers
             return res;
         }
 
+        [ValidateInput(false)]
+        [HttpPost]        
+        public string UpdateProDocActAss(TemplateSectionVo models)
+        {
+            string res = objprmdl.UpdateProDocActAss(models);
+            return res;
+        }
+
+        /*Method used in authorreivew page on accept and revert 
+         * click of section and activity
+        */
+        [ValidateInput(false)]
+        [HttpPost]
+        public string UpdateAcceptReject(int id, string status, string comment, string recTemplate, string templateVar)
+        {
+            var model = objprmdl.UpdateAcceptReject(id, status, comment, prodocid, recTemplate, templateVar);
+            return model;
+        }
+
+
+        /*Method used in authorreivew page to get the data on click of view 
+         * button
+         */
+        [HttpPost]
+        public JsonResult GetViewData(int id, string templateVar)
+        {
+            var model = objprmdl.GetViewData(id, templateVar);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        /*
+         * Method to get difference of template changes and comments
+         * from Lead Author and author
+        */
+        [HttpPost]
+        public string GetDifferenceData(int id, string templateVar)
+        {
+            var model = objprmdl.GetDiffData(id, templateVar);
+            if (model.Oldtemplate == null)
+                model.Oldtemplate = "";
+            var diffHelper = new HtmlDiff.HtmlDiff(model.Oldtemplate, model.Newtemplate);
+            var diff = diffHelper.Build();
+            return diff;
+        }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult PrictDoc(string doctext)
         {
             List<TemplateSectionVo> Grid = JsonConvert.DeserializeObject<List<TemplateSectionVo>>(doctext);
-            htmlString = "<h1 style='text-align: center;'><strong>Pharmacovigilance Agreement</strong></h1>" + "<br>";
+            htmlString = "<h1 style='text-align: center;'><strong>Report</strong></h1>" + "<br>";
             for (int i = 0; i < Grid.Count; i++)
             {
                 htmlString += "<br><h2><strong>" + Grid[i].Section + "</strong></h2>" + Grid[i].Template_Content;
@@ -342,13 +426,6 @@ namespace AARTWeb.Controllers
             Response.End();
             Response.Flush();
             return View();
-        }
-        [ValidateInput(false)]
-        [HttpPost]
-        public string UpdateProDocActAss(TemplateSectionVo models)
-        {
-            string res = objprmdl.UpdateProDocActAss(models);
-            return res;
         }
         private void AddFormatting(StringBuilder strBody, string yourHtmlContent)
         {
@@ -393,6 +470,111 @@ namespace AARTWeb.Controllers
             strBody.Append(yourHtmlContent);
             strBody.Append("</div></body></html>");
         }
+
+
+        public ActionResult SubmitReport()
+        {
+            var proDocSecAssList = objprmdl.SubmitReport(prodocid);
+            return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]        
+        public string SubmitSecAsignRecordByUser(int id, string comment, string section, string status, string templateContent) {
+
+            TemplateSectionVo template = new TemplateSectionVo();
+            template.ProDoc_Section_Assignment_id = id;
+            template.Comment = comment;
+            template.Section = section;
+            template.Status = status;
+            template.Template_Content = templateContent;
+
+            var model = new ProductModel();
+            var res = model.SubmitRecordByUser(template);
+
+            return res;
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public string SubmitActAsignRecordByUser(int id, string comment, string status, string templateContent)
+        {
+
+            TemplateSectionVo template = new TemplateSectionVo();
+            template.ProDoc_Template_id = id;
+            template.Comment = comment;            
+            template.Status = status;
+            template.Template_Content = templateContent;
+
+            var model = new ProductModel();
+            var res = model.SubmitActRecordByUser(template);
+
+            return res;
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public string SubmitAuthRevSecAsignRecordByUser(int id, string comment, string status, string templateContent)
+        {
+
+            TemplateSectionVo template = new TemplateSectionVo();
+            template.ProDoc_Section_Assignment_id = id;
+            template.Comment = comment;            
+            template.Status = status;
+            template.Template_Content = templateContent;
+
+            var model = new ProductModel();
+            var res = model.SubmitAuthRevSecRecordByUser(template);
+
+            return res;
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public string SubmitAuthRevActAsignRecordByUser(int id, string comment, string status, string templateContent)
+        {
+
+            TemplateSectionVo template = new TemplateSectionVo();
+            template.ProDoc_Template_id = id;
+            template.Comment = comment;            
+            template.Status = status;
+            template.Template_Content = templateContent;
+
+            var model = new ProductModel();
+            var res = model.SubmitAuthRevActRecordByUser(template);
+
+            return res;
+        }
+
+        /*
+         * chart count for product wise in manager dashboard
+         */
+        [HttpPost]
+        public JsonResult GetProductWiseCount() {
+            var model = objprmdl.GetUserChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetReportWiseCount()
+        {
+            var model = objprmdl.GetUserReportChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+		[HttpPost]
+        public JsonResult GetDocumentWiseCount() {
+            var model = objprmdl.GetUserDocumentChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpPost]
+        //public JsonResult GetReportWiseCount()
+        //{
+        //    var model = objprmdl.GetUserReportChartDetails();
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
+
 
     }
 }

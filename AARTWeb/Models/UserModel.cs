@@ -18,8 +18,11 @@ using System.Web.Script.Serialization;
 
 namespace AARTWeb.Models
 {
+
     public class UserModel:BaseModel
     {
+       // Auth Auth = new Auth();
+
         [Required]
         public string UserName { get; set; }
         public string Name { get; set; }
@@ -47,7 +50,7 @@ namespace AARTWeb.Models
                 {
                     httpClient.BaseAddress = new Uri(WebURL + "user/InsertUser");
 
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     if (!objumdl.IsStatus)
@@ -77,12 +80,16 @@ namespace AARTWeb.Models
                             {
                                 objumdl.Message = data.warning;
                                 objumdl.Warning = true;
+                                InsertAudit("Add user", Message, "Failed");
+
                                 return objumdl;
                             }
                             else
                             {
                                 objumdl.Message = data.info;
                                 objumdl.IsSuccess = true;
+                                InsertAudit("Add user", Message, "Success");
+
                                 return objumdl;
                             }
                         }
@@ -93,6 +100,8 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
+                InsertAudit("Add user", error, "Error");
+
                 return objumdl;
             }
         }

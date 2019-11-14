@@ -3,15 +3,15 @@
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
 
-<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">*@
 
 <style>
     /*.w3-tab {
@@ -23,13 +23,16 @@
         background-color: darkgrey !important;
         padding: 10px;
     }
+    .k-grid-header th.k-header {
+        background-color: #1a5087 !important;
+        color: #fff !important;
+    }
 
     .w3-tab {
         color: #000 !important;
         background-color: #ccc !important;
         padding: 10px;
     }
-   
 </style>
 
 <script>
@@ -39,9 +42,9 @@
         var proDataSource = new kendo.data.DataSource({
              schema: {
                 model: {
-                    id: "pro_doct_template",
+                    id: "pro_doc_template",
                     fields: {
-                        pro_doct_template: { type: "string", editable: false },
+                        pro_doc_template: { type: "string", editable: false },
                         document_template_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
                         responsible_role_id: { type: "string", editable: false, validation: { required: true } },
                         role_name: { type: "string", editable: false },
@@ -62,16 +65,31 @@
                 update: {
                     url: '@Url.Action("UpdateAssgnActPro", "KickOffMeeting")',
                     type: 'post',
-                    dataType: "json",
-                    success: function (data) {
-                        refreshPage();
-                    },
-                    error: function (xhr, error) {
-                        refreshPage();
-                        console.debug(xhr); console.debug(error);
+                    dataType: "string",
+                    	complete: function (e) {
+						if (e.status == 200) {
+                            //console.log(e);
+                            var json = JSON.parse(e.responseText)
+                            swal(json.info);
+							
+								$('#KOMTemplate').data('kendoGrid').dataSource.read();
+							    $('#KOMTemplate').data('kendoGrid').refresh();
+							
+
+						} else {
+							swal(e.responseText);
+						}
                     }
+                    //success: function (data) {
+                    //    console.log(data);
+                    //    refreshPage();
+                    //},
+                    //error: function (xhr, error) {
+                    //    refreshPage();
+                    //    //console.debug(xhr); console.debug(error);
+                    //}
                 }
-            },           
+            },
             parameterMap: function (options, operation) {
                 if (operation != "read") {
                     return { models: kendo.stringify( options.models ) };
@@ -111,12 +129,12 @@
                         pro_doc_section_assignment_id: { type: "string", editable: false },
                         document_section_assignment_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
                         role_id: { type: "string", editable: false, validation: { required: true } },
-                        sectionid: { type: "string", editable: false },
+                        //sectionid: { type: "string", editable: false },
                         sectionname: { type: "string", editable: false },
                         role_name: { type: "string", editable: false },
-                        user_id: { defaultValue: { user_id: 0, user_name: "Select User" }, validation: { required: true } },                       
+                        user_id: { defaultValue: { user_id: 0, user_name: "Select User" }, validation: { required: true } },
                         target_date: { type: "date", editable: false },
-                        comment: { type: "string", editable: false }                        
+                        comment: { type: "string", editable: false }
                     }
                 }
             },
@@ -129,17 +147,31 @@
                 update: {
                     url: '@Url.Action("UpdateAssgnActSec", "KickOffMeeting")',
                     type: 'post',
-                    dataType: "json",
-                    success: function (data) {
-                        refreshPage();
-                    },
-                    error: function (xhr, error) {                        
-                        console.debug(xhr);
-                        console.debug(error);
-                        refreshPage();
+                    dataType: "string",
+                    complete: function (e) {
+						if (e.status == 200) {
+                            //console.log(e);
+                            var json = JSON.parse(e.responseText)
+                            swal(json.info);
+							
+								$('#KOMSection').data('kendoGrid').dataSource.read();
+							    $('#KOMSection').data('kendoGrid').refresh();
+							
+
+						} else {
+							swal(e.responseText);
+						}
                     }
+                    //success: function (data) {
+                    //    refreshPage();
+                    //},
+                    //error: function (xhr, error) {
+                    //   // console.debug(xhr);
+                    //   // console.debug(error);
+                    //    refreshPage();
+                    //}
                 }
-            },           
+            },
             parameterMap: function (options, operation) {
                 if (operation != "read") {
                     return { sModels: options };
@@ -162,13 +194,13 @@
                 //{ field: "document_section_assignment_id", Title: "Document Section Assignment ID" },
                 //{ field: "role_id", Title: "RoleID"},
                 //{ field: "user_id", Title: "UserID"},
-                { field: "role_name", title: "Role" }, 
+                { field: "role_name", title: "Role" },
                 { field: "sectionid", title: "Section ID" },
                 { field: "sectionname", title: "SectionName" },
-                { field: "user_id", title: "ReAssign To", editor: categoryDropDownEditor4, template: "#= user_id.user_name #" },               
+                { field: "user_id", title: "ReAssign To", editor: categoryDropDownEditor4, template: "#= user_id.user_name #" },
                 { field: "target_date", title: "Target Timeline", format: "{0:dd-MMM-yyyy}"  },
                 { field: "comment", title: "Comment" },
-                { command: ["edit"] }                 
+                { command: ["edit"] }
             ]
         });
 
@@ -178,13 +210,13 @@
         window.location.reload();
     }
 
-    function categoryDropDownEditor3(container, options) {        
+    function categoryDropDownEditor3(container, options) {
         $('<input required name="' + options.field + '"/>')
             .appendTo(container)
-            .kendoDropDownList({                   
+            .kendoDropDownList({
                 optionLabel: "Select User",
                 dataTextField: "user_name",
-                dataValueField: "user_name",               
+                dataValueField: "user_name",
                 dataSource: {
                        transport: {
                            read: {
@@ -200,10 +232,10 @@
             });
     }
 
-    function categoryDropDownEditor4(container, options) {        
+    function categoryDropDownEditor4(container, options) {
         $('<input required name="' + options.field + '"/>')
             .appendTo(container)
-            .kendoDropDownList({               
+            .kendoDropDownList({
                 optionLabel: "Select User",
                 dataTextField: "user_name",
                 dataValueField: "user_name",
@@ -238,12 +270,51 @@
 
 </script>
 
-<div class="w3-bar" style="width: 33.5em;">
-    <button class="w3-bar-item w3-button btn tablink w3-tab" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
-    <button class="w3-bar-item w3-button btn tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="kmmain">
+            <h2 class="kicofmt">Assignment & Timelines <span id="product-name"></span> <span id="doctype"></span> </h2>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel with-nav-tabs panel-primary">
+            <div class="panel-heading">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1primary" data-toggle="tab">Activity Assignments</a></li>
+                    <li><a href="#tab2primary" data-toggle="tab">Section Assignments</a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tab1primary">
+                        <div class="col-sm-12 col-md-12 usr-tlenm">
+                            @*<h2>Attendances</h2>*@
+                            <div id="KOMTemplate"></div>
+                            @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
+                        </div>
+                    </div>
+                    <div class="tab-pane fade atv-tab" id="tab2primary">
+                        <div class="col-sm-12 col-md-12 tble-tlenam">
+                            @*<h2>Assignment & Timelines</h2>*@
+                            <div id="KOMSection"></div>
+                            @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="Activity_Assignments" class="w3-container tabs" style="height: 100%;">
+@*<div class="w3-bar" style="width: 33.5em;">
+    <button class="w3-bar-item w3-button btn tablink w3-tab" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
+    <button class="w3-bar-item w3-button btn tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
+</div>*@
+
+@*<div id="Activity_Assignments" class="w3-container tabs" style="height: 100%;">
     <h2>Assignment & Timelines</h2>
     <div id="KOMTemplate"></div>
 </div>
@@ -251,4 +322,4 @@
 <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
     <h2>Section Assignments</h2>
     <div id="KOMSection"></div>
-</div>
+</div>*@

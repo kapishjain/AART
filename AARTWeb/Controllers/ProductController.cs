@@ -105,5 +105,24 @@ namespace AARTWeb.Controllers
 
             return Json(new { success = true, responseText = res }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult GetCountbyUser()
+        {
+            var model = prdctmdl.GetDashBoardDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult GetUserCountdetailsActivity()
+        {
+            var model = prdctmdl.GetUserCountdetailsActivity();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult GetUserCountdetailsSection()
+        {
+            var model = prdctmdl.GetUserCountdetailsSection();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="AARTServerVO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\netstandard2.0\AARTServerVO.dll</HintPath>
+      <HintPath>..\..\Azure download\bin\netstandard2.0\AARTServerVO.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -56,14 +56,12 @@
       <HintPath>..\packages\htmldiff.net.1.4.0\lib\net45\HtmlDiff.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
@@ -121,9 +119,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -149,6 +144,8 @@
     <Compile Include="Controllers\AARTBaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KickOffMeetingController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -158,6 +155,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminModel.cs" />
+    <Compile Include="Models\AuditViewModel.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\KickOffMeetingModel.cs" />
@@ -626,10 +624,19 @@
     <Content Include="Themes\css\fonts\fontomas-webfont.svg" />
     <Content Include="Themes\css\fonts\franchise-bold-webfont.svg" />
     <Content Include="Themes\css\style.css" />
+    <Content Include="Themes\Images\aart-logo2.png" />
+    <Content Include="Themes\Images\AART-NEW-COLOR-LOGO.png" />
     <Content Include="Themes\Images\aart-new-logo.jpg" />
+    <Content Include="Themes\Images\AART-NEW-WHITE-LOGO.png" />
+    <Content Include="Themes\Images\AART.png" />
+    <Content Include="Themes\Images\ancla_logo-white-bg.png" />
     <Content Include="Themes\Images\ancla_logo.png" />
     <Content Include="Themes\Images\bg.jpg" />
     <Content Include="Themes\Images\Company_logo.jpg" />
+    <Content Include="Themes\Images\downloadicon.jpg" />
+    <Content Include="Themes\Images\favicon.png" />
+    <Content Include="Themes\Images\ft-logo.png" />
+    <Content Include="Themes\Images\img_avatar.png" />
     <Content Include="Themes\Images\Unichem-logo.png" />
     <Content Include="Themes\Images\welcome-bg.png" />
     <Content Include="Web.config" />
@@ -667,6 +674,10 @@
     <Content Include="Views\Home\AuthorAssignment.cshtml" />
     <Content Include="Views\Home\AuthorReview.cshtml" />
     <Content Include="Views\KickOffMeeting\ReassignAssignment.cshtml" />
+    <Content Include="Views\Audit\Audit.cshtml" />
+    <Content Include="Views\Help\help.cshtml" />
+    <Content Include="Views\Shared\_HelpLayout.cshtml" />
+    <Content Include="Views\Home\UsersStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

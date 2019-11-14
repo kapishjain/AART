@@ -4,11 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AART</title>
+    <link rel="icon" type="image/png" href="~/Themes/Images/favicon.png">
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
     <style type="text/css">
-       
+
+
+        .footer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: #efefef;
+            text-align: center;
+        }
+        /*body {
+          position: relative;
+          margin: 0;
+          padding-bottom: 6rem;
+          min-height: 100%;
+          font-family: "Helvetica Neue", Arial, sans-serif;
+        }*/
     </style>
 </head>
 <body >
@@ -36,9 +56,17 @@
             </div>
         </div>*@
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - AART</p>
+        <footer class="footer">
+            @*<p>&copy; @DateTime.Now.Year - AART</p>
+        <p>Product by <b>Ancla Consultancy Services</b></p>*@
+            <div >
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
+                    <p>&copy; @DateTime.Now.Year - AART </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
+                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
+                </div>
+            </div>
         </footer>
     </div>
 

@@ -50,8 +50,8 @@ a.hiddenanchor {
     width: 60%;
     right: 0px;
     min-height: 560px;
-    margin: 0px 38%;
-    width: 450px;
+    margin: 2% 5%;
+    width: 458px;
     position: relative;
 }
     /**** Styling the form elements **/
@@ -160,7 +160,7 @@ input {
     color: rgb(106, 159, 171);
     position: absolute;
     left: 10px;
-    top: 35px;
+    top: 40px;
     width: 30px;
 }
 
@@ -236,9 +236,9 @@ p.signin.button {
 p.change_link {
     position: absolute;
     color: rgb(127, 124, 124);
-    left: 0px;
+    left: 16px;
     height: 60px;
-    width: 396px;
+    width: 367px;
     padding: 17px 30px 20px 30px;
     font-size: 16px;
     text-align: right;
@@ -289,11 +289,11 @@ p.change_link {
     width: 88%;
     padding: 18px 6% 60px 6%;
     margin: 0 0 35px 0;
-    background: rgb(247, 247, 247);
+    background: rgb(255, 255, 255);
     border: 1px solid rgba(147, 184, 189,0.8);
-    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109, 0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    /*-webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109, 0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
     -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109, 0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
-    box-shadow: 0pt 2px 5px rgba(105, 108, 109, 0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    box-shadow: 0pt 2px 5px rgba(105, 108, 109, 0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;*/
     -webkit-box-shadow: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -437,14 +437,16 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 /* General Demo Style */
-body {
+/*body {
     font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
-    background: #fff url(../images/bg.jpg) repeat top left;
+    background: #fff url(../images/welcome-bg.png) repeat top left;
     font-weight: 400;
     font-size: 15px;
     color: #1d3c41;
     overflow-y: scroll;
-}
+    background-repeat: no-repeat;
+    background-size: contain;
+}*/
 
 a {
     color: #333;

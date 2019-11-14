@@ -30,7 +30,7 @@ namespace AARTWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult InsertProDocKOMDtls(List<KickOffMeetingModel.ProDocAttendies> modelatten, List<ProDocActivityVo> docactivity, List<ProDocSectionAssignmentVO> docsection)
+        public ActionResult InsertProDocKOMDtls(List<KickOffMeetingModel.ProDocAttendies> modelatten, List<ProDocActivityVoforKOM> docactivity, List<ProDocSectionAssignmentVoforKOM> docsection)
         {
             KickOffMeetingModel objmdl = new KickOffMeetingModel();
             objmdl.InsertProDocKOMDtls(modelatten, docactivity, docsection);
@@ -115,17 +115,20 @@ namespace AARTWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateAssgnActPro(AssgnActProdList models) {
+        public string UpdateAssgnActPro(AssgnActProdList models) {
             var model = new KickOffMeetingModel();
-            var resT = model.UpdateAssgnActPro(models); 
-            return Json(resT, JsonRequestBehavior.AllowGet);
+            string resT = model.UpdateAssgnActPro(models); 
+           // return Json(resT, JsonRequestBehavior.AllowGet);
+            return resT;
         }
 
         [HttpPost]
-        public JsonResult UpdateAssgnActSec(AssgnSecProdList sModels) {
+        public string UpdateAssgnActSec(AssgnSecProdList sModels) {
             var model = new KickOffMeetingModel();
-            var resT = model.UpdateAssgnSecPro(sModels);
-            return Json(resT, JsonRequestBehavior.AllowGet);
+            string resT = model.UpdateAssgnSecPro(sModels);
+            return resT;
+
+            //return Json(resT, JsonRequestBehavior.AllowGet);
         }
         
         private void AddFormatting(StringBuilder strBody, string yourHtmlContent)

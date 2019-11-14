@@ -5,1689 +5,1637 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\AART\Azure\AARTWeb\AARTWeb\AARTWeb\bin\Release\Publish</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\AART\Azure download\AARTWeb\AARTWeb\bin\Release\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/AARTServerVO.dll">
-      <publishTime>09/09/2019 14:39:08</publishTime>
+      <publishTime>05/11/2019 11:05:51</publishTime>
     </File>
     <File Include="bin/AARTServerVO.pdb">
-      <publishTime>09/09/2019 14:39:08</publishTime>
+      <publishTime>05/11/2019 11:05:51</publishTime>
     </File>
     <File Include="bin/AARTWeb.dll">
-      <publishTime>09/09/2019 18:46:59</publishTime>
+      <publishTime>11/11/2019 14:00:01</publishTime>
     </File>
     <File Include="bin/AARTWeb.pdb">
-      <publishTime>09/09/2019 18:46:59</publishTime>
+      <publishTime>11/11/2019 14:00:01</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.pdb">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/DocumentFormat.OpenXml.dll">
-      <publishTime>09/09/2019 10:21:58</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
+    </File>
+    <File Include="bin/HtmlDiff.dll">
+      <publishTime>05/23/2019 07:17:54</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
-      <publishTime>09/09/2019 10:22:03</publishTime>
+      <publishTime>09/25/2019 11:31:52</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
+      <publishTime>09/25/2019 11:31:52</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>09/09/2019 10:22:09</publishTime>
-    </File>
-    <File Include="bin/roslyn/csc.exe">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>04/22/2019 01:06:16</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe.config">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/csc.rsp">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/csi.exe">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/csi.exe.config">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/csi.rsp">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Managed.Core.targets">
-      <publishTime>09/09/2019 10:22:04</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
-      <publishTime>09/09/2019 10:22:04</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.AppContext.dll">
-      <publishTime>09/09/2019 10:22:06</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Collections.Immutable.dll">
-      <publishTime>09/09/2019 10:22:06</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Console.dll">
-      <publishTime>09/09/2019 10:22:06</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Diagnostics.FileVersionInfo.dll">
-      <publishTime>09/09/2019 10:22:06</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.IO.Compression.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.IO.FileSystem.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.IO.Pipes.AccessControl.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.IO.Pipes.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.AccessControl.dll">
-      <publishTime>09/09/2019 10:22:07</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Claims.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Cryptography.Algorithms.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Cryptography.Encoding.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Cryptography.Primitives.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Cryptography.X509Certificates.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Security.Principal.Windows.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Text.Encoding.CodePages.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.ValueTuple.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Xml.ReaderWriter.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Xml.XmlDocument.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Xml.XPath.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/System.Xml.XPath.XDocument.dll">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/vbc.exe">
-      <publishTime>09/09/2019 10:22:08</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.exe.config">
-      <publishTime>09/09/2019 10:22:08</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.rsp">
-      <publishTime>09/09/2019 10:22:08</publishTime>
-    </File>
-    <File Include="bin/roslyn/VBCSCompiler.exe">
-      <publishTime>09/09/2019 10:22:08</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
-      <publishTime>09/09/2019 10:22:08</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="bin/System.IO.Packaging.dll">
-      <publishTime>09/09/2019 10:22:11</publishTime>
+      <publishTime>09/25/2019 11:31:52</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>09/09/2019 10:22:00</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>09/09/2019 10:22:02</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>09/09/2019 10:22:00</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>09/09/2019 10:22:00</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>09/09/2019 10:22:00</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>09/09/2019 10:22:02</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>09/09/2019 10:22:02</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>09/09/2019 10:22:02</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
-      <publishTime>09/09/2019 10:22:11</publishTime>
+      <publishTime>09/25/2019 11:31:52</publishTime>
     </File>
     <File Include="bin/Xceed.Words.NET.dll">
-      <publishTime>09/09/2019 10:21:59</publishTime>
+      <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>07/11/2019 19:24:47</publishTime>
     </File>
     <File Include="favicon.ico">
-      <publishTime>09/09/2019 10:21:07</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.svg">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff2">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/editor.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/loading-image.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/loading.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/markers.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/markers_2x.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/slider-h.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/slider-v.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/sprite.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Black/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/editor.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/loading-image.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/loading.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/markers.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/markers_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/slider-h.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/slider-v.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/sprite.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/BlueOpal/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/editor.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/loading-image.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/loading.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/markers.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/markers_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/slider-h.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/slider-v.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/sprite.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Bootstrap/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/editor.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/loading-image.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/loading.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/markers.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/markers_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/slider-h.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/slider-v.gif">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/sprite.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Default/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/editor.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:32</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/loading-image.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/loading.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/markers.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/markers_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/slider-h.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/slider-v.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/sprite.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Fiori/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/editor.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/loading-image.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/loading.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/markers.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/markers_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/slider-h.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/slider-v.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/sprite.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Flat/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSans-Bold.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSans-BoldOblique.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSans-ExtraLight.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSans-Oblique.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSans.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSansMono-Bold.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSansMono-BoldOblique.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSansMono-Oblique.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSansMono.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSerif-Bold.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSerif-BoldItalic.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSerif-Italic.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/DejaVuSerif.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/DejaVu/LICENSE.txt">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/KendoUIGlyphs.eot">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/KendoUIGlyphs.svg">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/KendoUIGlyphs.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/KendoUIGlyphs.woff">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/WebComponentsIcons.eot">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/WebComponentsIcons.svg">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/WebComponentsIcons.ttf">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/fonts/glyphs/WebComponentsIcons.woff">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/editor.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/loading-image.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/loading.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/markers.png">
-      <publishTime>09/09/2019 10:21:33</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/markers_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/slider-h.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/slider-v.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/sprite.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/HighContrast/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/back.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/kendoui.svg">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/kendoui.ttf">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/kendoui.woff">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/wp8_icons.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/images/wp8_inverseicons.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.black.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.black.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.black.mobile.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.black.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.blueopal.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.blueopal.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap-v4.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap-v4.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap.mobile.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.bootstrap.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-bootstrap.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-bootstrap.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-fiori.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-fiori.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-material.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-material.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-nova.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-nova.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-office365.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common-office365.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common.min.css">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.common.min.css.map">
-      <publishTime>09/09/2019 10:21:28</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.black.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.black.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.blueopal.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.blueopal.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.bootstrap.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.bootstrap.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.default.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.default.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.fiori.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.fiori.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.flat.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.flat.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.highcontrast.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.highcontrast.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.material.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.material.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.materialblack.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.materialblack.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.metro.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.metro.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.metroblack.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.metroblack.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.mobile.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.moonlight.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.moonlight.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.nova.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.nova.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.office365.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.office365.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.silver.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.silver.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.uniform.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.dataviz.uniform.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default-v2.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default-v2.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default.min.css">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default.min.css.map">
-      <publishTime>09/09/2019 10:21:29</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.fiori.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.fiori.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.fiori.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.fiori.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.flat.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.flat.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.flat.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.flat.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.highcontrast.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.highcontrast.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.highcontrast.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.highcontrast.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material-v2.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material-v2.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.material.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.materialblack.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.materialblack.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.materialblack.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.materialblack.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metro.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metro.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metro.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metro.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metroblack.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metroblack.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metroblack.mobile.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.metroblack.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.all.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.all.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.android.dark.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.android.dark.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.android.light.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.android.light.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.blackberry.min.css">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.blackberry.min.css.map">
-      <publishTime>09/09/2019 10:21:30</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.common.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.common.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.fiori.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.fiori.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.flat.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.flat.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.ios.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.ios.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.material.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.material.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.meego.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.meego.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.nova.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.nova.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.office365.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.office365.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.wp8.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.mobile.wp8.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.moonlight.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.moonlight.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.moonlight.mobile.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.moonlight.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.nova.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.nova.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.nova.mobile.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.nova.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.office365.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.office365.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.office365.mobile.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.office365.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.rtl.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.rtl.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.silver.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.silver.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.silver.mobile.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.silver.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.uniform.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.uniform.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.uniform.mobile.min.css">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/kendo.uniform.mobile.min.css.map">
-      <publishTime>09/09/2019 10:21:31</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/editor.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/loading-image.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/loading.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/markers.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/markers_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/slider-h.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/slider-v.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/sprite.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Material/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/editor.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/loading-image.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/loading.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/markers.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/markers_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/slider-h.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/slider-v.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/sprite.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MaterialBlack/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/editor.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/loading-image.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/loading.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/markers.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/markers_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/slider-h.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/slider-v.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/sprite.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Metro/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/editor.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/loading-image.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/loading.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:34</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/markers.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/markers_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/slider-h.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/slider-v.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/sprite.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/MetroBlack/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/editor.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/loading-image.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/loading.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/markers.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/markers_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/slider-h.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/slider-v.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/sprite.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Moonlight/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/editor.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/loading-image.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/loading.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/markers.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/markers_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/slider-h.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/slider-v.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/sprite.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Nova/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/editor.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/loading-image.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/loading.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/markers.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/markers_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/slider-h.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/slider-v.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/sprite.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Office365/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/editor.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/loading-image.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/loading.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/markers.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/markers_2x.png">
-      <publishTime>09/09/2019 10:21:35</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/slider-h.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/slider-v.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/sprite.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Silver/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/brushed-metal.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots1.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots10.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots11.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots12.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots13.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots2.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots3.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots4.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots5.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots6.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots7.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots8.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/dots9.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/glass-lighter.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/glass.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/highlight.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/hsv-gradient.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/hue.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/image-default.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/leather1.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/leather2.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/noise.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe1.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe2.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe3.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe4.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe5.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/stripe6.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/transparency.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/textures/transtexture.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/editor.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/imagebrowser.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/indeterminate.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/loading-image.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/loading.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/loading_2x.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/markers.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/markers_2x.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/slider-h.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/slider-v.gif">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/sprite.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/sprite_2x.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/sprite_kpi.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikCSS/Uniform/sprite_kpi_2x.png">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikScripts/jquery.min.js">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikScripts/jquery.min.map">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikScripts/jszip.min.js">
-      <publishTime>09/09/2019 10:21:36</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikScripts/kendo.all.min.js">
-      <publishTime>09/09/2019 10:21:38</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="GeneralJscripts/TelerikScripts/kendo.all.min.js.map">
-      <publishTime>09/09/2019 10:21:38</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Global.asax">
-      <publishTime>09/09/2019 10:21:07</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Scripts/html2canvas.js">
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.min.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.8.3.js">
-      <publishTime>09/09/2019 10:21:55</publishTime>
-    </File>
-    <File Include="test.docx">
-      <publishTime>09/09/2019 10:21:07</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/aart_style.css">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/22/2019 16:19:37</publishTime>
     </File>
     <File Include="Themes/css/fonts/BebasNeue-webfont.eot">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/BebasNeue-webfont.svg">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/BebasNeue-webfont.ttf">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/BebasNeue-webfont.woff">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/Dharma Type Font License.txt">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/fontomas-webfont.eot">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/fontomas-webfont.svg">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/fontomas-webfont.ttf">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/fontomas-webfont.woff">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/franchise-bold-webfont.eot">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/franchise-bold-webfont.svg">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/franchise-bold-webfont.ttf">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/fonts/franchise-bold-webfont.woff">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/css/style.css">
+      <publishTime>11/08/2019 16:23:26</publishTime>
+    </File>
+    <File Include="Themes/Images/aart-logo2.png">
+      <publishTime>10/24/2019 11:39:14</publishTime>
+    </File>
+    <File Include="Themes/Images/AART-NEW-COLOR-LOGO.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/aart-new-logo.jpg">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/AART-NEW-WHITE-LOGO.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/AART.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/ancla_logo-white-bg.png">
+      <publishTime>10/24/2019 11:35:48</publishTime>
+    </File>
+    <File Include="Themes/Images/ancla_logo.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/Images/bg.jpg">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/Company_logo.jpg">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/downloadicon.jpg">
+      <publishTime>04/11/2019 14:23:49</publishTime>
+    </File>
+    <File Include="Themes/Images/favicon.png">
+      <publishTime>07/11/2019 18:43:48</publishTime>
+    </File>
+    <File Include="Themes/Images/ft-logo.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/img_avatar.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/Unichem-logo.png">
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Themes/Images/welcome-bg.png">
+      <publishTime>10/22/2019 16:35:05</publishTime>
     </File>
     <File Include="Views/Account/ChangePassword.cshtml">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>11/08/2019 16:15:40</publishTime>
     </File>
     <File Include="Views/Account/ForgotPassword.cshtml">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>01/11/2019 11:23:26</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>07/11/2019 18:42:30</publishTime>
     </File>
     <File Include="Views/Admin/Admin.cshtml">
-      <publishTime>09/09/2019 14:57:32</publishTime>
+      <publishTime>11/11/2019 12:20:00</publishTime>
+    </File>
+    <File Include="Views/Audit/Audit.cshtml">
+      <publishTime>10/28/2019 14:49:10</publishTime>
+    </File>
+    <File Include="Views/Help/help.cshtml">
+      <publishTime>06/11/2019 16:29:49</publishTime>
     </File>
     <File Include="Views/Home/Author.cshtml">
-      <publishTime>09/09/2019 17:41:33</publishTime>
+      <publishTime>11/08/2019 13:44:53</publishTime>
     </File>
     <File Include="Views/Home/AuthorAssignment.cshtml">
-      <publishTime>09/09/2019 15:13:38</publishTime>
+      <publishTime>11/08/2019 14:03:50</publishTime>
     </File>
     <File Include="Views/Home/AuthorReview.cshtml">
-      <publishTime>09/09/2019 10:50:32</publishTime>
+      <publishTime>11/11/2019 12:20:00</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>09/09/2019 17:29:32</publishTime>
+      <publishTime>10/22/2019 10:24:46</publishTime>
     </File>
     <File Include="Views/Home/Manager.cshtml">
-      <publishTime>09/09/2019 17:41:08</publishTime>
+      <publishTime>11/11/2019 12:28:14</publishTime>
     </File>
     <File Include="Views/KickOffMeeting/KickoffMeeting.cshtml">
-      <publishTime>09/09/2019 14:36:50</publishTime>
+      <publishTime>08/11/2019 12:17:03</publishTime>
     </File>
     <File Include="Views/KickOffMeeting/ReassignAssignment.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>07/11/2019 20:12:30</publishTime>
     </File>
     <File Include="Views/Product/AddProduct.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>07/11/2019 19:53:20</publishTime>
     </File>
     <File Include="Views/Role/AddRole.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
+    </File>
+    <File Include="Views/Shared/_HelpLayout.cshtml">
+      <publishTime>07/11/2019 18:46:16</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>07/11/2019 18:46:15</publishTime>
     </File>
     <File Include="Views/Shared/_MasterLayout.cshtml">
-      <publishTime>09/09/2019 13:05:36</publishTime>
+      <publishTime>11/08/2019 16:32:55</publishTime>
     </File>
     <File Include="Views/User/AddUser.cshtml">
-      <publishTime>09/09/2019 10:21:56</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
-      <publishTime>09/09/2019 10:21:55</publishTime>
+      <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/09/2019 18:47:00</publishTime>
+      <publishTime>11/11/2019 14:00:03</publishTime>
     </File>
   </ItemGroup>
 </Project>

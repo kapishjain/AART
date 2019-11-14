@@ -13,6 +13,8 @@ namespace AARTWeb.Models
 {
     public class AdminModel : BaseModel
     {
+        Auth Auth = new Auth();
+
         public string allusers { get; set; }
         public string allroles { get; set; }
         public List<UsersModel> users { get; set; }
@@ -25,7 +27,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("user/GetAllUsers");
                 responseTask.Wait();
@@ -48,7 +50,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var responseTask = httpClient.GetAsync("Role/GetAllRoles");
                 responseTask.Wait();
@@ -70,7 +72,7 @@ namespace AARTWeb.Models
                 return roles;
             }
         }
-        public String AddUser(UsersModel rUsers)
+        public string AddUser(UsersModel rUsers)
         {
 
             using (var httpClient = new HttpClient())
@@ -78,7 +80,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var obj = rUsers;
@@ -134,6 +136,9 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.error;
+                            users = GetAllUsers();
+                            InsertAudit("Add user", Message, "Failed");
+
                             return Message;
 
                         }
@@ -142,6 +147,9 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.warning;
+                            users = GetAllUsers();
+                            InsertAudit("Add user", Message, "Failed");
+
                             return Message;
 
                         }
@@ -149,6 +157,9 @@ namespace AARTWeb.Models
                         {
                             IsSuccess = true;
                             Message = data.info;
+                            users = GetAllUsers();
+                            InsertAudit("Add user", Message, "Success");
+
                             return Message;
 
                             // users = GetAllUsers();
@@ -156,11 +167,11 @@ namespace AARTWeb.Models
                     }
 
                 }
-                return Message;
+                return "";
 
             }
         }
-        public String UpdateUser(UsersModel uUsers)
+        public string UpdateUser(UsersModel uUsers)
         {
             using (var httpClient = new HttpClient())
             {
@@ -168,7 +179,7 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var obj = uUsers;
@@ -223,19 +234,27 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.error;
+                            InsertAudit("Update user details", Message, "Failed");
+
                         }
                         else if (value.Contains("warning"))
                         {
                             Warning = true;
                             IsSuccess = false;
                             Message = data.warning;
+                            InsertAudit("Update user details", Message, "Failed");
+
                         }
+                      
+                       
                         else
                         {
                             IsSuccess = true;
-                            Message = data.info;
+                            Message = value;
                             System.Threading.Thread.Sleep(1000);
                             users = GetAllUsers();
+                            InsertAudit("Update user details", Message, "Failed");
+
                             return Message;
                         }
                     }
@@ -245,7 +264,7 @@ namespace AARTWeb.Models
             }
             return Message;
         }
-        public List<RolesModel> AddRole(RolesModel aRoles)
+        public string AddRole(RolesModel aRoles)
         {
             using (var httpClient = new HttpClient())
             {
@@ -253,18 +272,18 @@ namespace AARTWeb.Models
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 string rS = "";
                 var obj = aRoles;
-                if (obj.status == "true")
+                if (obj.status == "false")
                 {
-                    rS = "A";
+                    rS = "I";
                 }
                 else
                 {
-                    rS = "I";
+                    rS = "A";
                 }
 
 
@@ -294,27 +313,107 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Warning = true;
                             Message = data.error;
+                            InsertAudit("Add new role", Message, "Failed");
+
+                            return Message;
                         }
                         else if (value.Contains("warning"))
                         {
                             IsSuccess = false;
                             Warning = true;
                             Message = data.warning;
+                            InsertAudit("Add new role", Message, "Failed");
 
+                            return Message;
                         }
                         else
                         {
                             IsSuccess = true;
                             Message = data.info;
-                            roles = GetAllRoles();
+                            InsertAudit("Add new role", Message, "Success");
+
+                            return Message;
                         }
                     }
 
                 }
-                return roles;
+                return "";
             }
         }
 
+        public string UpdateRole(RolesModel aRoles)
+        {
+            using (var httpClient = new HttpClient())
+            {
+
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+                httpClient.BaseAddress = new Uri(url);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                string rS = "";
+                var obj = aRoles;
+                if (obj.status == "false")
+
+                    rS = "I";
+
+                else
+                    rS = "A";
+
+                object cObj = new
+                {
+                    RoleId = obj.role_id,
+                    RoleName = obj.role_name,
+                    RoleDescription = obj.role_description,
+                    Status = rS,
+                    LastModifiedBy = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()),
+                    LastModifiedDate = DateTime.Now.ToString()
+                };
+
+
+                var responseTask = httpClient.PutAsJsonAsync<object>("role/UpdateRole", cObj);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = result.Content)
+                    {
+                        Task<string> result1 = content.ReadAsStringAsync();
+                        var rs = result1.Result;
+                        dynamic data = JsonConvert.DeserializeObject(rs);
+                        string value = Convert.ToString(data);
+
+                        if (value.Contains("error"))
+                        {
+                            IsSuccess = false;
+                            Warning = true;
+                            Message = value;
+                            InsertAudit("Update role details", Message, "Failed");
+
+                        }
+                        else if (value.Contains("warning"))
+                        {
+                            IsSuccess = false;
+                            Warning = true;
+                            Message = value;
+                            InsertAudit("Update role details", Message, "Failed");
+
+                        }
+                        else
+                        {
+                            IsSuccess = true;
+                            Message = value;
+                            roles = GetAllRoles();
+                            InsertAudit("Update role details", Message, "Success");
+                            return Message;
+                        }
+                    }
+
+                }
+                return Message;
+            }
+        }
         public class UsersModel
         {
             public string user_id { get; set; }

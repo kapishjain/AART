@@ -9,8 +9,11 @@ using System.Web;
 
 namespace AARTWeb.Models
 {
+
     public class RoleModel: BaseModel
     {
+       // Auth Auth = new Auth();
+
         public int RoleId { get; set; }
         [Required]
         [Display(Name = "Role Name")]
@@ -35,7 +38,7 @@ namespace AARTWeb.Models
                 {
                     httpClient.BaseAddress = new Uri(WebURL + "role/AddRole");
 
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     if (!objrmdl.IsStatus)
@@ -59,12 +62,16 @@ namespace AARTWeb.Models
                             {
                                 objrmdl.Message = data.warning;
                                 objrmdl.Warning = true;
+                                InsertAudit("Add role", Message, "Failed");
+
                                 return objrmdl;
                             }
                             else
                             {
                                 objrmdl.Message = data.info;
                                 objrmdl.IsSuccess = true;
+                                InsertAudit("Add role", Message, "Success");
+
                                 return objrmdl;
                             }
                         }
@@ -75,6 +82,8 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
+                InsertAudit("Add role", error, "Error");
+
                 return objrmdl;
             }
         }

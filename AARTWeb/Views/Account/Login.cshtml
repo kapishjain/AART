@@ -6,8 +6,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Themes/css/aart_style.css" rel="stylesheet" />
-<style type="text/css">
-</style>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
 @*<div class="row ">
         <div class="col-md-8 login">
             <section id="loginForm">
@@ -67,42 +67,62 @@
 
         </div>
     </div>*@
-<header class="header_area animated">
+
+<div class="container-fluid tpmns">
+
+    <div class="col-sm-3">
+        <a class="navbar-brand" href="https://www.anclacorp.com">
+            <img src="~/Themes/Images/ancla_logo-white-bg.png" />
+        </a>
+
+    </div>
+    <div class="col-sm-9 hel-btn">
+        <a href="@Url.Action("Help", "Help")"
+           type="submit"
+           target="_blank">
+            Help
+        </a>
+    </div>
+
+</div>
+
+@*<header class="header_area animated">
     <div class="container-fluid">
-        <div class="row align-items-center">
+        <div class="menu_area">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <!-- Logo -->
+
+                <!-- Menu Area -->
+
+            </nav>
+        </div>
+        <div class="row">
             <!-- Menu Area Start -->
-            <div class="col-12 col-lg-10">
-                <div class="menu_area">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <!-- Logo -->
-                        <a class="navbar-brand" href="https://www.anclacorp.com/index"><img width="200px;" src="~/Themes/Images/ancla_logo-white-bg.png" /></a>
-                        <!-- Menu Area -->
-                     
-                    </nav>
-                </div>
-            </div>
             <!-- Signup btn -->
             <div class="col-12 col-lg-2">
-                <div class="sing-up-button d-none d-lg-block" >
-                    <a href="#" style="color:white;" >Help</a>
+                <div class="sing-up-button d-none d-lg-block">
+                    <a href="#" style="color:white;">Help</a>
                 </div>
             </div>
         </div>
     </div>
-</header>
-<div id="container_demo">
+</header>*@
+<div class="container-fluid login-bg-ban">
+    <div id="container_demo">
 
-    <div style="display: flex;">
-        <div style="width: 50%;text-align: center;padding-top: 15%;">
-            <a href="https://www.anclacorp.com/index"><img width="400px;" src="~/Themes/Images/AART-NEW-WHITE-LOGO.png" /></a>
+        <div class="col-sm-6 art-log-agn">
+            <a href="https://www.anclacorp.com/aart">
+                <img src="~/Themes/Images/aart-logo2.png" />
+            </a>
+        </div>        
+        <div id="wrapper" class="col-sm-6">
 
-        </div>
-        <div id="wrapper" style="padding-top: 5%;">
             <div id="login" class="animate form">
                 @using (Html.BeginForm("Login", "Account",
                 FormMethod.Post, new { role = "form" }))
                 {
                     <h1>Log in</h1>
+
                     if (Model != null)
                     {
                         if (Model.error != null)
@@ -123,19 +143,19 @@
                         @Html.ValidationMessageFor(m => m.Password,
                          "", new { @class = "text-danger" })
                     </p>
-                    <p class="keeplogin">
+                    @*<p class="keeplogin">
                         <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
                         <label for="loginkeeping">Keep me logged in</label>
-                    </p>
+                    </p>*@
                     <p class="login button">
                         <input type="submit" value="Login" />
                     </p>
                     <p class="change_link">
                         @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
-
                     </p>
                 }
             </div>
         </div>
+
     </div>
 </div>

@@ -10,13 +10,14 @@ using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Web;
 
 namespace AARTWeb.Models
 {
-    public class Auth
+    public class Auth : BaseModel
     {
         
-        public static string result = null;
+        public string result = null;
         public static string username = null;
         public static string password = null;
 
@@ -32,18 +33,26 @@ namespace AARTWeb.Models
 
 
             //webRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), webRequest);
-
-            var url = ConfigurationManager.AppSettings["WEBAPIURL"];
-            string URI = url + "auth/login";
-            string requestBody = string.Format("{{\"UserName\":\"{0}\",\"Password\":\"{1}\"}}", username, password);
-
-            using (WebClient wc = new WebClient())
+            try
             {
-                wc.Headers[HttpRequestHeader.ContentType] = "application/json";
-                string HtmlResult = wc.UploadString(URI, requestBody);
-                var jo = JObject.Parse(HtmlResult);
-                var value = jo["tokenString"].ToString();
-                result = value;
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+                string URI = url + "auth/login";
+                string requestBody = string.Format("{{\"UserName\":\"{0}\",\"Password\":\"{1}\"}}", username, password);
+
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string HtmlResult = wc.UploadString(URI, requestBody);
+                    var jo = JObject.Parse(HtmlResult);
+                    var value = jo["tokenString"].ToString();
+                    result = value;
+                    HttpContext.Current.Session["token"] = result;
+
+                }
+            }
+            catch(Exception ex)
+            {
+                error = "Username or Password does't match";
             }
         }
 

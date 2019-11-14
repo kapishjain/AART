@@ -1,0 +1,65 @@
+﻿@{
+	ViewBag.Title = "Audit";
+	Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<h2>Audit</h2>
+
+<script>
+	$(document).ready(function () {
+		var datasource = new kendo.data.DataSource({
+            transport: {
+                read: {                       
+                    url: '@Url.Action("GetDetails", "Audit")',
+                    type: 'post',
+                    dataType: 'json',
+                }                
+            },
+            pageSize: 50,
+            schema: {
+				model: {       					
+                    fields: {
+                        User: { type: "string", editable: false },
+                        Module: { type: "string", editable: false },
+                        //Changes: { type: "string", editable: false },
+                        Ip_Address: { type: "string", editable: false },
+                        Description: { type: "string", editable: false },                        
+                        Status: { type: "string", editable: false },                        
+                        Modified_Date: { type: "string", editable: false },                        
+                    }
+                }
+            },
+            parameterMap: function (options, operation) {
+                if (operation != "read") {
+                    return { models: options };
+                }
+            }
+        });
+
+        $("#audit-grid").kendoGrid({
+            dataSource: datasource,            
+            height: 750,
+            reorderable: true,
+            sortable: true,
+            pageable: {
+                    alwaysVisible: false,
+                    pageSizes: [100, 200, 500]
+                },
+            resizable: true,   
+            groupable: true,
+            filterable: true,
+            columns: [
+                { field: "User", title: "User" },
+                { field: "Module", title: "Module" },
+                //{ field: "Changes", title: "Changes" },
+                { field: "Ip_Address", title: "Ip Address" },
+                { field: "Description", title: "Description" },
+                { field: "Status", title: "Status" },
+                { field: "Modified_Date", title: "Modified Date" },                                        
+            ],                       
+        });
+	});
+</script>
+
+<div id="audit-grid"></div>
+

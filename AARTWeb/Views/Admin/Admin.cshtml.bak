@@ -1,0 +1,1044 @@
+﻿@model AARTWeb.Models.AdminModel
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>*@
+@*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">*@
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<style type="text/css">
+
+    .pop-pd{ padding:0px;}
+    .lst-pd {
+        padding: 0px;
+    }
+    .ui-widget-content {
+        background: none;
+        background-color: aliceblue;
+    }
+
+
+
+    #pendingworkdiv .k-grid-content {
+        overflow-y: hidden;
+    }
+
+    .ui-widget-header, .ui-state-default, ui-button {
+        background: #f6db33;
+        border: 1px solid #ebf4c7;
+        color: black;
+        font-weight: bold;
+    }
+
+    .ui-dialog {
+        /*top:10% !important;*/
+        left: 20% !important;
+        width: 60% !important;
+        height: 500px !important;
+        box-shadow: 10px 10px;
+        overflow-y: scroll;
+    }
+
+    .k-grid-edit-row .k-tooltip {
+        max-width: 117px !important;
+    }
+
+    .pointerevent {
+        pointer-events: none;
+    }
+    .w3-button:hover {
+            color: blue !important;
+    background-color: darkgrey !important;
+    padding:10px;
+    }
+    .w3-tab {
+            color: #000!important;
+    background-color: #ccc!important;
+    padding:10px;
+    }
+</style>
+<script>
+    $(function () {
+        $("#pendingworkdiv").dialog({
+            autoOpen: false,
+            //buttons: {
+            //    OK: function () { $(this).dialog("close"); }
+            //},
+            title: "Pending Activity and section",
+            close: "X",
+            position: {
+                my: "left center",
+                at: "left center"
+            }
+        });
+        //$("#opener-2").click(function () {
+        //    $("#dialog-2").dialog("open");
+        //});
+    });
+</script>
+<script>
+
+
+		$(document).ready(function () {
+
+			var countryList = [
+				{
+					name: "Afghanistan",
+					dial_code: "+93",
+					code: "AF",
+					format: 9
+				},
+				{
+					name: "Aland Islands",
+					dial_code: "+358",
+					code: "AX",
+					format: 10
+				},
+				{
+					name: "Albania",
+					dial_code: "+355",
+					code: "AL",
+					format: 5
+				},
+				{
+					name: "India",
+					dial_code: "+91",
+					code: "IN",
+					format: 10
+				}
+			]
+
+		//function customNameEditor(container, options) {
+		//	$('<input required name="' + options.field + '" pattern="[^a-zA-Z]+" />')
+  //                      .appendTo(container);
+		//}
+
+		//function isValidChar(e) {
+		//	var match = e.key.match(/[a-zA-Z0-9]/);
+		//	return match ? true : false;
+		//}
+
+        //function editNumber(container, options) {
+        //    $('<input required minlength="10" maxlength="10" data-bind="value:' + options.field + '"/>')
+        //        .appendTo(container)
+        //        .kendoNumericTextBox({
+        //            spinners: false,
+        //            format: "#",
+        //            decimals: 0,
+        //        });
+        //}
+
+			function hasWhiteSpaceAtBeginning(s) {
+				return /^\s/g.test(s);
+			}
+
+			function hasWhiteSpace(s) {
+				return /\s/g.test(s);
+			}
+
+			function countryDropDownEditor(container, options) {
+				$('<input name="' + options.field + '"/>')
+					.appendTo(container)
+					.kendoDropDownList({
+						//autoBind: false,
+						optionLabel: "Select Country",
+						dataTextField: "name",
+						dataValueField: "dial_code",
+						dataSource: countryList,
+						//select: onSelect
+					});
+			}
+
+			function onSelect(e) {
+				var grid = $("#grid").data("kendoGrid").dataSource;
+				var selectedItem = grid.select("tr:eq(1)");
+				//numValidation(e,e.dataItem);
+			}
+
+            function validateUserName(userName) {
+                var userNamereg = /^[A-Za-z0-9]+$/;
+                if (userNamereg.test(userName) == false) {
+                    return false;
+                }
+                return true;
+            }
+
+
+
+            function validateName(name) {
+                var namereg = /^([a-zA-Z]+\s)*[a-zA-Z]+$/;;
+                if (namereg.test(name) == false) {
+                    return false;
+                }
+                return true; 
+            }
+            function validateRoleName(name) {
+                var namereg = /^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$/;;
+                if (namereg.test(name) == false) {
+                    return false;
+                }
+                return true;
+            }
+
+      function editCheck(container, options) {
+            if (options.model.status === true) {
+                $('<input name="' + options.field + '" type="checkbox"/>')
+                    .attr('checked', options.model.status === "true")
+                    .appendTo(container);
+            } else {
+                $('<input name="' + options.field + '" type="checkbox"/>')
+                    .appendTo(container);
+            }
+        }
+
+
+            function editCheck1(container, options) {
+               // alert(options.model.is_locked);
+
+                if (options.model.is_locked === true) {
+
+                    $('<input type="checkbox" name="is_locked" class="active chkbx" checked   />').appendTo(container)
+                } else {
+                    //  alert(options.model.is_locked);
+
+                    $('<input type="checkbox" name="is_locked"  disabled />').appendTo(container)
+                }
+            }
+
+			function numValidation(input, data) {
+				
+				if (input.is("[name=phone_number]") && input.val().match(/[^0-9]+$/)) {
+					input.attr("data-phonevalidation-msg", "Only numbers are allowed");
+					return false;
+				}
+				if (input.is("[name=phone_number]") && input.val().length < 10) {
+					input.attr("data-phonevalidation-msg", "number must of length 10");
+					return false;
+				}
+				if (input.is("[name=phone_number]") && input.val().length > 10) {
+					input.attr("data-phonevalidation-msg", "number must of length 10");
+					return false;
+				}
+				return true;
+
+			}
+
+
+        function editCheck2(container, options) {
+            $('<input name="' + options.field + '" type="checkbox"/>')
+                .attr('checked', options.model.status === 'A')
+                .appendTo(container);
+            //alert(options.model.status);
+            //if (options.model.status === true) {
+            //    $('<input name="' + options.field + '" type="checkbox"/>')
+            //        .attr('checked', options.model.status == true)
+            //        .appendTo(container);
+            //} else {
+            //    $('<input name="' + options.field + '" type="checkbox"/>')
+            //        .appendTo(container);
+            //}
+        }
+
+            var usersDataSource = new kendo.data.DataSource({
+                schema: {
+                    //data: "users",
+                    //total: "users.length",
+                    model: {
+                        id: "user_id",
+                        fields: {
+                            user_name: {
+                                type: "string", validation: {
+                                    required: true,
+                                    usernamevalidation: function (input) {
+
+                                        if (input.is("[name=user_name]") && hasWhiteSpace(input.val())) {
+                                            input.attr("data-usernamevalidation-msg", "Spaces are not allowed");
+                                            return false;
+                                        }
+                                        if (input.is("[name=user_name]") && validateUserName(input.val()) == false) {
+                                            input.attr("data-usernamevalidation-msg", "Special characters are not allowed");
+                                            return false;
+                                        }
+                                        if (input.is("[name=user_name]") && input.val().length < 5) {
+                                            input.attr("data-usernamevalidation-msg", "Username must contain 5-15 characters");
+                                            return false;
+                                        }
+                                        if (input.is("[name=user_name]") && input.val().length > 15) {
+                                            input.attr("data-usernamevalidation-msg", "Username must contain 5-15 characters");
+                                            return false;
+                                        }
+
+                                        return true;
+                                    }
+                                }
+                            },
+                            name: {
+                                type: "string", validation: {
+                                    required: true,
+                                    namevalidation: function (input) {
+                                        if (input.is("[name=name]") && hasWhiteSpaceAtBeginning(input.val())) {
+                                            input.attr("data-namevalidation-msg", "Spaces are not allowed");
+                                            return false;
+                                        }
+                                        if (input.is("[name=name]") && validateName(input.val()) == false) {
+                                            input.attr("data-namevalidation-msg", "Only alphabets are allowed with one space in between words");
+                                            return false;
+                                        }
+                                        if (input.is("[name=name]") && input.val().length < 3) {
+                                            input.attr("data-namevalidation-msg", "Name must be in range of 3-32 characters");
+                                            return false;
+                                        }
+                                        if (input.is("[name=name]") && input.val().length > 32) {
+                                            input.attr("data-namevalidation-msg", "Name must be in range of 3-32 characters");
+                                            return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            },
+                            status: { type: "boolean", parse: function (item) { return (item == 'true' || item === true); }, validation: { required: true } },
+                            email_id: {
+                                type: "string", validation: {
+                                    email: true, required: true,
+                                    emailvalidation: function (input) {
+                                        if (input.is("[name=email_id]") && input.val().length > 255) {
+                                            input.attr("data-emailvalidation-msg", "Email must be in range of 0-255 characters");
+                                            return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            },
+                            country: {
+                                defaultValue: { name: "", dial_code: "" }
+                            },
+                            phone_number: {
+                                type: "string", validation: {
+                                    required: true,
+                                    phonevalidation: function (input) {
+                                        if (input.is("[name=phone_number]") && hasWhiteSpace(input.val())) {
+                                            input.attr("data-phonevalidation-msg", "Spaces are not allowed");
+                                            return false;
+                                        }
+                                        if (input.is("[name=phone_number]") && input.val().match(/[^0-9]+$/)) {
+                                            input.attr("data-phonevalidation-msg", "Only numbers are allowed");
+                                            return false;
+                                        }
+                                        if (input.is("[name=phone_number]") && input.val().length < 10) {
+                                            input.attr("data-phonevalidation-msg", "Number must of length 10");
+                                            return false;
+                                        }
+                                        if (input.is("[name=phone_number]") && input.val().length > 10) {
+                                            input.attr("data-phonevalidation-msg", "Number must of length 10");
+                                            return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            },
+                            role_id: { defaultValue: { role_id: "", role_name: "", }, validation: { required: true } },
+                            is_locked: { type: "boolean" }
+                        }
+                    }
+                },
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetUsers", "Admin")',
+                        type: "post",
+                        dataType: "json",
+                        success: function (e) {
+                        },
+                        error: function (err) {
+                            //console.log(err);
+                        }
+                    },
+                    create: {
+                        url: '@Url.Action("Create", "Admin")',
+                        type: "post",
+                        dataType: "string",
+                        complete: function (e) {
+                            if (e.status == 200) {
+                                swal(e.responseText);
+                                if (e.responseText == "Username already exists." || e.responseText == "Emailid already exists.") {
+                                    return;
+                                } else {
+                                    $('#grid').data('kendoGrid').dataSource.read();
+                                    $('#grid').data('kendoGrid').refresh();
+                                }
+
+                            } else {
+                                swal(e.responseText);
+                            }
+                        }
+                    },
+                    update: {
+                        url: '@Url.Action("Update", "Admin")',
+                        type: "post",
+                        dataType: "string",
+                        complete: function (e) {
+                            if (e.status == 200) {
+
+                                var productdtls = JSON.parse(e.responseText);
+                                if (productdtls.info != null) {
+                                    swal(productdtls.info);
+
+                                }
+                                else {
+                                    if (productdtls.productMappingTable != null)
+                                        prodoc = productdtls.productMappingTable;
+                                    if (productdtls.activity != null)
+                                        activity = productdtls.activity;
+                                    if (productdtls.section != null)
+                                        section = productdtls.section;
+                                    prodocdiv();
+                                    // $("#pendingworkdiv").show();
+                                    //  $("#pendingworkdiv").dialog("open");
+                                    var myWindow = $("#pendingworkdiv");
+                                    myWindow.kendoWindow({
+
+                                        modal: true,
+
+                                        width: "800px",
+
+                                        height: "500px",
+
+                                        title: "User cannot be deactivated b'cuz of following open project or activities or sections",
+
+                                        visible: false,
+
+                                        actions: [
+
+                                            "Minimize",
+
+                                            "Close"
+
+                                        ],
+
+                                    }).data("kendoWindow").center().open();
+                                    //$('#pendingworkdiv').modal('show');
+                                    //console.log("update response:", e);
+                                }
+                                //swal(e.responseText);
+                                $('#grid').data('kendoGrid').dataSource.read();
+                                $('#grid').data('kendoGrid').refresh();
+                            } else {
+                                swal(e.responseText);
+                                $('#grid').data('kendoGrid').dataSource.read();
+                                $('#grid').data('kendoGrid').refresh();
+                            }
+                        }
+                    },
+                    parameterMap: function (options, operation) {
+                        if (operation != "read") {
+                            return { models: options };
+                        }
+                    }
+                },
+                pageSize: 20
+            });
+		$("#grid").kendoGrid({
+			dataSource: usersDataSource,
+			height: 550,
+			sortable: true,
+			 pageable: {
+                    alwaysVisible: false,
+                    pageSizes: [10, 20, 50,100]
+                },
+			toolbar: [{ name: "create", text: "Add New User" }],
+			columns: [
+				{ field: "user_name", title: "UserName", width: "120px" },
+				{
+					field: "name", title: "Name", width: "120px",
+				},
+				{
+					field: "status", title: "Status",
+					template: '#if(status) { # Active # } else { # InActive # } #',
+					width: "120px", editor: editCheck
+				},
+				{ field: "email_id", title: "EmailID", width: "120px" },
+				//{ field: "country", title: "Country", editor: countryDropDownEditor, width: "140px" },
+				//{
+				//	field: "phone_number", title: "Phone Number", width: "120px"
+				//},
+				{ field: "role_id", title: "Role", width: "180px", editor: categoryDropDownEditor, template: "#=role_id.role_name#" },
+				{
+					field: "is_locked", title: "Is Locked",
+					template: '# if(is_locked) { # Locked # } else { # UnLocked # } #',
+					width: "120px", editor: editCheck1
+				},
+				{ command: [{ name: "edit", text: { update: "Update User" } }], title: "&nbsp;", width: "250px" }],
+			editable: "inline",
+			edit: function (e) {
+
+                if (!e.model.isNew()) {
+                    e.container.find("input[name='user_name']").each(function () { $(this).attr("disabled", "disabled") });
+                    if (e.model.role_id.role_name == "Administrator") {
+                        e.container.find("input[name='status']").each(function () { $(this).attr("disabled", "disabled") });
+                        //e.container.find("input[name='phone_number']").each(function () { $(this).attr("disabled", "disabled") });
+                        e.container.find("input[name='role_id']").data("kendoDropDownList").enable(false);
+                        e.container.find("input[name='is_locked']").each(function () { $(this).attr("disabled", "disabled") });
+                    }
+                }
+
+				if (e.model.isNew()) {
+					var update = $(e.container).parent().find(".k-grid-update");
+					$(update).html('<span class="k-icon k-i-update"></span>Add User');
+				}
+			},
+			//dataBound: function (e) {
+			//	var grid = $("#grid").data("kendoGrid");
+			//	var columns = grid.options.columns;
+			//	if (columns.length > 0) {
+			//		for (var i = 0; i < columns.length; i++) {
+			//			if (columns[i].field == "email_id") {
+			//				mergeGridRows("grid", "Phone Number")
+			//			}
+			//		}
+			//	}
+			//}
+		});
+
+			function formatNumber(data) {
+				numValidation("", data);
+			}
+
+                            var rolegridval;
+
+            var rolesDataSource = new kendo.data.DataSource({
+                schema: {
+                    model: {
+                        id: "role_id",
+                        fields: {
+                            role_id: { type: "number", editable: false },
+                            role_name: {
+                                type: "string", validation: {
+                                    required: true,
+                                    rolenamevalidation: function (input) {
+
+
+                                        if (input.is("[name=role_name]") && hasWhiteSpaceAtBeginning(input.val())) {
+                                            input.attr("data-rolenamevalidation-msg", "Spaces are not allowed");
+                                            return false;
+                                        }
+                                        //                          if (input.is("[name=role_name]") && input.val().match(/[^a-zA-Z]+$/)) {
+                                        //input.attr("data-rolenamevalidation-msg", "Only alphabets are allowed");
+                                        //return false;
+                                        //                          }
+                                        if (input.is("[name=role_name]") && validateRoleName(input.val()) == false) {
+                                            input.attr("data-rolenamevalidation-msg", "Only alphabets and numbers are allowed with one space in between words");
+                                            return false;
+                                        }
+                                        //if (input.is("[name=role_name]") && input.val().match(/[^a-zA-Z0-9]+$/)) {
+                                        //	input.attr("data-rolenamevalidation-msg", "Special characters and space are not allowed");
+                                        //	return false;
+                                        //}
+                                        if (input.is("[name=role_name]") && input.val().length < 3) {
+                                            input.attr("data-rolenamevalidation-msg", "Rolename must be in range of 3-24 characters");
+                                            return false;
+                                        }
+                                        if (input.is("[name=role_name]") && input.val().length > 24) {
+                                            input.attr("data-rolenamevalidation-msg", "Rolename must be in range of 3-24 characters");
+                                            return false;
+                                        }
+                                        input.val().trim
+                                        return true;
+                                    }
+                                }
+                            },
+                            role_description: {
+                                type: "string", validation: {
+                                    required: true,
+                                    roledescvalidation: function (input) {
+                                        if (input.is("[name=role_description]") && hasWhiteSpaceAtBeginning(input.val())) {
+                                            input.attr("data-roledescvalidation-msg", "Spaces are not allowed");
+                                            return false;
+                                        }
+                                        //if (input.is("[name=role_description]") && input.val().match(/[^a-zA-Z]+$/)) {
+                                        //    input.attr("data-roledescvalidation-msg", "Only alphabets are allowed");
+                                        //    return false;
+                                        //}
+                                        //if (input.is("[name=role_description]") && input.val().match(/[^a-zA-Z0-9]+$/)) {
+                                        //    input.attr("data-roledescvalidation-msg", "Special characters are not allowed");
+                                        //    return false;
+                                        //}
+                                        //if (input.is("[name=role_description]") && validateName(input.val()) == false) {
+                                        //    input.attr("data-roledescvalidation-msg", "Only alphabets are allowed with one space in between words");
+                                        //    return false;
+                                        //}
+                                        if (input.is("[name=role_description]") && input.val().length < 3) {
+                                            input.attr("data-roledescvalidation-msg", "Role description must be in range of 3-200 characters");
+                                            return false;
+                                        }
+                                        if (input.is("[name=role_description]") && input.val().length > 200) {
+                                            input.attr("data-roledescvalidation-msg", "Role description must be in range of 3-200 characters");
+                                            return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            },
+                           // status: { type: "boolean", parse: function (item) { return (item == "A" ? true : false); }, validation: { required: true } },
+
+                            status: {
+                                type: "string", validation: { required: true },
+                            },
+                        }
+                    }
+                },
+                transport: {
+
+                    read: {
+                        url: '@Url.Action("GetRoles", "Admin")',
+                        type: 'post',
+                        dataType: 'json',
+                    },
+                    create: {
+                        url: '@Url.Action("CreateRole", "Admin")',
+                        type: "post",
+                        dataType: "string",
+                        complete: function (e) {
+                            if (e.status == 200) {
+                                swal(e.responseText);
+                                if (e.responseText != "Role already exists.") {
+                                    $('#role-grid').data('kendoGrid').dataSource.read();
+                                    $('#role-grid').data('kendoGrid').refresh();
+                                }
+                            } else {
+                                swal(e.responseText);
+                            }
+                        }
+                    },
+                    update: {
+                        url: '@Url.Action("UpdateRole", "Admin")',
+                        type: "post",
+                        dataType: "string",
+                        complete: function (e) {
+                           // console.log(e);
+                            if (e.status == 200) {
+                                var roleupdate = JSON.parse(e.responseText);
+                               // console.log(roleupdate);
+                                if (typeof roleupdate.info === 'undefined') {
+                                    if (roleupdate[0].info != null) {
+                                        swal(roleupdate[0].info);
+                                        $('#role-grid').data('kendoGrid').dataSource.read();
+                                        $('#role-grid').data('kendoGrid').refresh();
+                                    }
+                                }
+                                else {
+                                    // alert(roleupdate.info);
+                                    //rolegridval = roleupdate.info;
+                                    // rolegrid();
+                                    swal("You can not Inactivate this role because some user or task already assigned.");
+
+                                }
+                                // swal(e.responseJSON.info);
+                                //swal("Role updated.");
+
+                                //  $('#role-grid').data('kendoGrid').refresh();
+                            } else {
+                                swal("Error occuered while update role.");
+                                $('#role-grid').data('kendoGrid').refresh();
+
+                                // swal(e.responseJSON.error);
+                            }
+                            // reloadPage();
+                        }
+                    },
+                    parameterMap: function (options, operation) {
+                        if (operation != "read") {
+                            return { rModels: options };
+                        }
+                    }
+                },
+                pageSize: 50,
+            });
+
+            $("#role-grid").kendoGrid({
+                dataSource: rolesDataSource,
+                sortable: true,
+                //pageable: true,
+                //height: 550,
+                toolbar: [{ name: "create", text: "Add New Role" }],
+                columns: [
+                    { field: "role_name", title: "Role Name", width: "120px" },
+                    { field: "role_description", title: "Role Description", width: "120px" },
+                    {
+                        field: "status", title: "Status",
+                        template: '<input type="checkbox"  #if(status === "A"){#= checked="checked" #}else{ }# disabled="true"/>',
+                       // template: '#if(status) { # Active # } else { # InActive # } #',
+
+                        width: "120px", editor: editCheck2,
+                        //width: "120px", editor: editCheck
+                    },
+                    { command: ["edit"], title: "&nbsp;", width: "250px" }],
+                editable: "inline",
+                edit: function (e) {
+
+                    if (!e.model.isNew()) {
+                        e.container.find("input[name='role_name']").each(function () { $(this).attr("disabled", "disabled") });
+                        if (e.model.role_name == "Administrator") {
+                            e.container.find("input[name='status']").each(function () { $(this).attr("disabled", "disabled") });
+                        }
+                    }
+
+                    if (e.model.isNew()) {
+                        var update = $(e.container).parent().find(".k-grid-update");
+                        $(update).html('<span class="k-icon k-i-update"></span>Add Role');
+                    }
+                },
+            });
+
+        function reloadPage() {
+            window.location.reload();
+		}
+
+		function mergeGridRows(gridId, colTitle) {
+
+			$('#' + gridId + '>.k-grid-content>table').each(function (index, item) {
+
+				var dimension_col = 1;
+				// First, scan first row of headers for the "Dimensions" column.
+				$('#' + gridId + '>.k-grid-header>.k-grid-header-wrap>table').find('th').each(function () {
+					if ($(this).text() == colTitle) {
+
+						// first_instance holds the first instance of identical td
+						var first_instance = null;
+
+						$(item).find('tr').each(function () {
+
+							// find the td of the correct column (determined by the colTitle)
+							var dimension_td = $(this).find('td:nth-child(' + dimension_col + ')');
+
+							if (first_instance == null) {
+								first_instance = dimension_td;
+							} else if (dimension_td.text() == first_instance.text()) {
+								// if current td is identical to the previous
+								// then remove the current td
+								dimension_td.remove();
+								// increment the rowspan attribute of the first instance
+								first_instance.attr('rowspan', typeof first_instance.attr('rowspan') == "undefined" ? 2 : first_instance.attr('rowspan') + 1);
+							} else {
+								// this cell is different from the last
+								first_instance = dimension_td;
+							}
+						});
+						return;
+					}
+					dimension_col++;
+				});
+
+			});
+		}
+		});
+
+    function categoryDropDownEditor(container, options) {
+        $('<input required name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                //autoBind: false,
+                optionLabel: "Select Role",
+                dataTextField: "role_name",
+                dataValueField: "role_id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetRoles", "Admin")',
+                            type: 'post',
+                            dataType: 'json',
+                        }
+                    }
+                },
+            });
+    }
+     var prodoc;
+            var activity;
+            var section;
+
+    function prodocdiv() {
+        $("#prodocdiv").kendoGrid({
+            dataSource: {
+                data: prodoc,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                            product_name: { type: "string", editable: false },
+                            doc_Type: { type: "string", editable: false },
+                            author: { type: "string", editable: false },
+                            coAuthor: { type: "string",  editable: false },
+                            status: { type: "string",  editable: false },
+
+                        }
+                    }
+                },
+
+            },
+            sortable: true,
+            resizable: true,
+            columns: [
+                { field: "product_name", title: "Product Name", editable: false },
+
+                { field: "doc_Type", title: "Doc Type", editable: false },
+
+                { field: "author", title: "Author", editable: false },
+                { field: "coAuthor", title: "Co-Author", editable: false },
+                { field: "status", title: "Status" },
+            ],
+
+        });
+        $("#KOMTemplate").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: activity,
+
+                schema: {
+                    model: {
+                        fields: {
+                            product_name: { type: "string", editable: false },
+                            doc_Type: { type: "string", editable: false },
+                            heading: { type: "string", editable: false },
+                            status: { type: "string",  editable: false },
+                        }
+                    }
+                }
+            },
+            reorderable: true,
+            sortable: true,
+
+            resizable: true,
+
+
+            columns: [
+
+                { field: "product_name", title: "Product Name", width: "200px" },
+                { field: "doc_Type", title: "Document Type" },
+                { field: "heading", title: "Action" },
+                { field: "status", title: "Status" },
+            ]
+        });
+        $("#KOMSection").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: section,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                            product_name: { type: "string", editable: false },
+                            doc_Type: { type: "string", editable: false },
+                            heading: { type: "string", editable: false },
+                            status: { type: "string", validation: { required: true }, editable: false },
+                        }
+                    }
+                },
+                //group: { field: "section_id" }
+
+            },
+            height: 650,
+            reorderable: true,
+            sortable: true,
+
+            resizable: true,
+
+
+
+
+            columns: [
+                { field: "product_name", title: "Product Name" },
+                { field: "doc_Type", title: "Document Type" },
+                { field: "heading", title: "Action" },
+                { field: "status", title: "Status" },
+
+            ],
+
+        });
+    }
+    function rolegrid() {
+        $("#rolediv").kendoGrid({
+            dataSource: {
+                data: rolegridval,
+                
+
+            },
+            sortable: true,
+            resizable: true,
+            //columns: [
+            //    { field: "product_name", title: "Product Name", editable: false },
+
+            //    { field: "doc_Type", title: "Doc Type", editable: false },
+
+            //    { field: "author", title: "Author", editable: false },
+            //    { field: "coAuthor", title: "Co-Author", editable: false },
+            //    { field: "status", title: "status" },
+            //],
+
+        });
+    }
+    function opentab(evt, tabid) {
+        var i, tablinks;
+        var x = document.getElementsByClassName("tabs");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-tab", "");
+        }
+        document.getElementById(tabid).style.display = "block";
+        evt.currentTarget.className += " w3-tab";
+    }
+</script>
+
+<div class="tble-section">
+
+
+    <div class="col-sm-12 col-md-12 ">
+        @if (TempData["Status"] != null)
+        {
+            if ((bool)TempData["Status"] == false)
+            {
+                <span class="text-danger">@TempData["Message"]</span>
+            }
+            if ((bool)TempData["Status"] == true)
+            {
+                <span class="text-success">@TempData["Message"]</span>
+            }
+        }
+    </div>
+
+    <div class="container-fluid">
+        <div class="col-sm-6 "></div>
+        @*<div class="col-sm-6 usr-upds">
+                <button type="button" class="btn btn1">Add / Update Users</button>
+                <button type="button" class="btn btn1">Add / Update Roles</button>
+            </div>*@
+    </div>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel with-nav-tabs panel-primary">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1primary" data-toggle="tab">Add / Update Users</a></li>
+                            <li><a href="#tab2primary" data-toggle="tab">Add / Update Roles</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1primary">
+                                <div class="col-sm-12 col-md-12 usr-tlenm">
+                                    @*<h2>Users</h2>*@
+                                    <div id="grid"></div>
+                                    @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
+                                </div>
+                            </div>
+                            <div class="tab-pane fade usr-tlenm" id="tab2primary">
+                                <div class="col-sm-12 col-md-12 tble-tlenam">
+                                    @*<h2>Roles</h2>*@
+                                    <div id="role-grid"></div>
+                                    @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-sm-12 col-md-12">
+            @if (TempData["RoleStatus"] != null)
+            {
+                if ((bool)TempData["RoleStatus"] == false)
+                {
+                    <span class="text-danger">@TempData["RoleMessage"]</span>
+                }
+                if ((bool)TempData["RoleStatus"] == true)
+                {
+                    <span class="text-success">@TempData["RoleMessage"]</span>
+                }
+            }
+        </div>
+
+    </div>
+
+</div>
+@*<div id="pendingworkdiv" style="display:none">
+    <div class="w3-bar" style="width: 33.5em;">
+        <button class="w3-bar-item w3-button tablink w3-tab" style="border:none" onclick="opentab(event,'Productassign')">Project Assignments</button>
+        <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
+        <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
+    </div>
+    <div id="Productassign" class="w3-container tabs" style=" height: 100%;">
+        <div id="prodocdiv"></div>
+    </div>
+    <div id="Activity_Assignments" class="w3-container tabs" style="display:none;    height: 100%;">
+        <h2>Assignment & Timelines</h2>
+        <div id="KOMTemplate"></div>
+    </div>
+    <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
+        <div id="KOMSection"></div>
+    </div>
+    
+
+</div>*@
+
+<div id="pendingworkdiv" style="display:none">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel with-nav-tabs panel-primary">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab3primary" data-toggle="tab">Project Assignments</a></li>
+                            <li><a href="#tab4primary" data-toggle="tab"> Activity Assignments</a></li>
+                            <li><a href="#tab5primary" data-toggle="tab"> Section Assignments</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body pop-pd">
+                        <div class="tab-content">
+                            <div class="tab-pane fade usr-tlenm in active" id="tab3primary">
+                                <div class="col-sm-12 col-md-12 usr-tlenm lst-pd">
+                                    <div id="prodocdiv"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade usr-tlenm" id="tab4primary">
+                                <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                  <div id="KOMTemplate"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade usr-tlenm" id="tab5primary">
+                                <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                    <div id="KOMSection"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div id="rolegrid" style="display:none">
+    <div id="rolediv"></div>
+
+
+</div>*@

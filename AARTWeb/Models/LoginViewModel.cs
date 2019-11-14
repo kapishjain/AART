@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Configuration;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace AARTWeb.Models
 {
@@ -27,38 +28,48 @@ namespace AARTWeb.Models
         public string Message { get; set; }
         public bool success { get; set; } = false;
         //public bool warning { get; set; } = false;
+        Auth Auth = new Auth();
 
+               
+
+        [Required]
         public string UserName { get; set; }
+        [Required]
+        //[StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be 8 to 16 characters.")]
         public string Password { get; set; }
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
         public Int32 user_id { get; set; }
         public string name { get; set; }
         public Int32 role_id { get; set; }
+        public string role_name { get; set; }
 
-
-
+        private static int Minimum_Length = 8;
+        private static int Upper_Case_length = 1;
+        private static int Lower_Case_length = 1;
+        private static int NonAlpha_length = 1;
+      //  private static int Numeric_length = 1;
+        private static int Special_Character = 1;
 
         public LoginViewModel validateuser(string username, string password)
         {
-            InsertAudit("UserLogin", "EnterUserDetails");
             LoginViewModel lgnmdl = new LoginViewModel();
             try
             {
-                Auth cl = new Auth();
+                Auth Auth = new Auth();
+
                 if (Auth.result == null)
                 {
                     Auth.username = username;
                     Auth.password = password;
-                    InsertAudit("Authorize", "Authorize Token");
 
-                    cl.CallApi();
+                    Auth.CallApi();
                 }
                 //var httpClientHandler = new HttpClientHandler()
                 //{
                 //    Credentials = new NetworkCredential("Sysadmin", "SYSADMIN"),
                 //};
-                if (Auth.result != null)
+                if (HttpContext.Current.Session["token"] != null && Auth.error == null)
                 {
                     using (var client = new HttpClient())
                     {
@@ -68,7 +79,7 @@ namespace AARTWeb.Models
                         //  client.BaseAddress = new Uri("https://localhost:44312/api/user/");
                         // string requestBody = string.Format("{{\"UserName\":\"{0}\",\"Password\":\"{1}\"}}", "Sysadmin", "SYSADMIN");
 
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         client.DefaultRequestHeaders.Add("UserName", username);
                         client.DefaultRequestHeaders.Add("UserPassword", password);
@@ -98,6 +109,8 @@ namespace AARTWeb.Models
                                 if (value.Contains("error"))
                                 {
                                     error = data.error;
+                                    InsertAudit("Login", error, "Failed", username);
+
                                     return lgnmdl;
                                 }
                                 else
@@ -108,12 +121,15 @@ namespace AARTWeb.Models
                                     UserName = data[0].name;
                                     role_id = data[0].role_Id;
                                     Status = data[0].status;
-                                    HttpContext.Current.Session["UserName"] = data[0].name;
+                                    role_name= data[0].role_name;
+                                    HttpContext.Current.Session["UserName"] = data[0].userName;
                                     HttpContext.Current.Session["UserID"] = data[0].user_Id;
                                     HttpContext.Current.Session["role"] = data[0].role_name;
+                                    HttpContext.Current.Session["Name"] = data[0].name;
+
+                                    InsertAudit("Login", "Logged In successfully", "Success", username,"");
+
                                     //HttpContext.Current.Session["role_id"] = data[0].role_Id;
-
-
                                 }
 
                             }
@@ -121,17 +137,30 @@ namespace AARTWeb.Models
                         }
                         else
                         {
+
                             error = result.RequestMessage.ToString();
+                            InsertAudit("Login", error, "Failed", username);
+
+                            error = "Username or Password does't match";
                         }
                         return lgnmdl;
                     }
 
+                }
+                else
+                {
+                   // InsertAudit("Login", Auth.error, "Failed", username);
+
+                    lgnmdl.error = Auth.error;
                 }
                 return lgnmdl;
             }
             catch (Exception ex)
             {
                 error = ex.Message;
+                //if (error.Equals(""))
+                InsertAudit("Login", error, "Error", username);
+
                 return lgnmdl;
             }
         }
@@ -163,11 +192,15 @@ namespace AARTWeb.Models
                             {
                                 objlgnmdl.success = true;
                                 objlgnmdl.Message = data.info;
+                               // InsertAudit("ForgotPassword", objlgnmdl.Message, "Success", objlgnmdl.Email);
+
                             }
                             else if (value.Contains("error"))
                             {
                                 objlgnmdl.Warning = true;
                                 objlgnmdl.Message = data.error;
+                                //InsertAudit("ForgotPassword", objlgnmdl.Message, "Failed" ,objlgnmdl.Email);
+
                             }
                         }
                     }
@@ -178,12 +211,15 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
+              //  InsertAudit("Forgot Password", error, "Error", objlgnmdl.Email);
+
                 return objlgnmdl;
             }
         }
 
         public LoginViewModel ChangePassword(FormCollection form)
         {
+
             LoginViewModel objlgnmdl = new LoginViewModel();
             try
             {
@@ -191,7 +227,7 @@ namespace AARTWeb.Models
                 {
                     httpClient.BaseAddress = new Uri(WebURL);
 
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Auth.result);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     string OldPassword = form["old-password"];
@@ -227,12 +263,16 @@ namespace AARTWeb.Models
                             {
                                 Warning = true;
                                 Message = data.error;
+                                InsertAudit("Change Password", Message, "Failed");
+
                                 return objlgnmdl;
                             }
                             else
                             {
                                 IsSuccess = true;
                                 Message = data.message;
+                                InsertAudit("Change Password", Message, "Success");
+
                                 return objlgnmdl;
                             }
                         }
@@ -243,6 +283,8 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
+                InsertAudit("Change Password", error, "Error");
+
                 return objlgnmdl;
             }
 
@@ -250,7 +292,44 @@ namespace AARTWeb.Models
 
         public void Logout()
         {
-            Auth.result = null;
+            InsertAudit("LogOut", "Successfully Logout", "Success");
+
+        }
+        public static bool IsValid(string Password)
+        {
+            if (Password.Length < Minimum_Length)
+                return false;
+            if (UpperCaseCount(Password) < Upper_Case_length)
+                return false;
+            if (LowerCaseCount(Password) < Lower_Case_length)
+                return false;
+            if (NumericCount(Password) < 1)
+                return false;
+            if (NonAlphaCount(Password) < NonAlpha_length)
+                return false;
+            if (SpecialCharacterCount(Password) < Special_Character)
+                return false;
+            return true;
+        }
+        private static int UpperCaseCount(string Password)
+        {
+            return Regex.Matches(Password, "[A-Z]").Count;
+        }
+        private static int LowerCaseCount(string Password)
+        {
+            return Regex.Matches(Password, "[a-z]").Count;
+        }
+        private static int NumericCount(string Password)
+        {
+            return Regex.Matches(Password, "[0-9]").Count;
+        }
+        private static int SpecialCharacterCount(string password)
+        {
+            return Regex.Matches(password, "[~!@#$%^&*()_+{}:\"<>?]").Count;
+        }
+        private static int NonAlphaCount(string Password)
+        {
+            return Regex.Matches(Password, @"[^0-9a-zA-Z\._]").Count;
         }
     }
 }

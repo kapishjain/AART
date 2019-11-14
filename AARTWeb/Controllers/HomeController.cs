@@ -179,10 +179,13 @@ namespace AARTWeb.Controllers
             objprmdl.GetProductCount();
             objprmdl.GetDocumentCount();
             objprmdl.GetProductDetails();
+            objprmdl.GetManagerDashBoardDetails();
 
             return View(objprmdl);
         }
-        public ActionResult GetAllProduts(string id)
+
+        [HttpPost]
+        public JsonResult GetAllProducts(string id)
         {
             var productDetails = objprmdl.GetProductDetails();
             if (id != "All")
@@ -200,9 +203,10 @@ namespace AARTWeb.Controllers
             //Auth cl = new Auth();
             //cl.CallApi();
             //objprmdl.GetProductCount();
-           // objprmdl.GetDocumentCount();
+            // objprmdl.GetDocumentCount();
             //objprmdl.GetProductDetails();
-            return View("Author");
+            objprmdl.GetManagerDashBoardDetails();
+            return View(objprmdl);
         }
         
         public ActionResult AuthorAssignment()
@@ -212,13 +216,20 @@ namespace AARTWeb.Controllers
             //objprmdl.GetProductCount();
             // objprmdl.GetDocumentCount();
             //objprmdl.GetProductDetails();
-            return View("AuthorAssignment");
+            objprmdl.GetDashBoardDetails();
+            return View("AuthorAssignment", objprmdl);
         }
-        public ActionResult GetReportsByUser()
+        public ActionResult GetReportsByUser(string id)
         {
-            objprmdl.GetReportsByUser();
+         //   objprmdl.GetReportsByUser();
+            var productDetails = objprmdl.GetReportsByUser();
+            if (id != "All")
+            {
+                var product = productDetails.Where(item => item.status == id);
+                return Json(product, JsonRequestBehavior.AllowGet);
 
-            return Json(objprmdl.getreportsbyuser);
+            }
+            return Json(productDetails, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult GetProDocByUser()
@@ -231,6 +242,15 @@ namespace AARTWeb.Controllers
         {
             prodocid = pro_doc_id;
             return View("AuthorAssignment");
+        }
+        [HttpPost]
+        public JsonResult GetProDocStructure()
+        {
+            var model = new KickOffMeetingModel();
+            model.GetProDocDetails(prodocid);
+            model.GetProDocTemplate(prodocid);
+            model.GetProDocSecAssignment(prodocid);
+            return Json(model);
         }
         [HttpPost]
         public JsonResult GetProDocTemplate(string id)
@@ -304,7 +324,16 @@ namespace AARTWeb.Controllers
         {
             var model = objprmdl.GetUsersForCoAuthor();
             return Json(model, JsonRequestBehavior.AllowGet);
+        }        
+
+        [HttpPost]
+        public JsonResult GetFilteredCoAuthors(string selectedItem) {
+            var model = objprmdl.GetUsersForCoAuthor();
+            var itemToRemove = model.Single(r => r.user_name == selectedItem);
+            model.Remove(itemToRemove);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult AuthorReview(Int32 pro_doc_id)
         {
             prodocid = pro_doc_id;
@@ -527,6 +556,70 @@ namespace AARTWeb.Controllers
 
             return res;
         }
+
+        /*
+         * chart count for product wise in manager dashboard
+         */
+        [HttpPost]
+        public JsonResult GetProductWiseCount() {
+            var model = objprmdl.GetUserChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetReportWiseCount()
+        {
+            var model = objprmdl.GetUserReportChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+		[HttpPost]
+        public JsonResult GetDocumentWiseCount() {
+            var model = objprmdl.GetUserDocumentChartDetails();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public string CheckTemplateAvailability(string receivedId)
+        {
+            var response = objprmdl.CheckTemplateavailability(receivedId);
+            return response;
+        }
+        [HttpPost]
+        public string CheckRoleAvailability(string receivedId)
+        {
+            var response = objprmdl.CheckRoleAvailability(receivedId);
+            return response;
+        }
+
+        public ActionResult UsersStatus()
+        {
+            return View();
+        }
+        [HttpPost]
+        public JsonResult GetUserData(string selectedItem = "0")
+        {
+            var res = objprmdl.GetUsersData(selectedItem);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult GetUserActivityChart(string selectedItem = "0")
+        {
+            var res = objprmdl.GetUserActivityChartDetails(selectedItem);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult GetUserSectionChart(string selectedItem = "0")
+        {
+            var res = objprmdl.GetUserSectionChartDetails(selectedItem);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        //[HttpPost]
+        //public JsonResult GetReportWiseCount()
+        //{
+        //    var model = objprmdl.GetUserReportChartDetails();
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
 
 
     }
