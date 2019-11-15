@@ -1067,7 +1067,7 @@
                    field: "status", title: "Status", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" :  status==\"To be initiated\"? \"blue\" : status==\"Completed\"? \"greenwithcur\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>'
                },
                {
-                   field: "status", title: "Review Report", editable: false, template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Completed\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>'
+                   field: "status", title: "Review Report", editable: false, template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Completed\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status = "#= status#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>'
                },
                {
                    field: "completion_date", title: "Completion Date"

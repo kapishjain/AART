@@ -24,12 +24,13 @@
 <style>
     th {
         text-align: center !important;
-        padding:15px;
-        background-color:#1a5087;
+        padding: 15px;
+        background-color: #1a5087;
         color: white;
     }
+
     #table td {
-        padding:15px;
+        padding: 15px;
     }
     /*th, td {
         padding: 15px !important;
@@ -43,6 +44,7 @@
         font-size: 27px;
         margin: 0px;
     }
+
     .revdat {
         float: right;
     }
@@ -59,6 +61,7 @@
         background: none;
         background-color: aliceblue;
     }
+
     .ui-widget-header, .ui-state-default, ui-button {
         background: lightgreen;
         border: 1px solid #b9cd6d;
@@ -115,7 +118,8 @@
         color: #999;
         background-color: #FEC8C8;
     }
-     .disablebutton {
+
+    .disablebutton {
         background-color: gray !important;
         cursor: not-allowed !important;
     }
@@ -218,7 +222,7 @@
             //        alwaysVisible: false,
             //        pageSizes: [10, 20, 30]
             //    },
-            resizable: true, 
+            resizable: true,
             columns: [
                 { field: "Section", title: "Section",width: "300px" },
                 { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
@@ -318,7 +322,7 @@
             //        alwaysVisible: false,
             //        pageSizes: [10, 20, 30]
             //    },
-            resizable: true, 
+            resizable: true,
             columns: [
                 { field: "Action", title: "Action", width: "300px"},
                 { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
@@ -1115,123 +1119,125 @@
 </style>
 
 
-    <div class="col-sm-6">
-        <div class="kmmain">
-            <h2 class="kicofmt">Report View on <span id="product-name"></span> <span id="doctype"></span> </h2>
-        </div>
-        </div>
-        <div class="col-sm-6">
-            <table class="revdat">
-                @*<tr>
-                        <td>Document Type :<span id="doctype"></span></td>
-                    </tr>*@
-                <tr>
-                    <td>Review Period :<span id="reviewprd"></span></td>
-                </tr>
-                @*<tr>
-                        <td>DLP</td>
-                        <td>31-Jul-2019</td>
-                    </tr>*@
-                <tr>
-                    <td>KOM held on: <span id="komdate"></span></td>
-                </tr>
-            </table>
-        </div>
-        <div class="w3-bar" style="width: 33.5em;">
-            @*<button class="w3-bar-item w3-button tablink w3-tab" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
-                <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>*@
-        </div>
-        <div class="row">
-            <br />
+<div class="col-sm-6">
+    <div class="kmmain">
+        <h2 class="kicofmt">Report View on <span id="product-name"></span> <span id="doctype"></span> </h2>
+    </div>
+</div>
+<div class="col-sm-6">
+    <table class="revdat">
+        @*<tr>
+                <td>Document Type :<span id="doctype"></span></td>
+            </tr>*@
+        <tr>
+            <td>Review Period :<span id="reviewprd"></span></td>
+        </tr>
+        @*<tr>
+                <td>DLP</td>
+                <td>31-Jul-2019</td>
+            </tr>*@
+        <tr>
+            <td>KOM held on: <span id="komdate"></span></td>
+        </tr>
+    </table>
+</div>
+<div class="w3-bar" style="width: 33.5em;">
+    @*<button class="w3-bar-item w3-button tablink w3-tab" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
+        <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>*@
+</div>
+<div class="row">
+    <br />
 
-            @*<div class="col-sm-12 col-md-12">
-                    Activity
+    @*<div class="col-sm-12 col-md-12">
+            Activity
+            <div id="act-grid"></div>
+        </div>
+
+        <div class="col-sm-12 col-md-12">
+            Section
+            <div id="grid"></div>
+        </div>*@
+    @*<div id="Activity_Assignments" class="w3-container tabs" style="height: 100%;">
+            <h2>Assignment & Timelines</h2>
+
+        </div>
+
+        <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
+            <h2>Section Assignments</h2>
+
+        </div>*@
+
+
+
+    <div id="k-wnd"></div>
+
+    <div id="ka-wnd"></div>
+
+    <div id="k-dwnd">
+        <div id="data-grid"></div>
+    </div>
+
+    <div id="k-diffwnd">
+        <div id="diff-data-grid"></div>
+    </div>
+
+    <div id="k-dffwnd"></div>
+</div>
+@*<div id="dialog-modal" style="display:none; background-color:aliceblue;">
+
+    </div>*@
+@*<div id="dialog" title="Pending Activity and section">
+        <p>Dialog box</p>
+    </div>*@
+<div id="dialog-2" title="Pending Activity and section">
+    <table id="table" border="1" style="text-align:center;padding:2px;">
+        <tr>
+            <th align="center">Type</th>
+            <th align="center">Assigned To</th>
+            <th align="center">Description</th>
+
+        </tr>
+    </table>
+</div>
+
+
+<div class="panel with-nav-tabs panel-primary">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1primary" data-toggle="tab">Activity Assignments</a></li>
+            <li><a href="#tab2primary" data-toggle="tab">Section Assignments</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="tab1primary">
+                <div class="col-sm-12 col-md-12 usr-tlenm">
+                    @*<h2>Attendances</h2>*@
                     <div id="act-grid"></div>
+                    @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
                 </div>
-
-                <div class="col-sm-12 col-md-12">
-                    Section
+            </div>
+            <div class="tab-pane fade atv-tab" id="tab2primary">
+                <div class="col-sm-12 col-md-12 tble-tlenam">
+                    @*<h2>Assignment & Timelines</h2>*@
                     <div id="grid"></div>
-                </div>*@
-            @*<div id="Activity_Assignments" class="w3-container tabs" style="height: 100%;">
-                    <h2>Assignment & Timelines</h2>
-
+                    @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
                 </div>
 
-                <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
-                    <h2>Section Assignments</h2>
-
-                </div>*@
-
-
-
-            <div id="k-wnd"></div>
-
-            <div id="ka-wnd"></div>
-
-            <div id="k-dwnd">
-                <div id="data-grid"></div>
             </div>
 
-            <div id="k-diffwnd">
-                <div id="diff-data-grid"></div>
-            </div>
 
-            <div id="k-dffwnd"></div>
         </div>
-        @*<div id="dialog-modal" style="display:none; background-color:aliceblue;">
-
-            </div>*@
-        @*<div id="dialog" title="Pending Activity and section">
-                <p>Dialog box</p>
-            </div>*@
-        <div id="dialog-2" title="Pending Activity and section">
-            <table id="table" border="1" style="text-align:center;padding:2px;">
-                <tr>
-                    <th align="center">Type</th>
-                    <th align="center">Assigned To</th>
-                    <th align="center">Description</th>
-
-                </tr>
-            </table>
-        </div>
+    </div>
+</div>
 
 
-        <div class="panel with-nav-tabs panel-primary">
-            <div class="panel-heading">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1primary" data-toggle="tab">Activity Assignments</a></li>
-                    <li><a href="#tab2primary" data-toggle="tab">Section Assignments</a></li>
-                </ul>
-            </div>
-            <div class="panel-body">
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="tab1primary">
-                        <div class="col-sm-12 col-md-12 usr-tlenm">
-                            @*<h2>Attendances</h2>*@
-                            <div id="act-grid"></div>
-                            @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
-                        </div>
-                    </div>
-                    <div class="tab-pane fade atv-tab" id="tab2primary">
-                        <div class="col-sm-12 col-md-12 tble-tlenam">
-                            @*<h2>Assignment & Timelines</h2>*@
-                            <div id="grid"></div>
-                            @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
-                        </div>
+<button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary com-btn">Download Document</button>
 
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
- 
-
-        <button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary com-btn">Download Document</button>
-
-        <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Complete Report</button>
-
+@if ((string)ViewData["status"] == "Ongoing")
+{
+    <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Complete Report</button>
+}
 
 
 

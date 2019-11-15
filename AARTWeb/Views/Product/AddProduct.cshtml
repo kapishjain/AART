@@ -165,14 +165,16 @@
 			});
 	}	
 
-	function endDateEditor(container, options) {		
-		$('<input onkeydown="return false;" name="' + options.field + '"/>')
-			.appendTo(container)
-			.kendoDatePicker({
-				value: selectedDate,
-				min: selectedDate
-			});
-	}
+    function endDateEditor(container, options) {
+        var minimumDate = kendo.parseDate(selectedDate);
+        var updatedDate = kendo.date.addDays(minimumDate, 1);
+        $('<input onkeydown="return false;" name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDatePicker({
+                value: selectedDate,
+                min: updatedDate
+            });
+    }
 
      function complexityCategory(container, options) {
         $('<input name="' + options.field + '"/>')

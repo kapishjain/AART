@@ -334,10 +334,11 @@ namespace AARTWeb.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AuthorReview(Int32 pro_doc_id)
+        public ActionResult AuthorReview(Int32 pro_doc_id, string status)
         {
             prodocid = pro_doc_id;
-           return View("AuthorReview");
+            ViewData["status"] = status;
+            return View("AuthorReview");
         }
         [HttpPost]
         public JsonResult GetProDocActvity()

@@ -21,29 +21,30 @@
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
     <style type="text/css">
-        #page-container {
+      #page-container {
             position: relative;
-            min-height: 100vh;
+            min-height: 80vh;
         }
+            #page-container .firstsection-inner {
+          
+                width: 100%;
+                min-height: 84vh;
+              
+            }
 
         #content-wrap {
             padding-bottom: 2.5rem; /* Footer height */
         }
 
-        .footer {
-            /*position: absolute;*/
-            bottom: 0;
-            width: 99%;
-            height: 0.5rem; /* Footer height */
-        }
+        /*html{overflow: hidden;}*/
 
         .k-grid-header th.k-header {
             background-color: #1a5087 !important;
         }
 
-        .k-grid-header th.k-header {
+        /*.k-grid-header th.k-header {
             white-space: initial !important;
-        }
+        }*/
 
         .k-grid td {
             /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
@@ -118,14 +119,17 @@
             padding: 10px;
         }
         /*.footer {
-                  position: absolute;
+                  position:fixed;
                   right: 0;
                   bottom: 0;
                   left: 0;
                   padding: 1rem;
-                  background-color: #efefef;
-                  /*text-align: center;
-                }
+                  background-color: #265690;
+                  text-align: center;
+                }*/
+
+        /*.cyrght{ color:#fff;}
+        .pwdby{ color:#fff;}*/
                 body {
                   position: relative;
                   margin: 0;
@@ -149,16 +153,19 @@
             display: inline-block;
         }
 
-
-
+        .logout-drpmn span{ color:#333; font-size:13px; display:table;}
+         .logout-drpmn img {
+            margin-right: 6px;
+        }
         .dropdown-content {
             display: none;
             background-color: white;
-            min-width:200px;
+            min-width:150px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
             position: fixed;
             top:52px;
+            right:13px;
         }
 
 
@@ -227,12 +234,14 @@
             padding-top: 25% !important;
         }
 }
-        #footer {
+        /*#footer {
             height: 35px;
             width: 100%;
-        }
+            top:0px;
+            bottom:0px;
+        }*/
     </style>
-    <script>
+    @*<script>
 
         // Window load event used just in case window height is dependant upon images
         $(window).bind("load", function () {
@@ -269,7 +278,7 @@
         });
 
 
-    </script>
+    </script>*@
 </head>
 <body style="background-color: #e0e2ea59;">
     @*#ACCFF29C,#f8f9fc*@
@@ -332,7 +341,7 @@
                             @*<li>@Html.ActionLink("Add Report", "Index", "Product")</li>*@
                             @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
                             @*<li>@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("UsersStatus", "UsersStatus", "Home")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("Users Status", "UsersStatus", "Home")</li>
 
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 3%">
@@ -418,43 +427,52 @@
 
 
                     @*<img src="img_avatar.png" alt="Avatar" class="avatar">S*@
-                    <div class="col-sm-9 mns-avt">
                         <div class="dropdown">
 
-                            <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
-                           
-                                <b class="dropbtn"> @Session["Name"]</b>
-                                <span class="userinfo">(@Session["role"])</span>
-                            
 
 
 
 
-                            <div class="dropdown-content">
-                                @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                                @Html.ActionLink("Logout", "Logout", "Account")
+
+
+                            <div class="logout-drpmn">
+                                <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
+                                <div class="dropbtn">
+                                    @Session["Name"]
+                                    <span class="userinfo">(@Session["role"])</span>
+                                </div>
+
+
+
+
+                                <div class="dropdown-content">
+                                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                                    @Html.ActionLink("Logout", "Logout", "Account")
+                                </div>
                             </div>
                             @*Hi,<strong> @Session["UserName"] </strong>
 
 
 
-                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                    |
-                    @Html.ActionLink("Logout", "Logout", "Account")*@
+        @Html.ActionLink("Change Password", "ChangePassword", "Account")
+        |
+        @Html.ActionLink("Logout", "Logout", "Account")*@
                         </div>
 
 
 
-                    </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
             <div id="page-container">
-                @RenderBody()
+                <div class="firstsection-inner">
+                    @RenderBody()
+                </div>
             </div>
         </div>
-       <div id="footer">
+
+     
             @*<p>&copy; @DateTime.Now.Year - AART</p>
                 <p>Product by <b>Ancla Consultancy Services</b></p>*@
             <div>
@@ -462,10 +480,10 @@
                     <p>&copy; @DateTime.Now.Year - AART </p>
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
-                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank"><b>Ancla Technology Solutions India Private Limited</b></a> </p>
+                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
                 </div>
             </div>
-        </div>
+        
 
 
     </div>
