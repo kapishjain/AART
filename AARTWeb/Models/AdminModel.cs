@@ -206,7 +206,7 @@ namespace AARTWeb.Models
                 object cObj = new
                 {
                     User_Id = obj.user_id,
-                    lLastModifiedBy = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()),
+                    LastModifiedBy = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()),
                     Name = obj.name,
                     Status = rS,
                     UserType = "User",
@@ -243,10 +243,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Message = data.warning;
                             InsertAudit("Update user details", Message, "Failed");
-
                         }
-                      
-                       
                         else
                         {
                             IsSuccess = true;
@@ -254,7 +251,6 @@ namespace AARTWeb.Models
                             System.Threading.Thread.Sleep(1000);
                             users = GetAllUsers();
                             InsertAudit("Update user details", Message, "Failed");
-
                             return Message;
                         }
                     }

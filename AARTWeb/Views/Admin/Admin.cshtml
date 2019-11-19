@@ -390,6 +390,8 @@
                             if (e.status == 200) {
 
                                 var productdtls = JSON.parse(e.responseText);
+                                //alert(productdtls);
+                                //console.log(productdtls);
                                 if (productdtls.info != null) {
                                     swal(productdtls.info);
 

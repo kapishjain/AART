@@ -424,6 +424,9 @@
                                             "Close"
 
                                         ],
+                                        close: function () {
+                                            $('#grid').data('kendoGrid').refresh();
+                                        },
 
                                     }).data("kendoWindow").center().open();
                                     //$('#pendingworkdiv').modal('show');
@@ -588,7 +591,7 @@
                                     }
                                 }
                             },
-                           // status: { type: "boolean", parse: function (item) { return (item == "A" ? true : false); }, validation: { required: true } },
+                            // status: { type: "boolean", parse: function (item) { return (item == "A" ? true : false); }, validation: { required: true } },
 
                             status: {
                                 type: "string", validation: { required: true },
@@ -624,28 +627,65 @@
                         type: "post",
                         dataType: "string",
                         complete: function (e) {
-                           // console.log(e);
+                            // console.log(e);
                             if (e.status == 200) {
-                                var roleupdate = JSON.parse(e.responseText);
-                               // console.log(roleupdate);
-                                if (typeof roleupdate.info === 'undefined') {
-                                    if (roleupdate[0].info != null) {
-                                        swal(roleupdate[0].info);
-                                        $('#role-grid').data('kendoGrid').dataSource.read();
-                                        $('#role-grid').data('kendoGrid').refresh();
-                                    }
+                                if (e.responseText == "Updated") {
+                                    swal("Update successfully");
                                 }
                                 else {
-                                    // alert(roleupdate.info);
-                                    //rolegridval = roleupdate.info;
-                                    // rolegrid();
-                                    swal("You can not Inactivate this role because some user or task already assigned.");
+                                    //console.log(e.responseText);
+                                    var roleupdate = JSON.parse(e.responseText);
+                                    console.log(roleupdate);
+                                    if (roleupdate.user.length == 0 && roleupdate.master_Template.length == 0 && roleupdate.master_Section.length == 0 && roleupdate.assigned_Template.length == 0 && roleupdate.assined_Section.length == 0) {
+                                        swal("Update successfully");
+                                    }
+                                    else {
+                                          //  var roleuser, rolemastertem, rolemastersec, roleasstem, roleassec;
 
+                                        if (roleupdate.user != null)
+                                            roleuser = roleupdate.user;
+                                        if (roleupdate.master_Template != null)
+                                            rolemastertem = roleupdate.master_Template;
+                                        if (roleupdate.master_Section != null)
+                                            rolemastersec = roleupdate.master_Section;
+                                        if (roleupdate.assigned_Template != null)
+                                            roleasstem = roleupdate.assigned_Template;
+                                        if (roleupdate.assined_Section != null)
+                                            roleassec = roleupdate.assined_Section;
+                                        rolediv();
+                                        var myWindow = $("#pendingrolediv");
+                                        myWindow.kendoWindow({
+
+                                            modal: true,
+
+                                            width: "800px",
+
+                                            height: "500px",
+
+                                            title: "Role cannot be deactivated due to below work already assigned.",
+
+                                            visible: false,
+
+                                            actions: [
+
+                                                "Minimize",
+
+                                                "Close"
+
+                                            ],
+                                            close: function () {
+                                                $('#role-grid').data('kendoGrid').dataSource.read();
+
+                                                $('#role-grid').data('kendoGrid').refresh();
+                                            },
+
+                                        }).data("kendoWindow").center().open();
+
+                                    }
                                 }
-                                // swal(e.responseJSON.info);
-                                //swal("Role updated.");
 
-                                //  $('#role-grid').data('kendoGrid').refresh();
+                                $('#role-grid').data('kendoGrid').dataSource.read();
+                                $('#role-grid').data('kendoGrid').refresh();
                             } else {
                                 swal("Error occuered while update role.");
                                 $('#role-grid').data('kendoGrid').refresh();
@@ -764,7 +804,7 @@
      var prodoc;
             var activity;
             var section;
-
+    var roleuser, rolemastertem, rolemastersec, roleasstem, roleassec;
     function prodocdiv() {
         $("#prodocdiv").kendoGrid({
             dataSource: {
@@ -864,27 +904,152 @@
 
         });
     }
-    function rolegrid() {
-        $("#rolediv").kendoGrid({
+
+
+    function rolediv() {
+        $("#userdiv").kendoGrid({
             dataSource: {
-                data: rolegridval,
-                
+                data: roleuser,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                            user_name: { type: "string", editable: false },
+                            email_id: { type: "string", editable: false }
+                        }
+                    }
+                },
 
             },
             sortable: true,
             resizable: true,
-            //columns: [
-            //    { field: "product_name", title: "Product Name", editable: false },
+            columns: [
+                { field: "user_name", title: "Name", editable: false },
 
-            //    { field: "doc_Type", title: "Doc Type", editable: false },
+                { field: "email_id", title: "Email", editable: false },
 
-            //    { field: "author", title: "Author", editable: false },
-            //    { field: "coAuthor", title: "Co-Author", editable: false },
-            //    { field: "status", title: "status" },
-            //],
+            ],
+
+        });
+        $("#masterTemplate").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: rolemastertem,
+
+                schema: {
+                    model: {
+                        fields: {
+                            document_name: { type: "string", editable: false },
+                            action: { type: "string", editable: false },
+                           
+                        }
+                    }
+                }
+            },
+            reorderable: true,
+            sortable: true,
+            resizable: true,
+            columns: [
+
+                { field: "document_name", title: "Document Name", width: "200px" },
+                { field: "action", title: "Action" },               
+            ]
+        });
+        $("#masterSection").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: rolemastersec,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                            document_name: { type: "string", editable: false },
+                            section_sub_heading: { type: "string", editable: false },
+                        
+                        }
+                    }
+                },
+                //group: { field: "section_id" }
+
+            },
+            height: 650,
+            reorderable: true,
+            sortable: true,
+            resizable: true,
+            columns: [
+                { field: "document_name", title: "Document name" },
+                { field: "section_sub_heading", title: "Section heading" },
+               
+            ],
+
+        });
+          $("#assignedtemplate").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: roleasstem,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                            user_name: { type: "string", editable: false },
+                            product_name: { type: "string", editable: false },
+                            document_name: { type: "string", editable: false },
+                            action: { type: "string", editable: false },
+
+
+                        }
+                    }
+                },
+                //group: { field: "section_id" }
+
+            },
+            height: 650,
+            reorderable: true,
+            sortable: true,
+            resizable: true,
+            columns: [
+                { field: "user_name", title: "Name" },
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document name" },
+                { field: "action", title: "Action" },
+            ],
+
+          });
+          $("#assignedSection").kendoGrid({
+            //dataSource:komtempalte,
+            dataSource: {
+                data: roleassec,
+                schema: {
+                    model: {
+                        //id: section_id,
+                        fields: {
+                           user_name: { type: "string", editable: false },
+                            product_name: { type: "string", editable: false },
+                            document_name: { type: "string", editable: false },
+                            section_sub_heading: { type: "string", editable: false },
+                        
+                        }
+                    }
+                },
+                //group: { field: "section_id" }
+
+            },
+            height: 650,
+            reorderable: true,
+            sortable: true,
+            resizable: true,
+            columns: [
+                { field: "user_name", title: "Name" },
+                { field: "product_name", title: "Product Name" },
+                { field: "document_name", title: "Document name" },
+                { field: "section_sub_heading", title: "Heading" },
+               
+            ],
 
         });
     }
+
+
     function opentab(evt, tabid) {
         var i, tablinks;
         var x = document.getElementsByClassName("tabs");
@@ -1033,6 +1198,55 @@
                     </div>
                 </div>
          
+        </div>
+    </div>
+</div>
+
+
+<div id="pendingrolediv" style="display:none">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="panel with-nav-tabs panel-primary">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#role1primary" data-toggle="tab">User</a></li>
+                        <li><a href="#role2primary" data-toggle="tab"> Master Activity</a></li>
+                        <li><a href="#role3primary" data-toggle="tab"> Master Assignments</a></li>
+                        <li><a href="#role4primary" data-toggle="tab"> Assigned Activity</a></li>
+                        <li><a href="#role5primary" data-toggle="tab"> Assigned Assignments</a></li>
+                    </ul>
+                </div>
+                <div class="panel-body pop-pd">
+                    <div class="tab-content">
+                        <div class="tab-pane fade usr-tlenm in active" id="role1primary">
+                            <div class="col-sm-12 col-md-12 usr-tlenm lst-pd">
+                                <div id="userdiv"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade usr-tlenm" id="role2primary">
+                            <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                <div id="masterTemplate"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade usr-tlenm" id="role3primary">
+                            <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                <div id="masterSection"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade usr-tlenm" id="role4primary">
+                            <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                <div id="assignedtemplate"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade usr-tlenm" id="role5primary">
+                            <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
+                                <div id="assignedSection"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

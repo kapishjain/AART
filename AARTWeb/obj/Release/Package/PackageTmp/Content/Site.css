@@ -177,10 +177,19 @@ textarea {
     vertical-align: middle;
     width: 36px !important;
     height: 36px !important;
-    border-radius: 50%;
-}
+    border-radius: 50px;
+    float: left;
 
-    .navbar{ margin-bottom:0px;}
+}
+.userinfo {
+    color: #333;
+    font-weight: 600;
+    display: inline-block;
+}
+.mns-avt{ float:right;}
+.navbar {
+    margin-bottom: 0px;
+}
 .k-button {
     margin: 0;
     padding: 6px 8px;

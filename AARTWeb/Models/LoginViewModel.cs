@@ -57,7 +57,7 @@ namespace AARTWeb.Models
             try
             {
                 Auth Auth = new Auth();
-
+                string sessionID = HttpContext.Current.Session.SessionID;
                 if (Auth.result == null)
                 {
                     Auth.username = username;

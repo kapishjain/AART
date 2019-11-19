@@ -1,0 +1,671 @@
+﻿@{
+    ViewBag.Title = "UsersStatus";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<link href="~/Themes/css/style.css" rel="stylesheet" />
+
+<h2>Select user</h2>
+<style type="text/css">
+    .border-left-black {
+        border-left: .25rem solid #828181 !important;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $("#users-dropdown").kendoDropDownList({
+            optionLabel: {
+                user_id: '0',
+                user_name: 'All'
+            },
+            dataTextField: "user_name",
+            dataValueField: "user_id",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetUsers", "Admin")',
+                        type: 'post',
+                        dataType: 'json',
+                    }
+                }
+            },
+            dataBound: function () {
+                readData("0")
+            },
+            select: function (e) {
+                var id = e.dataItem.user_id;
+
+                readData(id);
+
+            }
+        });
+    });
+
+    function readData(id) {
+
+        $.ajax({
+
+            url: '@Url.Action("GetUserData", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                selectedItem: id
+            },
+            success: function (res) {
+                $(".act-count").text(res[0].total);
+                $(".act-tobeInit").text(res[0].ToBeInitiated);
+                $(".act-ongoi").text(res[0].onGoing);
+                $(".act-submitted").text(res[0].submited);
+                $(".act-reverted").text(res[0].reverted);
+                $(".act-submit-for-review").text(res[0].toBeRevied);
+                $(".sec-count").text(res[1].total);
+                $(".sec-tobeInit").text(res[1].ToBeInitiated);
+                $(".sec-ongoi").text(res[1].onGoing);
+                $(".sec-submitted").text(res[1].submited);
+                $(".sec-reverted").text(res[1].reverted);
+                $(".sec-submit-for-review").text(res[1].toBeRevied);
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetUserActivityChart", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                selectedItem: id
+            },
+            success: function (res) {
+                activityChart(res);
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetUserSectionChart", "Home")',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                selectedItem: id
+            },
+            success: function (res) {
+                sectionChart(res);
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+    }
+
+    function sectionChart(secData) {
+        $("#section-chart").kendoChart({
+            //         legend: {
+            //             position: "top",
+            // },
+            // dataSource: {
+            //	data: secData
+            //},
+            //         seriesDefaults: {
+            //             type: "column"
+            //         },
+            //         series: [
+            //	{
+            //		field: "Tobeinitiated",
+            //		name: "To be initiated",
+            //		categoryField: "document_name",
+            //                 color: "#36b9cc"
+            //	}, {
+            //		field: "OnGoing",
+            //		name: "OnGoing",
+            //		categoryField: "document_name",
+            //                 color: "#4e73df"
+            //	}, {
+            //		field: "SubmittedForReview",
+            //		name: "Submitted for review",
+            //		categoryField: "document_name",
+            //                 color: "#f6c23e"
+            //             },
+            //             {
+            //		field: "Accepted",
+            //		name: "Accepted",
+            //		categoryField: "document_name",
+            //                 color: "#1cc88a"
+            //             },
+            //             {
+            //		field: "Reverted",
+            //		name: "Reverted",
+            //		categoryField: "document_name",
+            //                 color: "#e74a3b"
+            //	}
+            //         ],
+
+            //         valueAxis: {
+            //             labels: {
+            //                 format: "{0}",
+            //             },
+            //             line: {
+            //                 visible: false
+            //             },
+            //         },
+            //         categoryAxis: {
+            //	labels: {
+            //		rotation: -90
+            //	},
+            //	majorGridLines: {
+            //		visible: false
+            //	},
+            //             line: {
+            //                 visible: true
+            //             },
+            //             labels: {
+            //                 padding: { top: 1 },
+            //             }
+            //         },
+            //         tooltip: {
+            //             visible: true,
+            //             format: "{0}",
+            //             template: "#= series.name #: #= value #"
+            //         }
+
+
+
+            //title: {
+            //    text: "Document wise Product",
+            //    color: "#000000"
+
+            //},
+            //chartArea: {background:"#02075D"},
+
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+            },
+            dataSource: {
+                data: secData
+            },
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+                {
+                    field: "Tobeinitiated",
+                    name: "To be initiated",
+                    categoryField: "document_name",
+                    color: "#36b9cc"
+                }, {
+                    field: "OnGoing",
+                    name: "OnGoing",
+                    categoryField: "document_name",
+                    color: "#4e73df"
+                }, {
+                    field: "SubmittedForReview",
+                    name: "Submitted for review",
+                    categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+                    field: "Accepted",
+                    name: "Accepted",
+                    categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+                    field: "Reverted",
+                    name: "Reverted",
+                    categoryField: "document_name",
+                    color: "#e74a3b"
+                }
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+                labels: {
+                    rotation: -90
+                },
+                majorGridLines: {
+                    visible: true
+                },
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+    }
+
+    function activityChart(actData) {
+        $("#activity-chart").kendoChart({
+            //         legend: {
+            //             position: "top",
+            // },
+            // dataSource: {
+            //	data: actData
+            //},
+            //         seriesDefaults: {
+            //             type: "column"
+            //         },
+            //         series: [
+            //	{
+            //		field: "Tobeinitiated",
+            //		name: "To be initiated",
+            //		categoryField: "document_name",
+            //                 color: "#36b9cc"
+            //	}, {
+            //		field: "OnGoing",
+            //		name: "OnGoing",
+            //		categoryField: "document_name",
+            //                 color: "#4e73df"
+            //	}, {
+            //		field: "SubmittedForReview",
+            //		name: "Submitted for review",
+            //		categoryField: "document_name",
+            //                 color: "#f6c23e"
+            //             },
+            //             {
+            //		field: "Accepted",
+            //		name: "Accepted",
+            //		categoryField: "document_name",
+            //                 color: "#1cc88a"
+            //             },
+            //             {
+            //		field: "Reverted",
+            //		name: "Reverted",
+            //		categoryField: "document_name",
+            //                 color: "#e74a3b"
+            //	}
+            //         ],
+
+            //         valueAxis: {
+            //             labels: {
+            //                 format: "{0}",
+            //             },
+            //             line: {
+            //                 visible: false
+            //             },
+            //         },
+            //         categoryAxis: {
+            //	labels: {
+            //		rotation: -90
+            //	},
+            //	majorGridLines: {
+            //		visible: false
+            //	},
+            //             line: {
+            //                 visible: true
+            //             },
+            //             labels: {
+            //                 padding: { top: 1 },
+            //             }
+            //         },
+            //         tooltip: {
+            //             visible: true,
+            //             format: "{0}",
+            //             template: "#= series.name #: #= value #"
+            //         }
+            legend: {
+                position: "top",
+                labels: {
+                    //color: "#ffffff"
+                }
+
+            },
+            dataSource: {
+                data: actData
+            },
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [
+                {
+                    field: "Tobeinitiated",
+                    name: "To be initiated",
+                    categoryField: "document_name",
+                    color: "#36b9cc"
+                }, {
+                    field: "OnGoing",
+                    name: "OnGoing",
+                    categoryField: "document_name",
+                    color: "#4e73df"
+                }, {
+                    field: "SubmittedForReview",
+                    name: "Submitted for review",
+                    categoryField: "document_name",
+                    color: "#f6c23e"
+                },
+                {
+                    field: "Accepted",
+                    name: "Accepted",
+                    categoryField: "document_name",
+                    color: "#1cc88a"
+                },
+                {
+                    field: "Reverted",
+                    name: "Reverted",
+                    categoryField: "document_name",
+                    color: "#e74a3b"
+                }
+            ],
+
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                    //color: "#ffffff"
+                },
+                line: {
+                    visible: false
+                },
+            },
+            categoryAxis: {
+                labels: {
+                    rotation: -90
+                },
+                majorGridLines: {
+                    visible: true
+                },
+                line: {
+                    visible: true
+                },
+                labels: {
+                    padding: { top: 1 },
+                    //color: "#ffffff"
+                }
+            },
+            //panes: [
+            //    { name: "top-pane", background: "#000000" },
+            //    ],
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "#= series.name #: #= value #"
+            }
+        });
+    }
+</script>
+
+<div id="users-dropdown"></div>
+
+<div id="dashboard">
+    <div id="ActivityDashboard">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h1 mb-0 text-gray-800">Activity</h1>
+        </div>
+        <div class="row">
+
+
+            <div class="col-xl-2 col-md-6 mb-3" id="activitycount">
+                <div class="card border-left-black shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-count"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-tobeInit"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 act-ongoi"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submit-for-review"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submitted"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-reverted"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="SectionDashboard">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h1 mb-0 text-gray-800">Section</h1>
+            </div>
+
+            <div class="row justify-content-md-center">
+
+                <div class="col-xl-2 col-md-6 mb-3" id="secactivitycount">
+                    <div class="card border-left-black shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-count"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-2 col-md-6 mb-3" id="secTobeinitiated">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-tobeInit"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-6 mb-3" id="secOngoing">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 sec-ongoi"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submit-for-review"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submitted"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-reverted"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div id="row">
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-6">
+            <div class="card-body">
+                <div class="">
+                    <div id="activity-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-6">
+            <div class="card-body">
+                <div class="">
+                    <div id="section-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div id="divchart">
+    <div class="col-xl-6 col-lg-5">
+        <div class="shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Document Activity Wise Count</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    @*<div id="k-dropdownlist"></div>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>*@
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="">
+                    <div id="activity-chart"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-5">
+        <div class="shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Document Section Wise Count</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                   
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="">
+                    <div id="section-chart"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

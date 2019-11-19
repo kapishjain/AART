@@ -238,12 +238,12 @@ namespace AARTWeb.Controllers
 
         public ActionResult Logout()
         {
-            BaseModel audit = new BaseModel();
+            //BaseModel audit = new BaseModel();
 
-            audit.InsertAudit("LogOut", "Successfully Logout", "Success");
+            //audit.InsertAudit("LogOut", "Successfully Logout", "Success");
 
 
-           // model.Logout();
+            // model.Logout();
             Session.Abandon();
 
             return View("Login");

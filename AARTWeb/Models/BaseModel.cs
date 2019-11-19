@@ -103,23 +103,100 @@ namespace AARTWeb.Models
         }
         public string GetIp()
         {
-           
 
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
             //string strHostName = "";
             //strHostName = System.Net.Dns.GetHostName();
             //IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
             //IPAddress[] addr = ipEntry.AddressList;
             //return addr[addr.Length - 1].ToString();
+            System.Web.HttpContext context = System.Web.HttpContext.Current;
+            string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+            if (!string.IsNullOrEmpty(ipAddress))
+            {
+                string[] addresses = ipAddress.Split(',');
+                if (addresses.Length != 0)
+                {
+                    return addresses[0];
+                }
+            }
+            System.Web.HttpContext.Current.Session["ip"] = context.Request.ServerVariables["REMOTE_ADDR"];
+            return context.Request.ServerVariables["REMOTE_ADDR"];
+            //var host = Dns.GetHostEntry(Dns.GetHostName());
+            //foreach (var ip in host.AddressList)
+            //{
+            //    if (ip.AddressFamily == AddressFamily.InterNetwork)
+            //    {
+            //        return ip.ToString();
+            //    }
+            //}
+            //throw new Exception("No network adapters with an IPv4 address in the system!");
+            //string strHostName = "";
+            //strHostName = System.Net.Dns.GetHostName();
+            //IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
+            //IPAddress[] addr = ipEntry.AddressList;
+            //return addr[addr.Length - 1].ToString();
+        }
+
+        public string InsertLogoutAudit(string module, string message, string status,string username,string Ip)
+        {
+            AuditVO auditvo = new AuditVO();
+            auditvo.Description = message;
+            auditvo.Module = module;
+            auditvo.Ip_Address = Ip ;
+            auditvo.Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss").ToString();
+            auditvo.Status = status;
+            auditvo.User = username;
+            //auditvo.Changes = changes;
+            //auditvo.User_id = Convert.ToInt32(System.Web.HttpContext.Current.Session["userid"].ToString());
+            //if (System.Web.HttpContext.Current.Session["UserID"] == null)
+            //    auditvo.User = username;
+            //else
+            //    auditvo.User = System.Web.HttpContext.Current.Session["UserName"].ToString();
+
+            string value = "";
+            using (var httpClient = new HttpClient())
+            {
+                var url = ConfigurationManager.AppSettings["WEBAPIURL"];
+
+
+
+                httpClient.BaseAddress = new Uri(url);
+                Auth Auth = new Auth();
+
+                // httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = httpClient.PostAsync("Audit/InsertAuditTrail", new StringContent(new JavaScriptSerializer().Serialize(auditvo), Encoding.UTF8, "application/json")).Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    using (HttpContent content = result.Content)
+                    {
+                        Task<string> result1 = content.ReadAsStringAsync();
+                        var rs = result1.Result;
+                        dynamic data = JsonConvert.DeserializeObject(rs);
+                        value = Convert.ToString(data);
+
+                        if (value.Contains("error"))
+                        {
+                            Warning = true;
+                            IsSuccess = false;
+                            //   Message = data.error;
+                        }
+                        else if (value.Contains("warning"))
+                        {
+                            Warning = true;
+                            IsSuccess = false;
+                            // Message = data.warning;
+                        }
+                        else
+                        {
+                            IsSuccess = true;
+                            //  Message = data.info;
+                        }
+                    }
+                }
+                return value;
+            }
         }
     }
 }

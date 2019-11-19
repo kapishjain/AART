@@ -514,6 +514,7 @@
                 console.log(response.responseText);
                 swal(response.responseText)
                 if (response.responseText.includes("Inserted"))
+                   // confirm("Want to download MOM")
                     window.location = '@Url.Action("Manager", "Home")';
             },
             error: function (err) {

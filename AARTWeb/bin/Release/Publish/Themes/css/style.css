@@ -10913,11 +10913,11 @@ a:focus {
 
 .text-gray-800 {
     color: #5a5c69 !important;
-    width: 40px;
+    /*width: 40px;*/
     height: 40px;
     /*background: #fff;*/
     border-radius: 29%;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 27px;
     line-height: 40px;
 }
