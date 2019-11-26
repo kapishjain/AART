@@ -62,7 +62,7 @@ namespace AARTWeb.Models
                             {
                                 objrmdl.Message = data.warning;
                                 objrmdl.Warning = true;
-                                InsertAudit("Add role", Message, "Failed");
+                                //InsertAudit("Add role", Message, "Failed");
 
                                 return objrmdl;
                             }
@@ -70,7 +70,7 @@ namespace AARTWeb.Models
                             {
                                 objrmdl.Message = data.info;
                                 objrmdl.IsSuccess = true;
-                                InsertAudit("Add role", Message, "Success");
+                                //InsertAudit("Add role", Message, "Success");
 
                                 return objrmdl;
                             }
@@ -82,7 +82,7 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
-                InsertAudit("Add role", error, "Error");
+              //  InsertAudit("Add role", error, "Error");
 
                 return objrmdl;
             }

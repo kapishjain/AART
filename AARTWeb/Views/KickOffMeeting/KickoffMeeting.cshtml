@@ -351,7 +351,7 @@
                    }
                },
            },
-           height: 650,
+           //height: 650,
            reorderable: true,
            sortable: true,
            pageable: {
@@ -406,7 +406,7 @@
                //group: { field: "section_id" }
 
            },
-           height: 650,
+           //height: 650,
            reorderable: true,
            sortable: true,
            pageable: {
@@ -619,15 +619,15 @@
         <div class="col-sm-6">
             <table class="revdat">
                 @*<tr>
-                    <td>Document Type :<span id="doctype"></span></td>
-                </tr>*@
+                        <td>Document Type :<span id="doctype"></span></td>
+                    </tr>*@
                 <tr>
                     <td>Review Period : <span id="reviewprd"></span></td>
                 </tr>
                 @*<tr>
-                    <td>DLP</td>
-                    <td>31-Jul-2019</td>
-                </tr>*@
+                        <td>DLP</td>
+                        <td>31-Jul-2019</td>
+                    </tr>*@
                 <tr>
                     <td>KOM held on: <span id="komdate"></span></td>
                 </tr>
@@ -674,32 +674,32 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
-            <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Submit</button>
-        </div>
+
     </div>
 
+    <div class="col-sm-12">
+        <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Submit</button>
+    </div>
+
+    @*<div class="w3-bar" style="width: 33.5em;">
+            <button class="w3-bar-item w3-button tablink w3-tab" style="border:none" onclick="opentab(event,'Attendances')">Attendances</button>
+            <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
+            <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
+        </div>*@
 
 
-            @*<div class="w3-bar" style="width: 33.5em;">
-                <button class="w3-bar-item w3-button tablink w3-tab" style="border:none" onclick="opentab(event,'Attendances')">Attendances</button>
-                <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Activity_Assignments')">Activity Assignments</button>
-                <button class="w3-bar-item w3-button tablink" style="border:none" onclick="opentab(event,'Section_Assignments')">Section Assignments</button>
-            </div>*@
+    <div id="Attendances" class="w3-container tabs" style=" height: 100%;">
 
+    </div>
+    <div id="Activity_Assignments" class="w3-container tabs" style="display:none;    height: 100%;">
+        <h2>Assignment & Timelines</h2>
+        <div id="KOMTemplate"></div>
+    </div>
+    <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
 
-        <div id="Attendances" class="w3-container tabs" style=" height: 100%;">
-      
-        </div>
-        <div id="Activity_Assignments" class="w3-container tabs" style="display:none;    height: 100%;">
-            <h2>Assignment & Timelines</h2>
-            <div id="KOMTemplate"></div>
-        </div>
-        <div id="Section_Assignments" class="tabs" style="display:none; height: 100%;">
-            
-        </div>
-        <br />
-    
+    </div>
+    <br />
+
 
 </body>
 

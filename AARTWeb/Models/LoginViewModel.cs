@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 
 namespace AARTWeb.Models
 {
@@ -30,15 +31,16 @@ namespace AARTWeb.Models
         //public bool warning { get; set; } = false;
         Auth Auth = new Auth();
 
-               
+        public string mode { get; set; } = "Login";
+
 
         [Required]
         public string UserName { get; set; }
         [Required]
         //[StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be 8 to 16 characters.")]
         public string Password { get; set; }
-        [Display(Name = "Remember Me")]
-        public bool RememberMe { get; set; }
+       
+
         public Int32 user_id { get; set; }
         public string name { get; set; }
         public Int32 role_id { get; set; }
@@ -51,7 +53,7 @@ namespace AARTWeb.Models
       //  private static int Numeric_length = 1;
         private static int Special_Character = 1;
 
-        public LoginViewModel validateuser(string username, string password)
+        public LoginViewModel validateuser(string username, string password,string mode)
         {
             LoginViewModel lgnmdl = new LoginViewModel();
             try
@@ -83,6 +85,9 @@ namespace AARTWeb.Models
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         client.DefaultRequestHeaders.Add("UserName", username);
                         client.DefaultRequestHeaders.Add("UserPassword", password);
+                        client.DefaultRequestHeaders.Add("SessionID", HttpContext.Current.Session.SessionID);
+                        client.DefaultRequestHeaders.Add("MACaddress", GetMACAddress());
+                        client.DefaultRequestHeaders.Add("Mode", mode);
 
                         // HttpContent content1 = new StringContent("{ UserName: 'Sysadmin',	UserPassword: 'SYSADMIN'}", Encoding.UTF8, "application/json");
                         // client.DefaultRequestHeaders.TryAddWithoutValidation("content", requestBody.ToString());
@@ -108,26 +113,26 @@ namespace AARTWeb.Models
                                 string value = Convert.ToString(data);
                                 if (value.Contains("error"))
                                 {
-                                    error = data.error;
-                                    InsertAudit("Login", error, "Failed", username);
+                                    error = data[0].error;
+                                    //InsertAudit("Login", error, "Failed", username);
 
                                     return lgnmdl;
                                 }
                                 else
                                 {
-                                    user_id = data[0].user_Id;
-                                    username = data[0].userName;
+                                    user_id = data[0].user_id;
+                                    username = data[0].user_name;
                                     name = data[0].name;
                                     UserName = data[0].name;
-                                    role_id = data[0].role_Id;
+                                    role_id = data[0].role_id;
                                     Status = data[0].status;
                                     role_name= data[0].role_name;
-                                    HttpContext.Current.Session["UserName"] = data[0].userName;
-                                    HttpContext.Current.Session["UserID"] = data[0].user_Id;
+                                    HttpContext.Current.Session["UserName"] = data[0].user_name;
+                                    HttpContext.Current.Session["UserID"] = data[0].user_id;
                                     HttpContext.Current.Session["role"] = data[0].role_name;
                                     HttpContext.Current.Session["Name"] = data[0].name;
 
-                                    InsertAudit("Login", "Logged In successfully", "Success", username,"");
+                                    //InsertAudit("Login", "Logged In successfully", "Success", username,"");
 
                                     //HttpContext.Current.Session["role_id"] = data[0].role_Id;
                                 }
@@ -139,7 +144,7 @@ namespace AARTWeb.Models
                         {
 
                             error = result.RequestMessage.ToString();
-                            InsertAudit("Login", error, "Failed", username);
+                           // InsertAudit("Login", error, "Failed", username);
 
                             error = "Username or Password does't match";
                         }
@@ -159,7 +164,7 @@ namespace AARTWeb.Models
             {
                 error = ex.Message;
                 //if (error.Equals(""))
-                InsertAudit("Login", error, "Error", username);
+                //InsertAudit("Login", error, "Error", username);
 
                 return lgnmdl;
             }
@@ -263,7 +268,7 @@ namespace AARTWeb.Models
                             {
                                 Warning = true;
                                 Message = data.error;
-                                InsertAudit("Change Password", Message, "Failed");
+                               // InsertAudit("Change Password", Message, "Failed");
 
                                 return objlgnmdl;
                             }
@@ -271,7 +276,7 @@ namespace AARTWeb.Models
                             {
                                 IsSuccess = true;
                                 Message = data.message;
-                                InsertAudit("Change Password", Message, "Success");
+                              //  InsertAudit("Change Password", Message, "Success");
 
                                 return objlgnmdl;
                             }
@@ -283,17 +288,30 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
-                InsertAudit("Change Password", error, "Error");
+              //  InsertAudit("Change Password", error, "Error");
 
                 return objlgnmdl;
             }
 
         }
 
-        public void Logout()
-        {
-            InsertAudit("LogOut", "Successfully Logout", "Success");
+        //public void Logout()
+        //{
+        //    InsertAudit("LogOut", "Successfully Logout", "Success");
 
+        //}
+        public string GetMACAddress()
+        {
+            string addr = "";
+            foreach (NetworkInterface n in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (n.OperationalStatus == OperationalStatus.Up)
+                {
+                    addr += n.GetPhysicalAddress().ToString();
+                    break;
+                }
+            }
+            return addr;
         }
         public static bool IsValid(string Password)
         {

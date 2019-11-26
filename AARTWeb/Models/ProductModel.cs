@@ -85,7 +85,7 @@ namespace AARTWeb.Models
                                 {
                                     error = data.error;
                                     Message = data.error;
-                                    InsertAudit("Add new Product", Message, "Failed");
+                                   // InsertAudit("Add new Product", Message, "Failed");
 
                                     return 0;
                                 }
@@ -94,7 +94,7 @@ namespace AARTWeb.Models
                                     Warning = true;
                                     error = data.warning;
                                     Message = data.warning;
-                                    InsertAudit("Add new Product", Message, "Failed");
+                                   // InsertAudit("Add new Product", Message, "Failed");
 
                                     return 0;
                                 }
@@ -102,7 +102,7 @@ namespace AARTWeb.Models
                                 {
                                     IsSuccess = true;
                                     Message = data.prodctid;
-                                    InsertAudit("Add new Product", Message, "Success");
+                                  //  InsertAudit("Add new Product", Message, "Success");
 
                                     return Convert.ToInt32(data.prodctid);
                                 }
@@ -114,7 +114,7 @@ namespace AARTWeb.Models
                 catch (Exception ex)
                 {
                     error = ex.Message;
-                    InsertAudit("Add new Product", error, "Failed");
+                   // InsertAudit("Add new Product", error, "Failed");
 
                     return 0;
                 }
@@ -642,7 +642,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Update actvity ", value, "Success");
+                           // InsertAudit("Update actvity ", value, "Success");
 
                             return value;
                         }
@@ -652,7 +652,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Update actvity ", ex.Message, "Error");
+               // InsertAudit("Update actvity ", ex.Message, "Error");
                 return null;
 
             }
@@ -686,7 +686,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Update section ", value, "Success");
+                           // InsertAudit("Update section ", value, "Success");
 
                             return value;
                         }
@@ -696,7 +696,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Update section ", ex.Message, "Success");
+               // InsertAudit("Update section ", ex.Message, "Success");
                 return null;
 
             }
@@ -757,7 +757,7 @@ namespace AARTWeb.Models
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + Convert.ToInt32(product.leadAuthor.user_id) + "&coauserid=" + Convert.ToInt32(product.co_author.user_id), "");
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + Convert.ToInt32(product.leadAuthor.user_id) + "&coauserid=" + Convert.ToInt32(product.co_author.user_id) + "&lmodifiedby=" + Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()) + "&lmodifieddate=" + DateTime.Now.ToString("dd/MMM/yyyy"), "");
                     responseTask.Wait();
                     var result = responseTask.Result;
 
@@ -769,7 +769,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data.info);
-                            InsertAudit("Update Author or co-author for document", value, "Success");
+                           // InsertAudit("Update Author or co-author for document", value, "Success");
 
                             return value;
                         }
@@ -779,7 +779,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Update Author or co-author for document", ex.Message, "Error");
+               // InsertAudit("Update Author or co-author for document", ex.Message, "Error");
                 return null;
 
             }
@@ -878,7 +878,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Update section ", value, "Success");
+                           // InsertAudit("Update section ", value, "Success");
 
                             return value;
                         }
@@ -888,7 +888,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Update section ", ex.Message, "Error");
+               // InsertAudit("Update section ", ex.Message, "Error");
                 return null;
 
             }
@@ -925,7 +925,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Update actvity ", value, "Success");
+                           // InsertAudit("Update actvity ", value, "Success");
 
                             return value;
                         }
@@ -935,7 +935,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Update actvity ", ex.Message, "Error");
+              //  InsertAudit("Update actvity ", ex.Message, "Error");
                 return null;
 
             }
@@ -1109,7 +1109,7 @@ namespace AARTWeb.Models
                             if (value.Contains("info"))
                             {
                                 value = Convert.ToString(data.info);
-                                InsertAudit("Insert new product", value, "Success");
+                               // InsertAudit("Insert new product", value, "Success");
 
                             }
                             return value;
@@ -1119,7 +1119,7 @@ namespace AARTWeb.Models
                 }
                 catch (Exception ex)
                 {
-                    InsertAudit("Insert new product", ex.Message, "Error");
+                   // InsertAudit("Insert new product", ex.Message, "Error");
 
                     return ex.Message;
 
@@ -1170,7 +1170,7 @@ namespace AARTWeb.Models
                                 var rs = result1.Result;
                                 dynamic data = JsonConvert.DeserializeObject(rs);
                                 string value = Convert.ToString(data);
-                                InsertAudit("Accept or Revert section ", value, "Success");
+                               // InsertAudit("Accept or Revert section ", value, "Success");
 
                                 return value;
                             }
@@ -1190,7 +1190,7 @@ namespace AARTWeb.Models
                                 var rs = result1.Result;
                                 dynamic data = JsonConvert.DeserializeObject(rs);
                                 string value = Convert.ToString(data);
-                                InsertAudit("Accept or Revert actvity ", value, "Success");
+                               // InsertAudit("Accept or Revert actvity ", value, "Success");
 
                                 return value;
                             }
@@ -1202,7 +1202,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Accept or Revert Section ", ex.Message, "Error");
+               // InsertAudit("Accept or Revert Section ", ex.Message, "Error");
                 return "";
             }
         }
@@ -1378,7 +1378,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Submit complete report", value, "Success");
+                           // InsertAudit("Submit complete report", value, "Success");
 
                             return value;
                         }
@@ -1389,7 +1389,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Submit complete report", ex.Message, "Error");
+               // InsertAudit("Submit complete report", ex.Message, "Error");
                 return "";
 
             }
@@ -1406,6 +1406,8 @@ namespace AARTWeb.Models
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
+
                     vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
                     vo.Status = "I";
                     var responseTask = httpClient.PutAsJsonAsync("Product/SubmitSecAsignRecordByUser", vo);
@@ -1422,7 +1424,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Submit section", value, "Success");
+                           // InsertAudit("Submit section", value, "Success");
 
                             return value;
                         }
@@ -1432,7 +1434,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Submit section", ex.Message, "Error");
+               // InsertAudit("Submit section", ex.Message, "Error");
                 return null;
             }
         }
@@ -1452,6 +1454,7 @@ namespace AARTWeb.Models
                     vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
                     vo.Status = "I";
                     vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                    vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
 
                     var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
 
@@ -1467,7 +1470,7 @@ namespace AARTWeb.Models
                             var rs = result1.Result;
                             dynamic data = JsonConvert.DeserializeObject(rs);
                             string value = Convert.ToString(data);
-                            InsertAudit("Submit activity", value, "Success");
+                          //  InsertAudit("Submit activity", value, "Success");
 
                             return value;
                         }
@@ -1477,7 +1480,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Submit activity", ex.Message, "Error");
+               // InsertAudit("Submit activity", ex.Message, "Error");
                 return null;
 
             }
@@ -1495,6 +1498,7 @@ namespace AARTWeb.Models
                 vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
                 vo.Status = "I";
                 vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
 
                 var responseTask = httpClient.PutAsJsonAsync("Product/SubmitSecAsignRecordByUser", vo);
                 
@@ -1510,7 +1514,7 @@ namespace AARTWeb.Models
                         var rs = result1.Result;
                         dynamic data = JsonConvert.DeserializeObject(rs);
                         string value = Convert.ToString(data);
-                        InsertAudit("Submit section", value, "Success");
+                      //  InsertAudit("Submit section", value, "Success");
 
                         return value;
                     }
@@ -1530,6 +1534,7 @@ namespace AARTWeb.Models
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
                 vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
+                vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
 
                 vo.Status = "I";
                 var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
@@ -1546,7 +1551,7 @@ namespace AARTWeb.Models
                         var rs = result1.Result;
                         dynamic data = JsonConvert.DeserializeObject(rs);
                         string value = Convert.ToString(data);
-                        InsertAudit("Submit activity", value, "Success");
+                      //  InsertAudit("Submit activity", value, "Success");
 
                         return value;
                     }

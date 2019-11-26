@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AART</title>
     <link rel="icon" type="image/png" href="~/Themes/Images/favicon.png">
+    <script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
 
     <link href="~/Content/Site.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
@@ -12,7 +13,7 @@
     @RenderSection("styles", false)
     <style type="text/css">
 
-            .fotr {
+        .fotr {
             position: fixed;
             z-index: 99999999;
             width: 100%;
@@ -21,7 +22,10 @@
             padding: 10px;
             opacity: 0.8;
         }
-             .lg-pd{ position:fixed !important;}
+
+        .lg-pd {
+            position: fixed !important;
+        }
         /*.footer {
             position: absolute;
             right: 0;

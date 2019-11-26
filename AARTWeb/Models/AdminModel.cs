@@ -137,7 +137,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Message = data.error;
                             users = GetAllUsers();
-                            InsertAudit("Add user", Message, "Failed");
+                            //InsertAudit("Add user", Message, "Failed");
 
                             return Message;
 
@@ -148,7 +148,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Message = data.warning;
                             users = GetAllUsers();
-                            InsertAudit("Add user", Message, "Failed");
+                            //InsertAudit("Add user", Message, "Failed");
 
                             return Message;
 
@@ -158,7 +158,7 @@ namespace AARTWeb.Models
                             IsSuccess = true;
                             Message = data.info;
                             users = GetAllUsers();
-                            InsertAudit("Add user", Message, "Success");
+                            //InsertAudit("Add user", Message, "Success");
 
                             return Message;
 
@@ -234,7 +234,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.error;
-                            InsertAudit("Update user details", Message, "Failed");
+                            //InsertAudit("Update user details", Message, "Failed");
 
                         }
                         else if (value.Contains("warning"))
@@ -242,7 +242,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.warning;
-                            InsertAudit("Update user details", Message, "Failed");
+                            //InsertAudit("Update user details", Message, "Failed");
                         }
                         else
                         {
@@ -250,7 +250,7 @@ namespace AARTWeb.Models
                             Message = value;
                             System.Threading.Thread.Sleep(1000);
                             users = GetAllUsers();
-                            InsertAudit("Update user details", Message, "Failed");
+                            //InsertAudit("Update user details", Message, "Failed");
                             return Message;
                         }
                     }
@@ -309,7 +309,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Warning = true;
                             Message = data.error;
-                            InsertAudit("Add new role", Message, "Failed");
+                            //InsertAudit("Add new role", Message, "Failed");
 
                             return Message;
                         }
@@ -318,7 +318,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Warning = true;
                             Message = data.warning;
-                            InsertAudit("Add new role", Message, "Failed");
+                            //InsertAudit("Add new role", Message, "Failed");
 
                             return Message;
                         }
@@ -326,7 +326,7 @@ namespace AARTWeb.Models
                         {
                             IsSuccess = true;
                             Message = data.info;
-                            InsertAudit("Add new role", Message, "Success");
+                            //InsertAudit("Add new role", Message, "Success");
 
                             return Message;
                         }
@@ -364,7 +364,7 @@ namespace AARTWeb.Models
                     RoleDescription = obj.role_description,
                     Status = rS,
                     LastModifiedBy = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()),
-                    LastModifiedDate = DateTime.Now.ToString()
+                    LastModifiedDate = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss")
                 };
 
 
@@ -385,7 +385,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Warning = true;
                             Message = value;
-                            InsertAudit("Update role details", Message, "Failed");
+                            //InsertAudit("Update role details", Message, "Failed");
 
                         }
                         else if (value.Contains("warning"))
@@ -393,7 +393,7 @@ namespace AARTWeb.Models
                             IsSuccess = false;
                             Warning = true;
                             Message = value;
-                            InsertAudit("Update role details", Message, "Failed");
+                            //InsertAudit("Update role details", Message, "Failed");
 
                         }
                         else
@@ -401,7 +401,7 @@ namespace AARTWeb.Models
                             IsSuccess = true;
                             Message = value;
                             roles = GetAllRoles();
-                            InsertAudit("Update role details", Message, "Success");
+                            //InsertAudit("Update role details", Message, "Success");
                             return Message;
                         }
                     }

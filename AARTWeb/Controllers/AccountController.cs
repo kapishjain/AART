@@ -13,13 +13,15 @@ namespace AARTWeb.Controllers
     {
         // GET: Account
         LoginViewModel model = new LoginViewModel();
-       
-   
+
+
 
         //public ActionResult Index()
         //{
         //    return View();
         //}
+      
+
         public ActionResult Login()
         {
             var model = new LoginViewModel();
@@ -59,15 +61,18 @@ namespace AARTWeb.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel mdl)
         {
+            TempData["username"] = mdl.UserName;
+            TempData["Password"] = mdl.Password;
 
             string enteredUserName = mdl.UserName;
             string enteredPassword = mdl.Password;
+           // string mode = "Login";
 
             if ((enteredUserName != null && enteredUserName.Length > 0) && (enteredPassword != null && enteredPassword.Length > 0))
             {
-                LoginViewModel model1 =model.validateuser(mdl.UserName, mdl.Password);
+                LoginViewModel model1 =model.validateuser(mdl.UserName, mdl.Password, mdl.mode);
                 if (model1.error == null && model.error == null)
-                {
+                    {
                     if (model.Status == "I")
                     {
                         return RedirectToAction("ChangePassword", "Account", new { area = "" });
@@ -88,7 +93,10 @@ namespace AARTWeb.Controllers
                     }
                     else
                         return RedirectToAction("AuthorAssignment", "Home", new { area = "" });
-
+                    //model.error = "Want to loggout from other system.";
+                    ////ViewData["Error"] = "Want to loggout from other system.";
+                    //ViewBag.Error = "Want to loggout from other system.";
+                    //return View(model);
                 }
                 else
                 {
@@ -102,6 +110,65 @@ namespace AARTWeb.Controllers
             }
             
             return View(model);                                 
+        }
+        [HttpPost]
+
+        public ActionResult ReLogin(string username,string password,string mode)
+        {
+
+            string enteredUserName = TempData["username"].ToString();
+            string enteredPassword = TempData["Password"].ToString();
+            // string mode = "Login";
+
+            if ((enteredUserName != null && enteredUserName.Length > 0) && (enteredPassword != null && enteredPassword.Length > 0))
+            {
+                LoginViewModel model1 = model.validateuser(enteredUserName, enteredPassword, mode);
+                if (model1.error == null && model.error == null)
+                {
+                    if (model.Status == "I")
+                    {
+                      //  return RedirectToAction("ChangePassword", "Account", new { area = "" });
+                        return Json(new { result = "Redirect", url = Url.Action("ChangePassword", "Account") });
+
+                    }
+                    if (model.role_name == "Administrator")
+                    {
+                       // return RedirectToAction("Admin", "Admin", new { area = "" });
+                        return Json(new { result = "Redirect", url = Url.Action("Admin", "Admin") });
+                    }
+                    else if (model.role_name == "Manager")
+                    {
+                        return Json(new { result = "Redirect", url = Url.Action("Manager", "Home") });
+
+                       // return RedirectToAction("Manager", "Home", new { area = "" });
+                    }
+                    else if (model.role_name == "Author")
+                    {
+                        return Json(new { result = "Redirect", url = Url.Action("Author", "Home") });
+
+                       // return RedirectToAction("Author", "Home", new { area = "" });
+                    }
+                    else
+                        return Json(new { result = "Redirect", url = Url.Action("AuthorAssignment", "Home") });
+
+                   // return RedirectToAction("AuthorAssignment", "Home", new { area = "" });
+                    //model.error = "Want to loggout from other system.";
+                    ////ViewData["Error"] = "Want to loggout from other system.";
+                    //ViewBag.Error = "Want to loggout from other system.";
+                    //return View(model);
+                }
+                else
+                {
+                    if (model1.error == null)
+
+                        return View(model);
+                    else
+                        return View(model1);
+
+                }
+            }
+
+            return View(model);
         }
         public ActionResult ForgotPassword()
         {

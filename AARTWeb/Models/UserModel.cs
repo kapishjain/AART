@@ -80,7 +80,7 @@ namespace AARTWeb.Models
                             {
                                 objumdl.Message = data.warning;
                                 objumdl.Warning = true;
-                                InsertAudit("Add user", Message, "Failed");
+                              //  InsertAudit("Add user", Message, "Failed");
 
                                 return objumdl;
                             }
@@ -88,7 +88,7 @@ namespace AARTWeb.Models
                             {
                                 objumdl.Message = data.info;
                                 objumdl.IsSuccess = true;
-                                InsertAudit("Add user", Message, "Success");
+                               // InsertAudit("Add user", Message, "Success");
 
                                 return objumdl;
                             }
@@ -100,7 +100,7 @@ namespace AARTWeb.Models
             catch (Exception ex)
             {
                 error = ex.Message;
-                InsertAudit("Add user", error, "Error");
+               // InsertAudit("Add user", error, "Error");
 
                 return objumdl;
             }

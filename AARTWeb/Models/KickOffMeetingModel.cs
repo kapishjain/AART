@@ -225,7 +225,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.error;
-                            InsertAudit("Reassign user for actvity", Message, "Failed");
+                            //InsertAudit("Reassign user for actvity", Message, "Failed");
 
                         }
                         else if (value.Contains("warning"))
@@ -233,7 +233,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.warning;
-                            InsertAudit("Reassign user for actvity", Message, "Failed");
+                          //  InsertAudit("Reassign user for actvity", Message, "Failed");
 
                         }
                         else
@@ -241,7 +241,7 @@ namespace AARTWeb.Models
                             IsSuccess = true;
                             Message = data.info;
                             getAssActByProIdList = GetAssignedActivitybyProDocIdList(pro_doc_id);
-                            InsertAudit("Reassign user for actvity", Message, "Success");
+                           // InsertAudit("Reassign user for actvity", Message, "Success");
 
                             return value;
                         }
@@ -290,7 +290,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.error;
-                            InsertAudit("Reassign user for section", Message, "Failed");
+                          //  InsertAudit("Reassign user for section", Message, "Failed");
 
                         }
                         else if (value.Contains("warning"))
@@ -298,7 +298,7 @@ namespace AARTWeb.Models
                             Warning = true;
                             IsSuccess = false;
                             Message = data.warning;
-                            InsertAudit("Reassign user for section", Message, "Failed");
+                         //   InsertAudit("Reassign user for section", Message, "Failed");
 
                         }
                         else
@@ -306,7 +306,7 @@ namespace AARTWeb.Models
                             IsSuccess = true;
                             Message = data.info;
                             getAssSecByProIdList = GetAssignedSectionbyProDocIdList(pro_doc_id);
-                            InsertAudit("Reassign user for section", Message, "Success");
+                          //  InsertAudit("Reassign user for section", Message, "Success");
 
                             return value;
                         }
@@ -399,7 +399,7 @@ namespace AARTWeb.Models
                             {
                                 Message = data.warning;
                                 Warning = true;
-                                InsertAudit("Insert Kick-Off Metting", Message, "Failed");
+                              //  InsertAudit("Insert Kick-Off Metting", Message, "Failed");
 
                                 return value;
                             }
@@ -407,7 +407,7 @@ namespace AARTWeb.Models
                             {
                                 Message = data.error;
                                 Warning = true;
-                                InsertAudit("Insert Kick-Off Metting", Message, "Failed");
+                              //  InsertAudit("Insert Kick-Off Metting", Message, "Failed");
 
                                 return value;
                             }
@@ -415,7 +415,7 @@ namespace AARTWeb.Models
                             {
                                 Message = data.info;
                                 IsSuccess = true;
-                                InsertAudit("Insert Kick-Off Metting", Message, "Success");
+                               // InsertAudit("Insert Kick-Off Metting", Message, "Success");
 
                                 return value;
                             }
@@ -426,7 +426,7 @@ namespace AARTWeb.Models
             }
             catch (Exception ex)
             {
-                InsertAudit("Insert Kick-Off Metting", ex.Message, "Erroe");
+              //  InsertAudit("Insert Kick-Off Metting", ex.Message, "Erroe");
 
                 return null;
             }
