@@ -33,7 +33,15 @@ namespace AARTWeb.Controllers
             var res = model.GetAllUsers();
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult GetUsersexpectadmin()
+        {
+            var model = new AdminModel();
+            var res = model.GetAllUsers();
+            var product = res.Where(item => (item.role_id.role_name != "Administrator" && item.role_id.role_name != "Manager"));
 
+            return Json(product, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult GetRoles() {
             var model = new AdminModel();

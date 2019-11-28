@@ -397,12 +397,24 @@
 
                                 }
                                 else {
-                                    if (productdtls.productMappingTable != null)
+                                    $("#project_Assignments").hide();
+                                    $("#activity_Assignments").hide();
+                                    $("#section_Assignments").hide();
+
+                                    if (productdtls.productMappingTable != null) {
                                         prodoc = productdtls.productMappingTable;
-                                    if (productdtls.activity != null)
+                                        $("#project_Assignments").show();
+                                    }
+                                    if (productdtls.activity != null) {
                                         activity = productdtls.activity;
-                                    if (productdtls.section != null)
+                                        $("#activity_Assignments").show();
+
+                                    }
+                                    if (productdtls.section != null) {
                                         section = productdtls.section;
+                                        $("#section_Assignments").show();
+
+                                    }
                                     prodocdiv();
                                     // $("#pendingworkdiv").show();
                                     //  $("#pendingworkdiv").dialog("open");
@@ -415,7 +427,7 @@
 
                                         height: "500px",
 
-                                        title: "User cannot be deactivated due to following open project or activities or sections",
+                                        title: "User cannot be deactivated or change role due to following open project or activities or sections",
 
                                         visible: false,
 
@@ -452,67 +464,67 @@
                 },
                 pageSize: 20
             });
-		$("#grid").kendoGrid({
-			dataSource: usersDataSource,
-			height: 550,
-			sortable: true,
-			 pageable: {
-                    alwaysVisible: false,
-                    pageSizes: [10, 20, 50,100]
+            $("#grid").kendoGrid({
+                dataSource: usersDataSource,
+                height: 650,
+                sortable: true,
+                pageable: {
+                    //alwaysVisible: false,
+                    pageSizes: [10, 20, 50, 100, 'All']
                 },
-			toolbar: [{ name: "create", text: "Add New User" }],
-			columns: [
-				{ field: "user_name", title: "UserName", width: "120px" },
-				{
-					field: "name", title: "Name", width: "120px",
-				},
-				{
-					field: "status", title: "Status",
-					template: '#if(status) { # Active # } else { # InActive # } #',
-					width: "120px", editor: editCheck
-				},
-				{ field: "email_id", title: "EmailID", width: "120px" },
-				//{ field: "country", title: "Country", editor: countryDropDownEditor, width: "140px" },
-				//{
-				//	field: "phone_number", title: "Phone Number", width: "120px"
-				//},
-				{ field: "role_id", title: "Role", width: "180px", editor: categoryDropDownEditor, template: "#=role_id.role_name#" },
-				{
-					field: "is_locked", title: "Is Locked",
-					template: '# if(is_locked) { # Locked # } else { # UnLocked # } #',
-					width: "120px", editor: editCheck1
-				},
-				{ command: [{ name: "edit", text: { update: "Update User" } }], title: "&nbsp;", width: "250px" }],
-			editable: "inline",
-			edit: function (e) {
+                toolbar: [{ name: "create", text: "Add New User" }],
+                columns: [
+                    { field: "user_name", title: "UserName", width: "120px" },
+                    {
+                        field: "name", title: "Name", width: "120px",
+                    },
+                    {
+                        field: "status", title: "Status",
+                        template: '#if(status) { # Active # } else { # InActive # } #',
+                        width: "120px", editor: editCheck
+                    },
+                    { field: "email_id", title: "EmailID", width: "120px" },
+                    //{ field: "country", title: "Country", editor: countryDropDownEditor, width: "140px" },
+                    //{
+                    //	field: "phone_number", title: "Phone Number", width: "120px"
+                    //},
+                    { field: "role_id", title: "Role", width: "180px", editor: categoryDropDownEditor, template: "#=role_id.role_name#" },
+                    {
+                        field: "is_locked", title: "Is Locked",
+                        template: '# if(is_locked) { # Locked # } else { # UnLocked # } #',
+                        width: "120px", editor: editCheck1
+                    },
+                    { command: [{ name: "edit", text: { update: "Update User" } }], title: "&nbsp;", width: "250px" }],
+                editable: "inline",
+                edit: function (e) {
 
-                if (!e.model.isNew()) {
-                    e.container.find("input[name='user_name']").each(function () { $(this).attr("disabled", "disabled") });
-                    if (e.model.role_id.role_name == "Administrator") {
-                        e.container.find("input[name='status']").each(function () { $(this).attr("disabled", "disabled") });
-                        //e.container.find("input[name='phone_number']").each(function () { $(this).attr("disabled", "disabled") });
-                        e.container.find("input[name='role_id']").data("kendoDropDownList").enable(false);
-                        e.container.find("input[name='is_locked']").each(function () { $(this).attr("disabled", "disabled") });
+                    if (!e.model.isNew()) {
+                        e.container.find("input[name='user_name']").each(function () { $(this).attr("disabled", "disabled") });
+                        if (e.model.role_id.role_name == "Administrator") {
+                            e.container.find("input[name='status']").each(function () { $(this).attr("disabled", "disabled") });
+                            //e.container.find("input[name='phone_number']").each(function () { $(this).attr("disabled", "disabled") });
+                            e.container.find("input[name='role_id']").data("kendoDropDownList").enable(false);
+                            e.container.find("input[name='is_locked']").each(function () { $(this).attr("disabled", "disabled") });
+                        }
                     }
-                }
 
-				if (e.model.isNew()) {
-					var update = $(e.container).parent().find(".k-grid-update");
-					$(update).html('<span class="k-icon k-i-update"></span>Add User');
-				}
-			},
-			//dataBound: function (e) {
-			//	var grid = $("#grid").data("kendoGrid");
-			//	var columns = grid.options.columns;
-			//	if (columns.length > 0) {
-			//		for (var i = 0; i < columns.length; i++) {
-			//			if (columns[i].field == "email_id") {
-			//				mergeGridRows("grid", "Phone Number")
-			//			}
-			//		}
-			//	}
-			//}
-		});
+                    if (e.model.isNew()) {
+                        var update = $(e.container).parent().find(".k-grid-update");
+                        $(update).html('<span class="k-icon k-i-update"></span>Add User');
+                    }
+                },
+                //dataBound: function (e) {
+                //	var grid = $("#grid").data("kendoGrid");
+                //	var columns = grid.options.columns;
+                //	if (columns.length > 0) {
+                //		for (var i = 0; i < columns.length; i++) {
+                //			if (columns[i].field == "email_id") {
+                //				mergeGridRows("grid", "Phone Number")
+                //			}
+                //		}
+                //	}
+                //}
+            });
 
 			function formatNumber(data) {
 				numValidation("", data);
@@ -521,6 +533,7 @@
                             var rolegridval;
 
             var rolesDataSource = new kendo.data.DataSource({
+
                 schema: {
                     model: {
                         id: "role_id",
@@ -636,24 +649,44 @@
                                 }
                                 else {
                                     //console.log(e.responseText);
+                                                                        console.log(e);
+
                                     var roleupdate = JSON.parse(e.responseText);
-                                    console.log(roleupdate);
                                     if (roleupdate.user.length == 0 && roleupdate.master_Template.length == 0 && roleupdate.master_Section.length == 0 && roleupdate.assigned_Template.length == 0 && roleupdate.assined_Section.length == 0) {
                                         swal("Update successfully");
                                     }
                                     else {
-                                          //  var roleuser, rolemastertem, rolemastersec, roleasstem, roleassec;
-
-                                        if (roleupdate.user != null)
+                                        //  var roleuser, rolemastertem, rolemastersec, roleasstem, roleassec;
+                                        $("#usertab").hide();
+                                        $("#masteractivity").hide();
+                                        $("#mastersection").hide();
+                                        $("#assignedactivity").hide();
+                                        $("#assignedsection").hide();
+                                        if (roleupdate.user != null) {
                                             roleuser = roleupdate.user;
-                                        if (roleupdate.master_Template != null)
+                                            $("#usertab").show();
+
+                                        }
+                                        if (roleupdate.master_Template != null) {
                                             rolemastertem = roleupdate.master_Template;
-                                        if (roleupdate.master_Section != null)
+                                            $("#masteractivity").show();
+
+                                        }
+                                        if (roleupdate.master_Section != null) {
                                             rolemastersec = roleupdate.master_Section;
-                                        if (roleupdate.assigned_Template != null)
+                                            $("#mastersection").show();
+
+                                        }
+                                        if (roleupdate.assigned_Template != null) {
                                             roleasstem = roleupdate.assigned_Template;
-                                        if (roleupdate.assined_Section != null)
+                                            $("#assignedactivity").show();
+
+                                        }
+                                        if (roleupdate.assined_Section != null) {
                                             roleassec = roleupdate.assined_Section;
+                                            $("#assignedsection").show();
+
+                                        }
                                         rolediv();
                                         var myWindow = $("#pendingrolediv");
                                         myWindow.kendoWindow({
@@ -703,13 +736,12 @@
                         }
                     }
                 },
-                pageSize: 50,
             });
 
             $("#role-grid").kendoGrid({
                 dataSource: rolesDataSource,
                 sortable: true,
-                //pageable: true,
+                pageable: true,
                 //height: 550,
                 toolbar: [{ name: "create", text: "Add New Role" }],
                 columns: [
@@ -718,7 +750,7 @@
                     {
                         field: "status", title: "Status",
                         template: '<input type="checkbox"  #if(status === "A"){#= checked="checked" #}else{ }# disabled="true"/>',
-                       // template: '#if(status) { # Active # } else { # InActive # } #',
+                        // template: '#if(status) { # Active # } else { # InActive # } #',
 
                         width: "120px", editor: editCheck2,
                         //width: "120px", editor: editCheck
@@ -1173,9 +1205,9 @@
                 <div class="panel with-nav-tabs panel-primary">
                     <div class="panel-heading">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab3primary" data-toggle="tab">Project Assignments</a></li>
-                            <li><a href="#tab4primary" data-toggle="tab"> Activity Assignments</a></li>
-                            <li><a href="#tab5primary" data-toggle="tab"> Section Assignments</a></li>
+                            <li class="active" id="project_Assignments" style="display:none"><a href="#tab3primary" data-toggle="tab" >Project Assignments</a></li>
+                            <li id="activity_Assignments" style="display:none"><a href="#tab4primary" data-toggle="tab"> Activity Assignments</a></li>
+                            <li id="section_Assignments" style="display:none"><a href="#tab5primary" data-toggle="tab"> Section Assignments</a></li>
                         </ul>
                     </div>
                     <div class="panel-body pop-pd">
@@ -1211,11 +1243,11 @@
             <div class="panel with-nav-tabs panel-primary">
                 <div class="panel-heading">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#role1primary" data-toggle="tab">User</a></li>
-                        <li><a href="#role2primary" data-toggle="tab"> Master Activity</a></li>
-                        <li><a href="#role3primary" data-toggle="tab"> Master Assignments</a></li>
-                        <li><a href="#role4primary" data-toggle="tab"> Assigned Activity</a></li>
-                        <li><a href="#role5primary" data-toggle="tab"> Assigned Assignments</a></li>
+                        <li id="usertab" style="display:none" class="active"><a href="#role1primary" data-toggle="tab">User</a></li>
+                        <li id="masteractivity" style="display:none"><a href="#role2primary" data-toggle="tab"> Master Activity</a></li>
+                        <li id="mastersection" style="display:none"><a href="#role3primary" data-toggle="tab"> Master Assignments</a></li>
+                        <li id="assignedactivity" style="display:none"><a href="#role4primary" data-toggle="tab"> Assigned Activity</a></li>
+                        <li id="assignedsection" style="display:none"><a href="#role5primary" data-toggle="tab"> Assigned Assignments</a></li>
                     </ul>
                 </div>
                 <div class="panel-body pop-pd">

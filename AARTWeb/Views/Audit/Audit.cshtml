@@ -49,10 +49,12 @@
             dataSource: datasource,            
             height: 750,
             reorderable: true,
+                       toolbar: ["excel"],
+
             sortable: true,
             pageable: {
-                    alwaysVisible: false,
-                    pageSizes: [100, 200, 500]
+                    //alwaysVisible: false,
+                    pageSizes: [100, 200, 500,1000,'All']
                 },
             resizable: true,   
             groupable: true,
