@@ -302,16 +302,39 @@ namespace AARTWeb.Models
         //}
         public string GetMACAddress()
         {
-            string addr = "";
-            foreach (NetworkInterface n in NetworkInterface.GetAllNetworkInterfaces())
-            {
-                if (n.OperationalStatus == OperationalStatus.Up)
-                {
-                    addr += n.GetPhysicalAddress().ToString();
-                    break;
-                }
-            }
-            return addr;
+            //string addr = "";
+            //foreach (NetworkInterface n in NetworkInterface.GetAllNetworkInterfaces())
+            //{
+            //    if (n.OperationalStatus == OperationalStatus.Up)
+            //    {
+            //        addr += n.GetPhysicalAddress().ToString();
+            //        break;
+            //    }
+            //}
+
+            var macAddr =
+    (
+        from nic in NetworkInterface.GetAllNetworkInterfaces()
+        where nic.OperationalStatus == OperationalStatus.Up
+        select nic.GetPhysicalAddress().ToString()
+    ).FirstOrDefault();
+            return macAddr;
+
+            //System.Web.HttpContext context = System.Web.HttpContext.Current;
+            //string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            //string addr = "";
+
+            //if (!string.IsNullOrEmpty(ipAddress))
+            //{
+
+            //    string[] addresses = ipAddress.Split(',');
+            //    if (addresses.Length != 0)
+            //    {
+            //        addr= addresses[0];
+            //    }
+
+            //}
+            //return addr;
         }
         public static bool IsValid(string Password)
         {

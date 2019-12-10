@@ -7,7 +7,17 @@
 }
 <link href="~/Themes/css/aart_style.css" rel="stylesheet" />
 <link href="~/Content/Site.css" rel="stylesheet" />
+<style type="text/css">
+       .emptdv{
+    padding-top:170px;
+    }
 
+</style>
+@*<script>
+    function alert(){
+       alert(@Html.ValidationSummary(true, "Hatalı giriş. Lütfen tekrar deneyiniz."))
+    }
+</script>*@
 @*<div class="row ">
         <div class="col-md-8 login">
             <section id="loginForm">
@@ -111,49 +121,92 @@
     <div id="container_demo">
 
         <div class="col-sm-6 art-log-agn">
-            <a href="https://www.anclacorp.com/aart">
+            <div class="emptdv">
+             <a href="https://www.anclacorp.com/aart">
                 <img src="~/Themes/Images/aart-logo2.png" />
             </a>
+            </div>
         </div>        
         <div id="wrapper" class="col-sm-6">
-
             <div id="login" class="animate form">
                 @using (Html.BeginForm("Login", "Account",
                 FormMethod.Post, new { role = "form" }))
                 {
                     <h1>Log in</h1>
 
+
                     if (Model != null)
                     {
                         if (Model.error != null)
                         {
-                            <div style="color:red;">@Model.error</div>
-                        }
-                    }
-                    <p>
-                        <label for="username" class="uname" data-icon="u"> Your email or username </label>
-                        @Html.TextBoxFor(m => m.UserName,
-                                               new { @class = "" })
-                        @Html.ValidationMessageFor(m => m.UserName,
-                         "", new { @class = "text-danger" })
-                    </p>
-                    <p>
-                        <label for="password" class="youpasswd" data-icon="p"> Your password </label>
-                        @Html.PasswordFor(m => m.Password, new { @class = "" })
-                        @Html.ValidationMessageFor(m => m.Password,
-                         "", new { @class = "text-danger" })
-                    </p>
-                    @*<p class="keeplogin">
-                        <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
-                        <label for="loginkeeping">Keep me logged in</label>
-                    </p>*@
-                    <p class="login button">
-                        <input type="submit" value="Login" />
-                    </p>
-                    <p class="change_link">
-                        @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
-                    </p>
-                }
+                            if (Model.error == "This user already logged in.Do you want to ternimate other active session")
+                            {
+                                Model.mode = "CHANGELOGIN";
+                <script type="text/javascript">
+                                 var r = confirm('@Model.error');
+                                if (r == true) {
+                                    //alert("You pressed OK!");
+                                    $.ajax({
+                                        url: "@Url.Action("ReLogin", "Account")",
+                                        data: { 'username': $("#UserName").val(), 'password': $("#Password").val(), 'mode': 'CHANGELOGIN' },
+                                        type: "post",
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response.result == 'Redirect')
+                                                window.location = response.url;
+                                        },
+                                        //error: function (err) {
+                                        //    alert(err);
+                                        //    console.log(err);
+                                        //}
+                                    });
+                                } else {
+                                    //alert("You pressed Cancel!");
+                                 //   return;
+                                }
+
+                                // alert('@Model.error')</script>
+
+                            }
+                            else
+                            {
+            <div style="color:red;">@Model.error</div>
+                            }
+                            // @if (!String.IsNullOrEmpty(Model.error))
+                            //  {
+            @:@*<script type="text/javascript">alert(@Model.error)</script>*@
+            // }
+        }
+            @*if (!String.IsNullOrEmpty(ViewBag["Errors"]))
+    {
+        @:<script type="text/javascript">alert('@ViewBag["Errors"]')</script>
+    }*@
+        }
+            <p>
+                <label for="username" class="uname" data-icon="u"> Your email or username </label>
+                @Html.TextBoxFor(m => m.UserName,
+                                       new { @class = "" })
+                @Html.ValidationMessageFor(m => m.UserName,
+                 "", new { @class = "text-danger" })
+            </p>
+            <p>
+                <label for="password" class="youpasswd" data-icon="p"> Your password </label>
+                @Html.PasswordFor(m => m.Password, new { @class = "" })
+                @Html.ValidationMessageFor(m => m.Password,
+                 "", new { @class = "text-danger" })
+            </p>
+            @*<p class="keeplogin">
+        <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
+        <label for="loginkeeping">Keep me logged in</label>
+    </p>*@
+            <p class="login button">
+                <input type="submit" value="Login" />
+
+            </p>
+            <p class="change_link">
+                @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
+            </p>
+        }
             </div>
         </div>
 

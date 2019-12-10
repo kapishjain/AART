@@ -757,7 +757,7 @@ namespace AARTWeb.Models
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + Convert.ToInt32(product.leadAuthor.user_id) + "&coauserid=" + Convert.ToInt32(product.co_author.user_id) + "&lmodifiedby=" + Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()) + "&lmodifieddate=" + DateTime.Now.ToString("dd/MMM/yyyy"), "");
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + product.leadAuthor.user_id + "&coauserid=" + (product.co_author == null ? product.co_authorid : Convert.ToInt32(product.co_author.user_id) ) + "&lmodifiedby=" + Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()) + "&lmodifieddate=" + DateTime.Now.ToString("dd/MMM/yyyy"), "");
                     responseTask.Wait();
                     var result = responseTask.Result;
 

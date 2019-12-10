@@ -5,15 +5,85 @@
 
 <link href="~/Themes/css/style.css" rel="stylesheet" />
 
-<h2>Select user</h2>
+
 <style type="text/css">
     .border-left-black {
         border-left: .25rem solid #828181 !important;
     }
 </style>
+<style>
+
+    /*.w3-tab {
+        color: blue !important;
+    background-color: cornflowerblue;
+    }*/
+    button, select {
+        border-radius: 4px;
+        text-transform: none;
+        height: 35px;
+        padding: 0px 15px 0px 20px;
+        margin-top: 11px;
+        margin-right: 6px;
+    }
+
+    .w3-button:hover {
+        border-radius: 4px;
+        color: #000 !important;
+        background-color: #93c8df !important;
+        border: none;
+    }
+
+    .tabs h2 {
+        margin-bottom: 0px;
+        color: #27477c;
+        margin: 0px;
+        padding-bottom: 15px;
+        font-weight: 600;
+        font-size: 23px;
+    }
+
+    .w3-bar {
+        float: right;
+    }
+
+    .w3-tab {
+        border-radius: 4px;
+        color: #FFF !important;
+        background-color: #106297 !important;
+        border: none;
+    }
+
+    .rvprd {
+        color: #eb5627;
+        font-size: 15px;
+    }
+
+    .kck-tle {
+        color: #27477c;
+        font-weight: 600;
+        font-size: 26px;
+    }
+
+    .rvsdate {
+        float: right;
+    }
+
+    .pd {
+        padding: 0px;
+    }
+
+    .attdc-btns {
+        float: right;
+        padding-right: 0px;
+    }
+</style>
+
 <script>
 
     $(document).ready(function () {
+//        $("#toggle").click(function(){
+//  $("#ActivityDashboard").slideToggle(1000);
+//});
         $("#users-dropdown").kendoDropDownList({
             optionLabel: {
                 user_id: '0',
@@ -409,212 +479,249 @@
     }
 </script>
 
-<div id="users-dropdown"></div>
+<div class="col-sm-6" style="margin-top:15px;">
+    <h2 style="float:left;padding-right:15px; padding-bottom:12px;">Select user:</h2>
+    <div id="users-dropdown"></div>
+</div>
 
-<div id="dashboard">
-    <div id="ActivityDashboard">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h1 mb-0 text-gray-800">Activity</h1>
+
+
+<div class="col-md-12">
+
+    <div class="panel with-nav-tabs panel-primary">
+        <div class="panel-heading">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1primary" data-toggle="tab" style="font-size: 1.75rem;">Section</a></li>
+                <li><a href="#tab2primary" data-toggle="tab"style="font-size: 1.75rem;">Activity</a></li>
+            </ul>
         </div>
-        <div class="row">
+        <div class="panel-body">
+            <div class="tab-content">
+                <div class="tab-pane in active" id="tab1primary">
+                    <div class="col-sm-12 col-md-12 usr-tlenm">
+                        @*<h2>Attendances</h2>*@
+                        <div id="SectionDashboard">
+                            @*<div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h1 mb-0 text-gray-800">Section</h1>
+                            </div>*@
 
+                            <div class="row justify-content-md-center">
 
-            <div class="col-xl-2 col-md-6 mb-3" id="activitycount">
-                <div class="card border-left-black shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-count"></div>
+                                <div class="col-xl-2 col-md-6 mb-3" id="secactivitycount">
+                                    <div class="card border-left-black shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-count"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xl-2 col-md-6 mb-3" id="secTobeinitiated">
+                                    <div class="card border-left-info shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-tobeInit"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-2 col-md-6 mb-3" id="secOngoing">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 sec-ongoi"></div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submit-for-review"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submitted"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-reverted"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-tobeInit"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="tab-pane atv-tab" id="tab2primary">
 
-            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+                    @*<h2>Assignment & Timelines</h2>*@
+                    <div id="ActivityDashboard">
 
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 act-ongoi"></div>
+                        <div class="row">
+
+
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitycount">
+                                <div class="card border-left-black shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-count"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submit-for-review"></div>
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityTobeinitiated">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-tobeInit"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submitted"></div>
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityOngoing">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
+
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 act-ongoi"></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
-                <div class="card border-left-danger shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-reverted"></div>
+
+                            <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submit-for-review"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="SectionDashboard">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h1 mb-0 text-gray-800">Section</h1>
-            </div>
 
-            <div class="row justify-content-md-center">
-
-                <div class="col-xl-2 col-md-6 mb-3" id="secactivitycount">
-                    <div class="card border-left-black shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-gray-700 text-uppercase mb-1">Total Count</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-count"></div>
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-submitted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 act-reverted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
 
                 </div>
 
-                <div class="col-xl-2 col-md-6 mb-3" id="secTobeinitiated">
-                    <div class="card border-left-info shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">To be initiated</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-tobeInit"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-2 col-md-6 mb-3" id="secOngoing">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">On Going</div>
-
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 sec-ongoi"></div>
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-xl-2 col-md-6 mb-3" id="activitySubmitted">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Submitted for Review</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submit-for-review"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-submitted"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-2 col-md-6 mb-3" id="activityReverted">
-                    <div class="card border-left-danger shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reverted</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 sec-reverted"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
-@*<div id="row">
-    <div class="col-xl-4 col-lg-5">
-        <div class="card shadow mb-6">
-            <div class="card-body">
-                <div class="">
-                    <div id="activity-chart"></div>
-                </div>
-            </div>
-        </div>
+@*<div id="dashboard">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h1 mb-0 text-gray-800">Activity</h1>
     </div>
-    <div class="col-xl-4 col-lg-5">
-        <div class="card shadow mb-6">
-            <div class="card-body">
-                <div class="">
-                    <div id="section-chart"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
 </div>*@
+@*<div id="row">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-6">
+                <div class="card-body">
+                    <div class="">
+                        <div id="activity-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-6">
+                <div class="card-body">
+                    <div class="">
+                        <div id="section-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 
 <div id="divchart">
     <div class="col-xl-6 col-lg-5">
@@ -627,13 +734,13 @@
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
                     @*<div id="k-dropdownlist"></div>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>*@
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>*@
                 </div>
             </div>
             <!-- Card Body -->
@@ -655,7 +762,7 @@
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
-                   
+
                 </div>
             </div>
             <!-- Card Body -->

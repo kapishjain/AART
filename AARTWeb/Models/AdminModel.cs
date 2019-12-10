@@ -175,7 +175,6 @@ namespace AARTWeb.Models
         {
             using (var httpClient = new HttpClient())
             {
-                //httpClient.BaseAddress = new Uri("http://192.168.1.81:9810/api/user/");
                 var url = ConfigurationManager.AppSettings["WEBAPIURL"];
 
                 httpClient.BaseAddress = new Uri(url);

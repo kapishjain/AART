@@ -202,8 +202,10 @@ namespace AARTWeb.Models
                 var nObj = new
                 {
                     ProDoc_Template_id = pObj.pro_doc_template,
-                    User_id = pObj.user.user_id
-                };
+                    User_id = pObj.user.user_id,
+                    Last_Modified_By = HttpContext.Current.Session["UserID"].ToString(),
+                    Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss")
+            };
 
                 pList.Add(nObj);
 
@@ -266,7 +268,9 @@ namespace AARTWeb.Models
                 var nObj = new
                 {
                     ProDoc_Section_Assignment_id = sObj.pro_doc_section_assignment_id,
-                    User_id = sObj.user_id.user_id
+                    User_id = sObj.user_id.user_id,
+                    Last_Modified_By = HttpContext.Current.Session["UserID"].ToString(),
+                    Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss")
                 };
 
                 sList.Add(nObj);

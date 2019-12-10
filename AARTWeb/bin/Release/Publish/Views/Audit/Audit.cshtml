@@ -17,6 +17,15 @@
             },
             pageSize: 50,
             schema: {
+                parse: function(data) {
+              var events = [];
+              for (var i = 0; i < data.length; i++) {
+                var event = data[i];
+                event.EventDate = kendo.toString(event.Modified_Date, 'dd/MMM/yyyy');
+                events.push(event);
+              }
+              return events;
+            },
 				model: {       					
                     fields: {
                         User: { type: "string", editable: false },
@@ -25,7 +34,7 @@
                         Ip_Address: { type: "string", editable: false },
                         Description: { type: "string", editable: false },                        
                         Status: { type: "string", editable: false },                        
-                        Modified_Date: { type: "string", editable: false },                        
+                        Modified_Date: { type: "date", editable: false },                        
                     }
                 }
             },
@@ -40,10 +49,12 @@
             dataSource: datasource,            
             height: 750,
             reorderable: true,
+                       toolbar: ["excel"],
+
             sortable: true,
             pageable: {
-                    alwaysVisible: false,
-                    pageSizes: [100, 200, 500]
+                    //alwaysVisible: false,
+                    pageSizes: [100, 200, 500,1000,'All']
                 },
             resizable: true,   
             groupable: true,
@@ -52,10 +63,9 @@
                 { field: "User", title: "User" },
                 { field: "Module", title: "Module" },
                 //{ field: "Changes", title: "Changes" },
-                { field: "Ip_Address", title: "Ip Address" },
+                { field: "Ip_Address", title: "MAC Address" },
                 { field: "Description", title: "Description" },
-                { field: "Status", title: "Status" },
-                { field: "Modified_Date", title: "Modified Date" },                                        
+                              { field: "Modified_Date", title: "Modified Date", template: "#= kendo.toString(Modified_Date, 'dd/MMM/yyyy HH:mm') #" },                                        
             ],                       
         });
 	});

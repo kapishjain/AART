@@ -158,23 +158,21 @@
         background-color: gray !important;
         cursor: not-allowed !important;
     }
-    
-        .page-template {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
+
+    .page-template {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
 
         .page-template .header {
             position: absolute;
             top: 30px;
             left: 30px;
             right: 30px;
-
             border-bottom: 1px solid #888;
-
             text-align: center;
             font-size: 18px;
         }
@@ -182,11 +180,10 @@
         .page-template .footer {
             position: absolute;
             bottom: 30px;
-            color:#333;
+            color: #333;
             /*left: 30px;
             right: 60px;*/
         }
-
 </style>
 <script type="text/x-kendo-template" id="template">
     <div class="tabstrip" id="detailschart">
@@ -210,39 +207,58 @@
     </div>
 
 </script>
+<style>
+    .k-pdf-export #imgproductwisecount {
+        display: none;
+    }
+     .k-pdf-export #imgductwisecount {
+        display: none;
+    }
+      .k-pdf-export #imgtotalreport {
+        display: none;
+    }
+      .k-pdf-export .k-dropdown {
+        display: none;
+    }
+    
+</style>
 <script type="x/kendo-template" id="page-template4">
     <div class="page-template">
         <div class="header">
-            <p style="font-size: 22px;">Manager Dashboard</p>
-            <div style="float: right; font-size: 16px;">#: getcurrentdate() #</div>
+            <p style="font-size: 22px;  font-weight: bold;">Manager Dashboard</p>
+            <div style="float: right; font-size: 16px; font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
     </div>
 </script>
 <script type="x/kendo-template" id="page-template">
     <div class="page-template">
         <div class="header">
-            <p>Product Wise Count</p>
-            <div style="float: right; font-size: 12px;">#: getcurrentdate() #</div>
+            <p style="font-size: 22px;  font-weight: bold;">Product Wise Count</p>
+            <div style="float: right; font-size: 12px;  font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
     </div>
 </script>
 <script type="x/kendo-template" id="page-template1">
     <div class="page-template">
         <div class="header">
-            <p>Document Wise Count</p>
-            <div style="float: right; font-size: 12px;">#: getcurrentdate() #</div>
+            <p style="font-size: 22px;  font-weight: bold;">Document Wise Count</p>
+            <div style="float: right; font-size: 12px; font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
     </div>
-    </script>
-    <script type="x/kendo-template" id="page-template2">
-        <div class="page-template">
-            <div class="header">
-                <p>Total Count</p>
-                <div style="float: right; font-size: 12px;">#: getcurrentdate() #</div>
-            </div>
+</script>
+<script type="x/kendo-template" id="page-template2">
+    <div class="page-template">
+        <div class="header">
+            <p style="font-size: 22px;  font-weight: bold;">Total Count</p>
+            <div style="float: right; font-size: 12px; font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
-    </script>
+    </div>
+</script>
 <script>
+//    $(window).resize(function()
+//{
+//    kendo.resize($("div.k-chart[data-role='chart']"));
+//});
     function getcurrentdate() {
         var d = new Date(),
             minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
@@ -278,17 +294,17 @@
             //        });
             //    });
             kendo.drawing.drawDOM($("#downloaddashbaord"), {
-                paperSize: ["800mm", "300mm"],
+                paperSize: ["600mm", "300mm"],
                 margin: { left: "0cm", top: "4cm", right: "0cm", bottom: "0cm" },
                 template: $("#page-template4").html()
             }).then(function (group) {
                 // Render the result as a PDF file
-                return kendo.drawing.exportPDF(group);
+                return kendo.drawing.exportImage(group);
             }).done(function (data) {
                 // Save the PDF file
                 kendo.saveAs({
                     dataURI: data,
-                    fileName: "Manager Dashboard.pdf",
+                    fileName: "Manager Dashboard.png",
                     proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                 });
 
@@ -301,12 +317,12 @@
                 template: $("#page-template").html()
             }).then(function (group) {
                 // Render the result as a PDF file
-                return kendo.drawing.exportPDF(group);
+                return kendo.drawing.exportImage(group);
             }).done(function (data) {
                 // Save the PDF file
                 kendo.saveAs({
                     dataURI: data,
-                    fileName: "Product Wise count.pdf",
+                    fileName: "Product Wise count.png",
                     proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                 });
 
@@ -319,12 +335,12 @@
                 template: $("#page-template1").html()
             }).then(function (group) {
                 // Render the result as a PDF file
-                return kendo.drawing.exportPDF(group);
+                return kendo.drawing.exportImage(group);
             }).done(function (data) {
                 // Save the PDF file
                 kendo.saveAs({
                     dataURI: data,
-                    fileName: "Document Wise Count.pdf",
+                    fileName: "Document Wise Count.png",
                     proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                 });
 
@@ -337,12 +353,12 @@
                 template: $("#page-template2").html()
             }).then(function (group) {
                 // Render the result as a PDF file
-                return kendo.drawing.exportPDF(group);
+                return kendo.drawing.exportImage(group);
             }).done(function (data) {
                 // Save the PDF file
                 kendo.saveAs({
                     dataURI: data,
-                    fileName: "Total report.pdf",
+                    fileName: "Total report.png",
                     proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                 });
 
@@ -660,10 +676,13 @@
                     color: "#1cc88a"
                 }
             ],
-
+            chartArea: {
+        height: 350
+    },
             valueAxis: {
                 labels: {
                     format: "{0}",
+                                            rotation: "auto"
                     //color: "#ffffff"
                 },
                 line: {
@@ -712,7 +731,10 @@
 			},
 			dataSource: {
 				data: vData
-			},
+            },
+            chartArea: {
+        height: 350
+    },
             //chartArea: { background: "#63778B" },
             //seriesDefaults: {
             //    type: "column"
@@ -756,7 +778,9 @@
                     //color: "#ffffff"
                 }
 			 },
-
+             chartArea: {
+        height: 350
+    },
 			 dataSource: {
 				data: tData
 			},
@@ -954,6 +978,11 @@
                            defaultValue: { user_name: "", user_id: "" }, validation: {
                                required: true,
                                validateLeadAuthor: function (input) {
+                                   
+                                   if (input.is("[name=leadAuthor]") && selectedLeadAuthor == "Select LeadAuthor") {
+                                       input.attr("data-validateLeadAuthor-msg", "Please select Author Name");
+                                       return false;
+                                   }
                                    if (input.is("[name=leadAuthor]") && selectedLeadAuthor == selectedCoAuthor) {
                                        input.attr("data-validateLeadAuthor-msg", "LeadAuthor can't be same as CoAuthor");
                                        return false;
@@ -1016,11 +1045,11 @@
            height: 750,
            reorderable: true,
            sortable: true,
-           pageable:true,
-           //{
-            //        alwaysVisible: false,
-            //        pageSizes: [10, 20, 50,100]
-            //    },
+           pageable:
+           {
+                    //alwaysVisible: false,
+                    pageSizes: [10, 20, 50,100,'All']
+                },
            resizable: true,
            edit: function (e) {
 					selectedCoAuthor = e.model.co_author.user_name;
@@ -1244,9 +1273,12 @@
                 filter: { field: "pro_doc_id", operator: "eq", value: e.data.pro_doc_id }
 
             },
+
             //dependencies: dependenciesDataSource,
             views: [
-                { type: "month", selected: true },
+                                { type: "week", selected: true },
+
+                { type: "month", selected: false },
                 { type: "year", selected: false }
             ],
 
@@ -1256,8 +1288,8 @@
             showWorkDays: false,
             columns: [
                 { field: "title", title: "Title", editable: true, sortable: true },
-                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
-                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
+                { field: "start", title: "Start Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
+                { field: "end", title: "End Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
             ],
         }).data("kendoGantt");
 
@@ -1318,11 +1350,11 @@
                 //{ field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100 ,editable: true, sortable: true },
                 //{ field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width:100 ,editable: true, sortable: true }
                 { field: "title", title: "Title", editable: true, sortable: true },
-                { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
-                { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
+                { field: "start", title: "Start Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
+                { field: "end", title: "End Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
             ],
             height: 500,
-            width: 1400,
+            width: 1200,
             editable: false,
             showWorkHours: false,
             showWorkDays: false,
@@ -1333,7 +1365,9 @@
         myWindow.kendoWindow({
 
             modal: true,
+            width: "1100px",
 
+            height: "600px",
 
             title: "Details of that product.",
 
@@ -1351,6 +1385,9 @@
             },
 
         }).data("kendoWindow").center().open();
+         $(document).bind("kendo:skinChange", function() {
+                    gantt.refresh();
+                });
     }
 
 </script>
@@ -1561,7 +1598,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist1" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" style="width: 50px;" id="imgproductwisecount" />
+                            <img src="~/Themes/Images/images.png" id="imgproductwisecount" />
 
                         </div>
                     </div>
@@ -1584,7 +1621,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" style="width: 50px;" id="imgductwisecount" />
+                            <img src="~/Themes/Images/images.png"  id="imgductwisecount" />
 
                         </div>
                     </div>
@@ -1609,7 +1646,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist2" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" style="width: 50px;" id="imgtotalreport" />
+                            <img src="~/Themes/Images/images.png" id="imgtotalreport" />
                             @*<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                                     <div class="dropdown-header">Dropdown Header:</div>
                                     <a class="dropdown-item" href="#">Action</a>

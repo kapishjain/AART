@@ -17,6 +17,7 @@
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" />
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
@@ -28,24 +29,39 @@
             #page-container .firstsection-inner {
           
                 width: 100%;
-                min-height: 84vh;
+                min-height: 81vh;
               
             }
 
         #content-wrap {
             padding-bottom: 2.5rem; /* Footer height */
         }
+        .fotr-cpy {
+            padding-top: 10px;
+            background: #dbdbdb;
+            display: table;
+            width: 100%;
+            margin-top:10px;
+             position: fixed;
+
+bottom: 0;
+        }
+
 
         /*html{overflow: hidden;}*/
 
         .k-grid-header th.k-header {
             background-color: #1a5087 !important;
+ white-space: initial !important;
+            vertical-align: top;
+            font-size: inherit !important;
+color: white !important;
         }
 
         /*.k-grid-header th.k-header {
             white-space: initial !important;
         }*/
-
+       
         .k-grid td {
             /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
                             background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0.15)));
@@ -90,7 +106,10 @@
             /*.k-grid tr:hover {background-color:#629fea !important;}*/
             .k-grid-header th.k-header > .k-link {
                 color: white !important;
-                font-size: initial;
+                font-size: inherit;
+display: table-row;
+ white-space: pre-line !important;
+            vertical-align: top;
             }
 
         .k-detail-cell .k-tabstrip .k-content {
@@ -133,10 +152,10 @@
                 body {
                   position: relative;
                   margin: 0;
-                  padding-bottom: 6rem;
+                  /*padding-bottom: 6rem;*/
                   min-height: 100%;
                   font-family: "Helvetica Neue", Arial, sans-serif;
-                }*/
+                }
         .avatar {
             vertical-align: middle;
             width: 50px;
@@ -230,9 +249,16 @@
         }
         .navbar-inverse .navbar-nav > li > a {
             color: #265690 !important;
-            font-size: large !important;
-            padding-top: 25% !important;
+            /*font-size: large !important;
+            padding-top: 25% !important;*/
+
         }
+.navbar-nav > li {
+
+    float: left;
+    padding-top: 12px;
+    font-size: 16px;
+
 }
         /*#footer {
             height: 35px;
@@ -280,7 +306,7 @@
 
     </script>*@
 </head>
-<body style="background-color: #e0e2ea59;">
+<body style="background-color: #f5f6fa;">
     @*#ACCFF29C,#f8f9fc*@
 
 
@@ -296,7 +322,7 @@
                     @*<img style="width: 200px;" src="~/Themes/Images/AART.png" />*@
                     @*<img style="width: 200px;" src="~/Themes/Images/aart-new-logo.jpg" />*@
                     <a href="@Url.Action("Login", "Account")" title="Dashboard" class="links">
-                        <img alt="Widget View" style="width: 200px;" src="@Url.Content("~/Themes/Images/AART-NEW-COLOR-LOGO.png")">
+                        <img alt="Widget View" style="width: 170px;" src="@Url.Content("~/Themes/Images/AART-NEW-COLOR-LOGO.png")">
 
                     </a>
                     @*<img style="width: 200px;" src="~/Themes/Images/AART-NEW-COLOR-LOGO.png" />*@
@@ -324,8 +350,8 @@
                         Help
                     </a>
                 </li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
                                 <a href="@Url.Action("Help", "Help")"
                                    type="submit"
                                    target="_blank">
@@ -343,8 +369,8 @@
                             @*<li>@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>*@
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("Users Status", "UsersStatus", "Home")</li>
 
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 3%">
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
                                 <a href="@Url.Action("Help", "Help")"
                                    type="submit"
                                    target="_blank">
@@ -365,8 +391,8 @@
                             @*<li class="navigation">@Html.ActionLink("Dashboard", "Author", "Home")</li>*@
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Author" ? "active" : "")">@Html.ActionLink("Dashboard", "Author", "Home")</li>
 
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
                                 <a href="@Url.Action("Help", "Help")"
                                    type="submit"
                                    target="_blank">
@@ -387,8 +413,8 @@
                             @*<li class="navigation">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>*@
                             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "AuthorAssignment" ? "active" : "")">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>
 
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" style="padding-top: 1%">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" style="padding-top: 4%">
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
                                 <a href="@Url.Action("Help", "Help")"
                                    type="submit"
                                    target="_blank">
@@ -475,7 +501,7 @@
      
             @*<p>&copy; @DateTime.Now.Year - AART</p>
                 <p>Product by <b>Ancla Consultancy Services</b></p>*@
-            <div>
+            <div class="fotr-cpy">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
                     <p>&copy; @DateTime.Now.Year - AART </p>
                 </div>

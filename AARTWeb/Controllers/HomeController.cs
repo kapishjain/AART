@@ -329,8 +329,10 @@ namespace AARTWeb.Controllers
         [HttpPost]
         public JsonResult GetFilteredCoAuthors(string selectedItem) {
             var model = objprmdl.GetUsersForCoAuthor();
-            var itemToRemove = model.Single(r => r.user_name == selectedItem);
-            model.Remove(itemToRemove);
+            var itemToRemove1 = model.FirstOrDefault(r => r.user_name == selectedItem);
+
+           // var itemToRemove = model.Single(r => r.user_name == selectedItem);
+            model.Remove(itemToRemove1);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 

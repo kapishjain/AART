@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AART</title>
     <link rel="icon" type="image/png" href="~/Themes/Images/favicon.png">
+    <script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
 
     <link href="~/Content/Site.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
@@ -12,7 +13,19 @@
     @RenderSection("styles", false)
     <style type="text/css">
 
+        .fotr {
+            position: fixed;
+            z-index: 99999999;
+            width: 100%;
+            background: #fff;
+            bottom: 0;
+            padding: 10px;
+            opacity: 0.8;
+        }
 
+        .lg-pd {
+            position: fixed !important;
+        }
         /*.footer {
             position: absolute;
             right: 0;
@@ -31,43 +44,44 @@
         }*/
     </style>
 </head>
-<body >
+<body>
 
     <div class="container body-content">
         @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("AART", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("AART", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+
+                    <div id="user-tools">
+                        Welcome,<strong>@Session["UserName"] </strong>.
+
+                        @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                        /
+                        @Html.ActionLink("Logout", "Login", "Account", new { area = "" })
+                    </div>
+
                 </div>
-
-                <div id="user-tools">
-                    Welcome,<strong>@Session["UserName"] </strong>.
-
-                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                    /
-                    @Html.ActionLink("Logout", "Login", "Account", new { area = "" })
-                </div>
-
-            </div>
-        </div>*@
+            </div>*@
         @RenderBody()
-        
-            @*<p>&copy; @DateTime.Now.Year - AART</p>
-        <p>Product by <b>Ancla Consultancy Services</b></p>*@
-            <div >
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
-                    <p>&copy; @DateTime.Now.Year - AART </p>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
-                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
-                </div>
-            </div>
-     
+
+        @*<p>&copy; @DateTime.Now.Year - AART</p>
+            <p>Product by <b>Ancla Consultancy Services</b></p>*@
+
+
+    </div>
+    <div class="container-fluid fotr">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
+            <p>&copy; @DateTime.Now.Year - AART </p>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
+            <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

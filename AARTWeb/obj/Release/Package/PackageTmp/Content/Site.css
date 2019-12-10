@@ -5,8 +5,10 @@
     width:100%;
 }*/
 
+.navbar-fixed-top{ position:relative;}
+
 #page-container {
-    padding-top: 90px;
+    /*padding-top: 90px;*/
     display: table;
     width: 100%;
 }
@@ -51,7 +53,7 @@ textarea {
     z-index: 999999;
     position: relative;
 }
-.art-log-agn img{ padding-top:170px;}
+/*.art-log-agn img{ padding-top:170px;}*/
 
 .navbar-brand {
     /* float: left; */

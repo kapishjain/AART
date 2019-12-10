@@ -390,6 +390,7 @@
                             if (e.status == 200) {
 
                                 var productdtls = JSON.parse(e.responseText);
+                                var checkmodule = true;
                                 //alert(productdtls);
                                 //console.log(productdtls);
                                 if (productdtls.info != null) {
@@ -400,19 +401,50 @@
                                     $("#project_Assignments").hide();
                                     $("#activity_Assignments").hide();
                                     $("#section_Assignments").hide();
+                                    $("#prodocdiv").hide();
+                                    $("#KOMTemplate").hide();
+                                    $("#KOMSection").hide();
+                                    //$("#tab3primary").removeClass(" active in");
+                                    //$("#tab4primary").removeClass(" active in");
+                                    //$("#tab5primary").removeClass(" active in");
+
 
                                     if (productdtls.productMappingTable != null) {
                                         prodoc = productdtls.productMappingTable;
                                         $("#project_Assignments").show();
+                                        $("#prodocdiv").show();
+                                        ////document.getElementById("project_Assignments").style.display = "block";
+                                        //// $("#project_Assignments").addClass(" active");
+                                        //if (checkmodule) {
+                                        //    checkmodule = false;
+                                        //    $("#tab3primary").addClass(" active in");
+
+                                        //}
+
                                     }
                                     if (productdtls.activity != null) {
                                         activity = productdtls.activity;
                                         $("#activity_Assignments").show();
+                                        //document.getElementById("activity_Assignments").style.display = "block";
+                                        $("#KOMTemplate").show();
+                                        //if (checkmodule) {
+                                        //    checkmodule = false;
+                                        //    $("#tab4primary").addClass(" active in");
+
+                                        //}
 
                                     }
                                     if (productdtls.section != null) {
                                         section = productdtls.section;
                                         $("#section_Assignments").show();
+                                        //document.getElementById("section_Assignments").style.display = "block";
+
+                                        $("#KOMSection").show();
+                                        //if (checkmodule) {
+                                        //    checkmodule = false;
+                                        //    $("#tab5primary").addClass(" active in");
+
+                                        //}
 
                                     }
                                     prodocdiv();
@@ -649,7 +681,7 @@
                                 }
                                 else {
                                     //console.log(e.responseText);
-                                                                        console.log(e);
+                                                                   //     console.log(e);
 
                                     var roleupdate = JSON.parse(e.responseText);
                                     if (roleupdate.user.length == 0 && roleupdate.master_Template.length == 0 && roleupdate.master_Section.length == 0 && roleupdate.assigned_Template.length == 0 && roleupdate.assined_Section.length == 0) {
@@ -736,13 +768,18 @@
                         }
                     }
                 },
+                                pageSize: 20
+
             });
 
             $("#role-grid").kendoGrid({
                 dataSource: rolesDataSource,
+               // height: 650,
                 sortable: true,
-                pageable: true,
-                //height: 550,
+                pageable: {
+                    //alwaysVisible: false,
+                    pageSizes: [10, 20, 50, 100, 'All']
+                },
                 toolbar: [{ name: "create", text: "Add New Role" }],
                 columns: [
                     { field: "role_name", title: "Role Name", width: "120px" },
@@ -755,8 +792,8 @@
                         width: "120px", editor: editCheck2,
                         //width: "120px", editor: editCheck
                     },
-                    { command: ["edit"], title: "&nbsp;", width: "250px" }],
-                editable: "inline",
+                    { command: [{ name: "edit", text: { update: "Update Role" } }], title: "&nbsp;", width: "250px" }],
+                  editable: "inline",
                 edit: function (e) {
 
                     if (!e.model.isNew()) {
@@ -771,6 +808,19 @@
                         $(update).html('<span class="k-icon k-i-update"></span>Add Role');
                     }
                 },
+
+
+
+
+
+
+
+
+
+
+
+
+               
             });
 
         function reloadPage() {
@@ -1212,19 +1262,19 @@
                     </div>
                     <div class="panel-body pop-pd">
                         <div class="tab-content">
-                            <div class="tab-pane fade usr-tlenm in active" id="tab3primary">
+                            <div class="tab-pane fade usr-tlenm in active" id="tab3primary" >
                                 <div class="col-sm-12 col-md-12 usr-tlenm lst-pd">
-                                    <div id="prodocdiv"></div>
+                                    <div id="prodocdiv" ></div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade usr-tlenm" id="tab4primary">
+                            <div class="tab-pane fade usr-tlenm" id="tab4primary" >
                                 <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
-                                  <div id="KOMTemplate"></div>
+                                  <div id="KOMTemplate" ></div>
                                 </div>
                             </div>
                             <div class="tab-pane fade usr-tlenm" id="tab5primary">
                                 <div class="col-sm-12 col-md-12 tble-tlenam lst-pd">
-                                    <div id="KOMSection"></div>
+                                    <div id="KOMSection" ></div>
                                 </div>
                             </div>
 

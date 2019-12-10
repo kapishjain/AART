@@ -22,6 +22,10 @@
 @*<script src="https://code.jquery.com/jquery-1.10.2.js"></script>*@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <style>
+    .popupfield {
+     padding:0px !important;
+        height:40px !important;
+        margin-top:15px !important;}
     th {
         text-align: center !important;
         padding: 15px;
@@ -89,17 +93,17 @@
     }
 
     .blue {
-        background-color: #6495edb5;
+        background-color: #8db0ee;
         color: black;
     }
 
     .orange {
-        background-color: #ffa500a6;
+        background-color: #ffc459;
         color: black;
     }
 
     .green {
-        background-color: #98d0627a;
+        background-color: #cee9b4;
         color: black;
     }
 
@@ -277,9 +281,10 @@
                     id: "ProDoc_Template_id",
                     fields: {
                         Action: { type: 'string', editable: false },
+                                                Status: { type: 'string', editable: false },
+
                         Template_Content: { type: 'string', editable: true },
-                        Status: { type: 'string', editable: false },
-                        ProductStatus: { type: 'string', editable: false },
+                        ProductStatus: { type: 'string', editable: true },
 
                     }
                 }
@@ -637,6 +642,8 @@
          wnd = $("#k-wnd").kendoWindow({
              width: 400,
              height: 150,
+             padding : 0,
+
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -664,8 +671,9 @@
 	function RevertActRecord(e) {
 
 		wnd = $("#k-wnd").kendoWindow({
-             width: 500,
-             height: 200,
+             width: 400,
+             height: 150,
+             padding : 0,
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -690,8 +698,9 @@
 	// window for accept functionality in section
     function AcceptRecord(e) {
          wnd = $("#k-wnd").kendoWindow({
-             width: 500,
-             height: 200,
+              width: 400,
+             height: 150,
+             padding : 0,
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -718,8 +727,9 @@
 	//window for revert functionality for sections
 	function RevertRecord(e) {
 		wnd = $("#k-wnd").kendoWindow({
-             width: 800,
-             height: 500,
+             width: 400,
+             height: 150,
+             padding : 0,
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -982,8 +992,9 @@
 
     function SubmitSecRecord(e) {
           wnd = $("#k-wnd").kendoWindow({
-             width: 500,
-             height: 200,
+             width: 400,
+             height: 150,
+             padding : 0,
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -1001,8 +1012,9 @@
 
     function SubmitActRecord(e) {
          wnd = $("#ka-wnd").kendoWindow({
-             width: 500,
-             height: 200,
+             width: 400,
+             height: 150,
+             padding : 0,
              title: "Comments",
              actions: ["Close"],
              visible: false,
@@ -1043,7 +1055,7 @@
     </div>
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control" />
+        <input type="text" id="comment" class="form-control popupfield" />
     </div>
 
     <br />
@@ -1065,7 +1077,7 @@
     </div>
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control" />
+        <input type="text" id="comment" class="form-control popupfield" />
     </div>
 
     <br />
@@ -1075,7 +1087,7 @@
 
 <script type="text/x-kendo-template" id="comment-template">
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control" />
+        <input type="text" id="comment" class="form-control popupfield" />
     </div>
 
     <br />
