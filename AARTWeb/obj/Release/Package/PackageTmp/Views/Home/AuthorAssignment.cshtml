@@ -14,6 +14,7 @@
     <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">*@
+@*<base href="http://192.168.1.142/AARTWEB/">*@
 
 <link href="~/Themes/css/style.css" rel="stylesheet" />
 
@@ -42,42 +43,118 @@
         -ms-user-select: none;
         user-select: none;
     }
-    .form-control {
-        display: block;
+    /*.form-control {
+            display: block;
+            width: 100%;
+
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        }*/
+    .popupfield {
+        padding: 0px !important;
+        height: 60px !important;
+        margin-top: 15px !important;
+    }
+    /*div.k-edit-form-container {
+            width: auto;
+            height: auto;
+        }*/
+
+    /*.k-edit-label {
+            width: 15% !important;
+            text-align: left !important;
+        }
+
+        .k-edit-field {
+            width: 80% !important;
+        }*/
+    /*
+        Increase the width of the edit form.
+        The default one is 400px.
+    */
+
+    .k-edit-form-container {
+        width: 100% !important;
+    }
+
+    .k-edit-form-container {
         width: 100%;
-        
-        font-size: 14px;
-        line-height: 1.42857143;
-        color: #555555;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-    }
-     .popupfield {
-     padding:0px !important;
-        height:40px !important;
-        margin-top:15px !important;}
-    div.k-edit-form-container {
-        width: auto;
-        height: auto;
+        /*height: 701px;*/
     }
 
-    .k-edit-label {
-        width: 15% !important;
-        text-align: left !important;
+    .k-edit-buttons {
+        bottom: -5% !important;
+    }
+    /*
+        Decrease the width of the edit form labels. The default one is 30%.
+        The new width should depend on the column titles.
+        Switch the text alignment to the left. By default, it is to the right.
+    */
+
+    .k-popup-edit-form .k-edit-label {
+        width: 5%;
+        text-align: left;
     }
 
-    .k-edit-field {
-        width: 80% !important;
+    /*
+        Increase the width of the textbox containers. The default one is 60%.
+        The sum of label and editor percentage widths should be around 90%, to make up for existing paddings.
+    */
+    .k-popup-edit-form .k-edit-field {
+        width: 90%;
+    }
+
+    .k-editor-dialog.k-editor-table-wizard-dialog.k-window-content {
+        width: 100% !important;
+        overflow: auto !important;
+    }
+
+    .k-editor-dialog.k-editor-table-wizard-dialog .k-tabstrip-wrapper .k-content {
+        height: 100% !important;
+    }
+
+    .k-window > div.k-popup-edit-form {
+        width: 100% !important;
+    }
+    /*
+        Expand the edit textboxes and any other Kendo UI widgets.
+        In case of unexpected side effects, use widget-specific classes, instead of .k-widget.
+    */
+    .k-popup-edit-form .k-edit-field > .k-textbox,
+    .k-popup-edit-form .k-edit-field > .k-widget:not(.k-tooltip) {
+        width: 98%;
+    }
+
+    .k-window {
+        visibility: visible;
+        display: block;
+        /*padding-top: 44px !important;*/
+        min-width: 90px;
+        min-height: 50px;
+        /*top: 1% !important;*/
+        left: 1% !important;
+        z-index: 10003;
+        opacity: 1;
+        transform: scale(1);
+        width: 98% !important;
+        height: 680px !important;
+    }
+
+    table.k-editor {
+        height: 335px !important;
     }
 
     .red {
@@ -130,33 +207,36 @@
         background-color: gray !important;
         cursor: not-allowed !important;
     }
-      .page-template {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
 
-        .page-template .header {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            right: 30px;
+    .page-template {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
 
-            border-bottom: 1px solid #888;
+    .k-grid table {
+        border-collapse: collapse;
+    }
 
-            text-align: center;
-            font-size: 18px;
-        }
+    .page-template .header {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        right: 30px;
+        border-bottom: 1px solid #888;
+        text-align: center;
+        font-size: 18px;
+    }
 
-        .page-template .footer {
-            position: absolute;
-            bottom: 30px;
-            color:#333;
-            /*left: 30px;
-            right: 60px;*/
-        }
+    .page-template .footer {
+        position: absolute;
+        bottom: 30px;
+        color: #333;
+        /*left: 30px;
+                right: 60px;*/
+    }
 </style>
 <script type="x/kendo-template" id="page-template">
     <div class="page-template">
@@ -166,6 +246,110 @@
         </div>
     </div>
 </script>
+<script type="text/x-kendo-template" id="insertSymbol-template">
+    <label for='templateTool1' style='vertical-align:middle;'>Insert Symbol:</label>
+    <select id='templateTool1' style='width:90px'>
+        <option value='1'>&Omega;</option>
+        <option value='2'>&reg;</option>
+        <option value='3'>&raquo;</option>
+        <option value='4'>&euro;</option>
+        <option value='5'>&pound;</option>
+        <option value='6'>&yen;</option>
+        <option value='7'>&copy;</option>
+        <option value='8'>&trade;</option>
+        <option value='9'>&plusmn;</option>
+        <option value='10'>&ne;</option>
+        <option value='11'>&le;</option>
+        <option value='12'>&ge;</option>
+        <option value='13'>&divide;</option>
+        <option value='14'>&Chi;</option>
+        <option value='15'>&infin;</option>
+        <option value='16'>&mu;</option>
+        <option value='17'>&alpha;</option>
+        <option value='18'>&beta;</option>
+        <option value='19'>&Pi;</option>
+        <option value='20'>&UnderBar;</option>
+    </select>
+
+</script>
+<script>
+    var MergeColumnCellsCommand = kendo.ui.editor.Command.extend({
+        exec: function () {
+            var range = this.lockRange(true),
+                currentTd = kendo.ui.editor.Dom.closest(range.endContainer, "td"),
+                columnIndex = kendo.ui.editor.Dom.findNodeIndex(currentTd);
+            nextTd = $(currentTd).parent().next().children()[columnIndex];
+
+            if (currentTd && nextTd) {
+                nextTd.remove();
+                $(currentTd).prop("rowspan", 2);
+            }
+
+            this.releaseRange(range);
+        }
+    });
+
+    var MergeRowCellsCommand = kendo.ui.editor.Command.extend({
+        exec: function () {
+            var range = this.lockRange(true),
+                currentTd = $(kendo.ui.editor.Dom.closest(range.endContainer, "td")),
+                nextTd = currentTd.next();
+
+            if (currentTd && nextTd) {
+                nextTd.remove();
+                currentTd.prop("colspan", 2);
+            }
+
+            this.releaseRange(range);
+        }
+    });
+
+    $.extend(kendo.ui.editor, {
+        MergeColumnCellsCommand: MergeColumnCellsCommand,
+        MergeRowCellsCommand: MergeRowCellsCommand
+    });
+
+    var mergeTool = kendo.ui.editor.TableModificationTool.extend({
+        command: function (commandArguments) {
+            var options = $.extend(commandArguments, this.options);
+
+            if (options.type == "column") {
+                return new MergeColumnCellsCommand($.extend(commandArguments, {}));
+            } else {
+                return new MergeRowCellsCommand($.extend(commandArguments, {}));
+            }
+        }
+    });
+
+    kendo.ui.editor.EditorUtils.registerTool(
+        "cellsMergeVertically",
+        new mergeTool({
+            type: "column",
+            action: "merge",
+            template: new kendo.ui.editor.ToolTemplate({
+                template: kendo.ui.editor.EditorUtils.buttonTemplate,
+                title: "Merge Next Column"
+            })
+        })
+    );
+
+    kendo.ui.editor.EditorUtils.registerTool(
+        "cellsMergeHorizontally",
+        new mergeTool({
+            type: "row",
+            action: "merge",
+            template: new kendo.ui.editor.ToolTemplate({
+                template: kendo.ui.editor.EditorUtils.buttonTemplate,
+                title: "Merge Next Row"
+            })
+        })
+    );
+</script>
+<script type="text/x-kendo-template" id="lineHeight-template">
+    <label for='templateTool' style='vertical-align:middle;'>Line spacing:</label>
+    <select id='templateTool' style='width:110px'><option value='120%'>Single</option><option value='180%'>1.5 lines</option><option value='240%'>Double</option></select>
+</script>
+
 <script>
       function getcurrentdate() {
         var d = new Date(),
@@ -176,7 +360,9 @@
             days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + hours + ':' + minutes + ampm;
     }
+
     $(document).ready(function () {
+
         $("#printToFile").click(function () {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
             //kendo.drawing.drawDOM($("#downloaddashbaord"))
@@ -369,7 +555,7 @@
             });
         });
     });
-    
+
     // submit functionality
                                 var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
 
@@ -838,7 +1024,7 @@
                         { field: "Reviewer_Datetime", title: "Date/Time" },
                         { field: "Status", title: "Status" },
                         { field: "Review_Comment", title: "Comment" },
-                        { command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
+                        //{ command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
                     ],
                     editable: false
                 }).data("kendoGrid");
@@ -851,7 +1037,7 @@
 
         dataWnd = $("#k-diffwnd").kendoWindow({
             width: 1000,
-            title: "Details",
+            title: "Contact Log",
             visible: false,
             modal: true
         }).data("kendoWindow");
@@ -889,7 +1075,7 @@
          wnd = $("#ka-wnd").kendoWindow({
              width: 500,
              height: 200,
-             title: "Comments",
+             title: "Contact Log",
              actions: ["Close"],
              visible: false,
              modal: true,
@@ -964,14 +1150,14 @@
                 { field: "document_name", title: "Document Name" },
                // { field: "document_template_id", title: "Action Id" },
                 { field: "action", title: "Action", width: "200px" },
-                { field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
+                //{ field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
                 { field: "target_timeline", title: "Target Timeline",  width: "140px" },
                 //{ field: "status", title: "Status" },
                 { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#"">#=status#</a>' },
 
-                { field: "template_content", title: "Template", encoded: false, editor: SectionEditor, width: "200px" },
-                { command: ["edit", { name: "Submit", click: SubmitActRecord }], width: "100px" },
-                                { command: [ {name: "View comments", click: OpenActData} ], width: "100px" }
+                { field: "template_content", title: "Comment", encoded: false, editor: SectionEditor, width: "200px" },
+                { command: [ { name: "Submit", click: SubmitActRecord }], width: "100px" },
+                                { command: [ {name: "Contact Log", click: OpenActData} ], width: "100px" }
 
                 //{
                 //    command: "edit", width: "100px"
@@ -1188,11 +1374,27 @@
         };
 
 
-        function SectionEditor(container, options) {
-            //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
-            $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
-                resizable: { content: true, toolbar: true },
-                tools: [
+    function SectionEditor(container, options) {
+
+        $('<textarea class="textarea" data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+            resizable: { content: true },
+            encoded: false,
+            execute: function(e) {
+                        var editor = this;
+                        if (e.name == "createtable") {
+                            setTimeout(function() {
+                                var table = $(editor.body).find("table:not(.custom-table)");
+                                table.addClass("custom-table");
+                                table.attr("style", "border-collapse: collapse; border: 1px solid black; ");
+                                table.find("tr td")
+                                    .each(function () {
+                                    var currentStyle = $(this).attr("style");
+                                    $(this).attr("style", currentStyle + " border: 1px solid black;");
+                                });
+                            }, 0);
+                        }
+                    },
+            tools: [
                 {
                     name: "fontName",
                     items: [
@@ -1213,8 +1415,34 @@
                         { text: "Trebuchet MS", value: "Trebuchet MS" },
                         { text: "Verdana", value: "Verdana" },
                         { text: "Webdings", value: "Webdings" },
-                        { text: "Wingdings", value: "Wingdings" }]
+                        { text: "Wingdings", value: "Wingdings" }],
                 },
+                {
+                    name: "fontSize",
+                    items: [
+                        { text: '8px', value: '8px' },
+                        { text: '10px', value: '10px' },
+                        { text: '13px', value: '13px' },
+                        { text: '16px', value: '16px' },
+                        { text: '18px', value: '18px' },
+                        { text: '24px', value: '24px' },
+                        { text: '26px', value: '26px' },
+                        { text: '28px', value: '28px' },
+                        { text: '36px', value: '36px' },
+                        { text: '48px', value: '48px' },
+                        { text: '72px', value: '72px' }
+                    ]
+                },
+                {
+                    name: "customTemplate",
+                    template: $("#lineHeight-template").html()
+                },
+                {
+
+                    name: "customTemplate1",
+                    template: $("#insertSymbol-template").html(),
+                },
+
                 "bold",
                 "italic",
                 "underline",
@@ -1241,16 +1469,59 @@
                 "addColumnRight",
                 "deleteRow",
                 "deleteColumn",
+                "cellsMergeVertically",
+                "cellsMergeHorizontally",
                 "viewHtml",
                 "formatting",
                 "cleanFormatting",
-                "fontSize",
                 "foreColor",
                 "backColor",
                 "print"
-            ]
-            });
-        };
+            ],
+            imageBrowser: {
+                messages: {
+                    dropFilesHere: "Drop files here"
+                },
+                transport: {
+                    read: {
+                        //url: "https://demos.telerik.com/kendo-ui/service/ImageBrowser/Read",
+                        url: '@Url.Action("Read", "ImageBrowser")',
+                        type: "post"
+
+                    },
+                    destroy: {
+                        url: '@Url.Action("Destroy", "ImageBrowser")',
+                        type: "POST"
+                    },
+                    create: {
+                        url: '@Url.Action("Create", "ImageBrowser")',
+                        type: "POST"
+                    },
+
+                    thumbnailUrl: '@Url.Action("Thumbnail", "ImageBrowser")',
+
+                    uploadUrl: '@Url.Action("Upload", "ImageBrowser")',
+                    imageUrl: '@Url.Action("Image", "ImageBrowser", new { path = "ID" })'.replace("ID", '{0}'),
+
+                }
+            },
+
+        });
+        $("#templateTool").kendoDropDownList({
+            change: function (e) {
+                $(".textarea").data("kendoEditor").body.style.lineHeight = e.sender.value();
+
+            }
+        });
+        $("#templateTool1").kendoDropDownList({
+            change: function (e) {
+                var inputValue = e.sender._inputValue();
+                var editor = $(".textarea").data("kendoEditor");
+                editor.exec("inserthtml", { html: inputValue });                //$('#editor').data('kendoEditor').exec("insertHtml", { html: inputValue });
+            },
+
+        });
+    };
 
 </script>
 
@@ -1270,12 +1541,12 @@
 
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control popupfield" />
+        <textarea id="comment" class="form-control popupfield" />
     </div>
 
     <br />
 
-    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitRecordByUser()" />
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitRecordByUser()" style="float: right;margin-right: 2%;" />
 </script>
 
 
@@ -1291,12 +1562,12 @@
     </div>
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control popupfield" />
+        <textarea id="comment" class="form-control popupfield" />
     </div>
 
     <br />
 
-    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" style="float: right;margin-right: 2%;" />
 
 </script>
 
@@ -1481,7 +1752,7 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Reviewed</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
                                             </div>
                                             @*<div class="col-auto">
@@ -1499,7 +1770,7 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Reviewed</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[0].toBeRevied</div>
                                             </div>
                                             @*<div class="col-auto">
@@ -1733,7 +2004,7 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Reviewed</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
                                             </div>
                                             @*<div class="col-auto">
@@ -1751,7 +2022,7 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Review</div>
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">To be Reviewed</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.getDashBoardDetails[1].toBeRevied</div>
                                             </div>
                                             @*<div class="col-auto">
@@ -1910,7 +2181,7 @@
     <br />
     <div class="col-sm-12 col-md-12 " id="divactivitygrid" style="display:none;">
         <h2>Activity Assigned</h2>
-       
+
         <div id="grid"></div>
     </div>
     <br />

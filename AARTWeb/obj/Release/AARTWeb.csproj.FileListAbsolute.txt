@@ -358,10 +358,13 @@ D:\AART\Azure download\AARTWeb\AARTWeb\bin\roslyn\vbc.rsp
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\roslyn\VBCSCompiler.exe
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\roslyn\VBCSCompiler.exe.config
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\Newtonsoft.Json.dll
-D:\AART\Azure download\AARTWeb\AARTWeb\bin\AARTServerVO.pdb
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\Newtonsoft.Json.xml
 D:\AART\Azure download\AARTWeb\AARTWeb\obj\Release\AARTWeb.csprojAssemblyReference.cache
 D:\AART\Azure download\AARTWeb\AARTWeb\obj\Release\AARTWeb.csproj.CoreCompileInputs.cache
 D:\AART\Azure download\AARTWeb\AARTWeb\obj\Release\AARTWeb.csproj.CopyComplete
 D:\AART\Azure download\AARTWeb\AARTWeb\obj\Release\AARTWeb.dll
 D:\AART\Azure download\AARTWeb\AARTWeb\obj\Release\AARTWeb.pdb
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.dll
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\Telerik.Web.Mvc.dll
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.pdb
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.xml

@@ -42,12 +42,18 @@
             display: table;
             width: 100%;
             margin-top:10px;
-             position: fixed;
-
+            position: absolute;
 bottom: 0;
+right: 0;
+left: 0;
+            
         }
 
+        html {
 
+    position:relative;
+    min-height:100%;
+}
         /*html{overflow: hidden;}*/
 
         .k-grid-header th.k-header {
@@ -150,11 +156,12 @@ display: table-row;
         /*.cyrght{ color:#fff;}
         .pwdby{ color:#fff;}*/
                 body {
-                  position: relative;
+                  /*position: relative;*/
                   margin: 0;
                   /*padding-bottom: 6rem;*/
                   min-height: 100%;
                   font-family: "Helvetica Neue", Arial, sans-serif;
+                  padding-bottom: 60px;
                 }
         .avatar {
             vertical-align: middle;

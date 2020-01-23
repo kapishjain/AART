@@ -184,6 +184,7 @@
             /*left: 30px;
             right: 60px;*/
         }
+  
 </style>
 <script type="text/x-kendo-template" id="template">
     <div class="tabstrip" id="detailschart">
@@ -211,16 +212,18 @@
     .k-pdf-export #imgproductwisecount {
         display: none;
     }
-     .k-pdf-export #imgductwisecount {
+
+    .k-pdf-export #imgductwisecount {
         display: none;
     }
-      .k-pdf-export #imgtotalreport {
+
+    .k-pdf-export #imgtotalreport {
         display: none;
     }
-      .k-pdf-export .k-dropdown {
+
+    .k-pdf-export .k-dropdown {
         display: none;
     }
-    
 </style>
 <script type="x/kendo-template" id="page-template4">
     <div class="page-template">
@@ -541,20 +544,40 @@
                 var kChart = $("#chart1").data("kendoChart");
                 //   alert(cType);
                 switch (cType) {
-                    case "Column":
-                        kChart.setOptions({ seriesDefaults: { type: 'column', stack: false } });
+                   case "Column":
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'column' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+
+                        }
                         break;
                     case "Bar":
-                        kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false } });
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'bar' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+                        }
                         break;
                     case "Donut":
-                        kChart.setOptions({ seriesDefaults: { type: 'donut', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'donut' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Pie":
-                        kChart.setOptions({ seriesDefaults: { type: 'pie', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'pie' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Funnel":
-                        kChart.setOptions({ seriesDefaults: { type: 'funnel', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'funnel' } });
+                         kChart.setOptions({
+                                seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "WaterFall":
                         kChart.setOptions({ seriesDefaults: { type: 'waterfall', stack: false } });
@@ -576,19 +599,39 @@
                 var kChart = $("#chart2").data("kendoChart");
                 switch (cType) {
                     case "Column":
-                        kChart.setOptions({ seriesDefaults: { type: 'column' } });
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'column' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+
+                        }
                         break;
                     case "Bar":
-                        kChart.setOptions({ seriesDefaults: { type: 'bar' } });
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'bar' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+                        }
                         break;
                     case "Donut":
                         kChart.setOptions({ seriesDefaults: { type: 'donut' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Pie":
                         kChart.setOptions({ seriesDefaults: { type: 'pie' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Funnel":
                         kChart.setOptions({ seriesDefaults: { type: 'funnel' } });
+                         kChart.setOptions({
+                                seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "WaterFall":
                         kChart.setOptions({ seriesDefaults: { type: 'waterfall' } });
@@ -708,7 +751,7 @@
             //    { name: "top-pane", background: "#000000" },
             //    ],
             tooltip: {
-                visible: true,
+                visible: false,
                 format: "{0}",
                 template: "#= series.name #: #= value #"
             }
@@ -876,8 +919,9 @@
         }
     }
 
-        	function LeadAuthorDropDown(container, options) {
-		$('<input class="lead_author" name="' + options.field + '"/>')
+    function LeadAuthorDropDown(container, options) {
+       
+		$('<input class="lead_author.user_name" name="' + options.field + '"/>')
 			.appendTo(container)
 			.kendoDropDownList({
 				optionLabel: "Select LeadAuthor",
@@ -894,15 +938,19 @@
 				},
 				select: function (e) {
 					var selItem = e.dataItem.user_name;
-					selectedLeadAuthor = selItem;
-					selLeadAuthId = e.dataItem.user_id;
+                    selectedLeadAuthor = selItem;
+                   // alert(selItem);
+                    selLeadAuthId = e.dataItem.user_id;
+                    leadAuthorid = selLeadAuthId;
+
 					$.ajax({
 				        url: '@Url.Action("GetFilteredCoAuthors", "Home")',
 						type: 'post',
 						dataType: 'json',
 						data: { selectedItem: selItem },
 						success: function (res) {
-							coAuthorData = res;
+                            coAuthorData = res;
+                           
 						},
 						error: function (err) {
 							swal(err);
@@ -912,17 +960,17 @@
 			});
 		};
 
-		$.ajax({
-			url: '@Url.Action("GetUsersForCoAuthor", "Home")',
-			type: 'post',
-			dataType: 'json',
-			success: function (res) {
-				coAuthorData = res;
-			},
-			error: function (err) {
-				swal(err);
-			}
-		})
+    $.ajax({
+        url: '@Url.Action("GetUsersForCoAuthor", "Home")',
+        type: 'post',
+        dataType: 'json',
+        success: function (res) {
+            coAuthorData = res;
+        },
+        error: function (err) {
+            swal(err);
+        }
+    });
 
 		function CoAuthorDropDown(container, options) {
 			$('<input class="coauthor" name="' + options.field + '"/>')
@@ -974,7 +1022,7 @@
                        document_name: { type: "string", editable: false, validation: { required: true } },
                        reporting_interval: { type: "string", editable: false, validation: { required: true } },
                        //todate: { type: "string", editable: false, validation: { required: true } },
-                       leadAuthor: {
+                       "leadAuthor": {
                            defaultValue: { user_name: "", user_id: "" }, validation: {
                                required: true,
                                validateLeadAuthor: function (input) {
@@ -983,11 +1031,11 @@
                                        input.attr("data-validateLeadAuthor-msg", "Please select Author Name");
                                        return false;
                                    }
-                                   if (input.is("[name=leadAuthor]") && selectedLeadAuthor == selectedCoAuthor) {
+                                   if (input.is("[name=leadAuthor.user_name]") && selectedLeadAuthor == selectedCoAuthor) {
                                        input.attr("data-validateLeadAuthor-msg", "LeadAuthor can't be same as CoAuthor");
                                        return false;
                                    }
-                                   if (input.is("[name=leadAuthor]") && selCoAuthId == selLeadAuthId) {
+                                   if (input.is("[name=leadAuthor.user_name]") && selCoAuthId == selLeadAuthId) {
                                        input.attr("data-validateLeadAuthor-msg", "LeadAuthor can't be same as CoAuthor");
                                        return false;
                                    }
@@ -995,16 +1043,17 @@
                                }
                            }
                        },
+                      
                        leadAuthorid: { type: "int", editable: false },
-                       co_author: {
+                       "co_author": {
                            defaultValue: { user_name: "", user_id: "" },
                            validation: {
                                validateCoAuthor: function (input) {
-                                   if (input.is("[name=co_author]") && selectedCoAuthor == selectedLeadAuthor) {
+                                   if (input.is("[name=co_author.user_name]") && selectedCoAuthor == selectedLeadAuthor) {
                                        input.attr("data-validateCoAuthor-msg", "CoAuthor can't be same as LeadAuthor");
                                        return false;
                                    }
-                                   if (input.is("[name=co_author]") && selCoAuthId == selLeadAuthId) {
+                                   if (input.is("[name=co_author.user_name]") && selCoAuthId == selLeadAuthId) {
                                        input.attr("data-validateCoAuthor-msg", "CoAuthor can't be same as LeadAuthor");
                                        return false;
                                    }
@@ -1016,12 +1065,15 @@
                        co_authorid: { type: "int", editable: false },
                        progress: { type: "string", editable: false, validation: { required: true } },
                        status: { type: "string", editable: false },
+                       reviewreport: { type: "string", editable: false },
                        completion_date: { type: "string", editable: false },
                        cutoff_date: { type: "string", editable: false },
                    }
                }
            },
            parameterMap: function (options, operation) {
+               console.log(options);
+               console.log(operation);
                if (operation != "read") {
                    return { models: options };
                }
@@ -1052,10 +1104,12 @@
                 },
            resizable: true,
            edit: function (e) {
+               //console.log(e.model.leadAuthor.user_name);
 					selectedCoAuthor = e.model.co_author.user_name;
 					selectedLeadAuthor = e.model.leadAuthor.user_name;
-					selLeadAuthId = e.model.leadAuthor.user_id;
-					selCoAuthId = e.model.co_author.user_id;
+               selLeadAuthId = e.model.leadAuthor.user_id;
+               selCoAuthId = e.model.co_author.user_id;
+
 				},
            filterable: {
                extra: false,
@@ -1070,6 +1124,8 @@
            columns: [
                {
                    field: "product_description", title: "Product Name",
+                                   
+
                    filterable: {
                        ui: cityFilter
                    }
@@ -1087,16 +1143,21 @@
                //    }
                //},
                {
-                   field: "leadAuthor", title: "Lead Author", editor: LeadAuthorDropDown, template: "#= leadAuthor.user_name#"
+                   field: "leadAuthor.user_name", title: "Lead Author", editor: LeadAuthorDropDown, template: "#= leadAuthor.user_name#",
+                  
                },
                {
-                   field: "co_author", title: "Co-Author", editor: CoAuthorDropDown, template: "#= co_author.user_name#"
+                   field: "co_author.user_name", title: "Co-Author", editor: CoAuthorDropDown, template: "#= co_author.user_name#",
+                    
                },
                {
                    field: "status", title: "Status", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" :  status==\"To be initiated\"? \"blue\" : status==\"Completed\"? \"greenwithcur\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>'
                },
                {
-                   field: "status", title: "Review Report", editable: false, template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Completed\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status = "#= status#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>'
+                   field: "reviewreport", title: "Review Report", attributes: { style: "cursor: pointer" }, template: '<a class="#: reviewreport==\"Late\"? \"red\" :  reviewreport==\"Not Applicable\"? \"white\" : reviewreport==\"Review Report\"? \"orange\" : reviewreport==\"Review Report\"? \"orange\" :\"white\"#"  href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status = "#= status#" }))">#=reviewreport#</a>'
+                    //                  field: "reviewreport", title: "Review Report"
+
+                   //field: "reviewreport", title: "Review Report", editable: false, template: '<a class="#:reviewreport==\"Not Applicable\"? \"white\" : reviewreport==\"Completed\"? \"green\" : status==\"Review Report\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status = "#= reviewreport#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>'
                },
                {
                    field: "completion_date", title: "Completion Date"
@@ -1114,33 +1175,33 @@
            excelExport: function (e) {
                var sheet = e.workbook.sheets[0];
                //  e.sender.hideColumn("Review Report");
-               var template = kendo.template(this.columns[3].template);
-               var template1 = kendo.template(this.columns[4].template);
-               var template2 = kendo.template(this.columns[6].template);
+               //var template = kendo.template(this.columns[3].template);
+               //var template1 = kendo.template(this.columns[4].template);
+               //var template2 = kendo.template(this.columns[6].template);
               // console.log(template);
 
                //console.log(template2);
                //var template2 = this.columns[6];
 
-               for (var i = 1; i < sheet.rows.length; i++) {
-                   var row = sheet.rows[i];
+               //for (var i = 1; i < sheet.rows.length; i++) {
+               //    var row = sheet.rows[i];
 
-                   var dataItem = {
-                       leadAuthor: row.cells[3].value
-                   };
+               //    var dataItem = {
+               //        leadAuthor: row.cells[3].value
+               //    };
 
-                   row.cells[3].value = template(dataItem);
-               }
-               for (var i = 1; i < sheet.rows.length; i++) {
-                   var row = sheet.rows[i];
+               //    row.cells[3].value = template(dataItem);
+               //}
+               //for (var i = 1; i < sheet.rows.length; i++) {
+               //    var row = sheet.rows[i];
 
-                   var dataItem = {
-                       co_author: row.cells[4].value
-                   };
+               //    var dataItem = {
+               //        co_author: row.cells[4].value
+               //    };
 
-                   row.cells[4].value = template1(dataItem);
+               //    row.cells[4].value = template1(dataItem);
 
-               }
+               //}
                for (var i = 1; i < sheet.rows.length; i++) {
                    var row = sheet.rows[i];
                    if (row.cells[6].value == "To be initiated")
@@ -1217,7 +1278,22 @@
             optionLabel: "--Select Value--"
         });
     }
-
+     function Author(element) {
+        element.kendoDropDownList({
+              dataTextField: "user_name",
+            dataValueField: "user_id",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetUsersForLeadAuthor", "Home")',
+                        type: 'post',
+                        dataType: 'json'
+                    }
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+    }
 
 
     function detailInit(e) {
@@ -1282,7 +1358,7 @@
                 { type: "year", selected: false }
             ],
 
-            height: 500,
+            //height: 500,
             editable: false,
             showWorkHours: false,
             showWorkDays: false,
@@ -1353,8 +1429,8 @@
                 { field: "start", title: "Start Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true },
                 { field: "end", title: "End Date", format: "{0:MM/dd/yyyy}", width: 100, editable: true, sortable: true }
             ],
-            height: 500,
-            width: 1200,
+            //height: 500,
+            //width: 1200,
             editable: false,
             showWorkHours: false,
             showWorkDays: false,
@@ -1375,7 +1451,7 @@
 
             actions: [
 
-                "Minimize",
+                "Maximize",
 
                 "Close"
 
@@ -1384,10 +1460,10 @@
                 $('#grid').data('kendoGrid').refresh()
             },
 
-        }).data("kendoWindow").center().open();
-         $(document).bind("kendo:skinChange", function() {
-                    gantt.refresh();
-                });
+        }).data("kendoWindow").center().maximize().open();
+        $(document).bind("kendo:skinChange", function () {
+            gantt.refresh();
+        });
     }
 
 </script>
@@ -1621,7 +1697,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png"  id="imgductwisecount" />
+                            <img src="~/Themes/Images/images.png" id="imgductwisecount" />
 
                         </div>
                     </div>

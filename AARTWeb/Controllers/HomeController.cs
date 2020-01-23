@@ -324,15 +324,19 @@ namespace AARTWeb.Controllers
         {
             var model = objprmdl.GetUsersForCoAuthor();
             return Json(model, JsonRequestBehavior.AllowGet);
-        }        
+        }
 
         [HttpPost]
-        public JsonResult GetFilteredCoAuthors(string selectedItem) {
+        public JsonResult GetFilteredCoAuthors(string selectedItem)
+        {
             var model = objprmdl.GetUsersForCoAuthor();
-            var itemToRemove1 = model.FirstOrDefault(r => r.user_name == selectedItem);
 
-           // var itemToRemove = model.Single(r => r.user_name == selectedItem);
-            model.Remove(itemToRemove1);
+            //  var itemToRemove1 = model.FirstOrDefault(r => r.user_name == selectedItem);
+            if (selectedItem != "Select LeadAuthor")
+            {
+                var itemToRemove = model.Single(r => r.user_name == selectedItem);
+                model.Remove(itemToRemove);
+            }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 

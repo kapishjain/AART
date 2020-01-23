@@ -749,6 +749,15 @@ namespace AARTWeb.Models
         {
             try
             {
+                if (product.co_author.user_name == product.leadAuthor.user_name)
+                {
+                    return "Lead author and Co-Author can not be same";
+                }
+                if (product.leadAuthor.user_name==null)
+
+                {
+                    return "Please select lead Author";
+                }
                 using (var httpClient = new HttpClient())
                 {
                     var url = ConfigurationManager.AppSettings["WEBAPIURL"];
@@ -756,8 +765,28 @@ namespace AARTWeb.Models
                     httpClient.BaseAddress = new Uri(url);
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var isNumeric = int.TryParse(product.co_author.user_name, out int n);
+                    int leadauthoruserid;
+                    int coleadauthoruserid;
 
-                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + product.leadAuthor.user_id + "&coauserid=" + (product.co_author == null ? product.co_authorid : Convert.ToInt32(product.co_author.user_id) ) + "&lmodifiedby=" + Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()) + "&lmodifieddate=" + DateTime.Now.ToString("dd/MMM/yyyy"), "");
+                    if (int.TryParse(product.co_author.user_name, out int coleadauthoruserid1))
+                    {
+                        coleadauthoruserid = coleadauthoruserid1;
+
+                    }
+                    else
+                    {
+                        coleadauthoruserid = Convert.ToInt32(product.co_author.user_id);
+                    }
+                    if (int.TryParse(product.leadAuthor.user_name, out int leadauthoruserid1))
+                        {
+                        leadauthoruserid = leadauthoruserid1;
+
+                    } else
+                    {
+                        leadauthoruserid = Convert.ToInt32(product.leadAuthor.user_id);
+                    }
+                    var responseTask = httpClient.PutAsJsonAsync("Product/UpdateAuthorInProduct?pdmid=" + product.pro_doc_id + "&lauserid=" + leadauthoruserid + "&coauserid=" + coleadauthoruserid + "&lmodifiedby=" + Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString()) + "&lmodifieddate=" + DateTime.Now.ToString("dd/MMM/yyyy"), "");
                     responseTask.Wait();
                     var result = responseTask.Result;
 
@@ -862,7 +891,9 @@ namespace AARTWeb.Models
                     httpClient.BaseAddress = new Uri(url);
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                    templateSection.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    templateSection.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
+                    templateSection.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
                     templateSection.Status = "O";
                     //List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
                     //tList.Add(templateSection);
@@ -2060,7 +2091,9 @@ namespace AARTWeb.Models
             public string reporting_interval { get; set; }
             public string completion_date { get; set; }
             public string cutoff_date { get; set; }
+            public string reviewreport { get; set; }
             public string comments { get; set; }
+
             public leadAuthor1 leadAuthor { get; set; }
 
             public co_author1 co_author { get; set; }
@@ -2083,6 +2116,9 @@ namespace AARTWeb.Models
             public string completion_date { get; set; }
             public string cutoff_date { get; set; }
             public string comments { get; set; }
+            public string reviewreport { get; set; }
+
+
             //public leadAuthor1 leadAuthor { get; set; }
 
             //public co_author1 co_author { get; set; }

@@ -454,20 +454,40 @@
                 var kChart = $("#chart1").data("kendoChart");
                 //   alert(cType);
                 switch (cType) {
-                    case "Column":
-                        kChart.setOptions({ seriesDefaults: { type: 'column', stack: false } });
+                   case "Column":
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'column' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+
+                        }
                         break;
                     case "Bar":
-                        kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false } });
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'bar' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+                        }
                         break;
                     case "Donut":
-                        kChart.setOptions({ seriesDefaults: { type: 'donut', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'donut' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Pie":
-                        kChart.setOptions({ seriesDefaults: { type: 'pie', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'pie' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "Funnel":
-                        kChart.setOptions({ seriesDefaults: { type: 'funnel', stack: false } });
+                        kChart.setOptions({ seriesDefaults: { type: 'funnel' } });
+                         kChart.setOptions({
+                                seriesDefaults: { labels: { visible: true } }
+                            });
                         break;
                     case "WaterFall":
                         kChart.setOptions({ seriesDefaults: { type: 'waterfall', stack: false } });
@@ -488,21 +508,41 @@
             cType1 = item.text();
             var kChart = $("#chart2").data("kendoChart");
             switch (cType) {
-                case "Column":
-                    kChart.setOptions({ seriesDefaults: { type: 'column' } });
-                    break;
-                case "Bar":
-                    kChart.setOptions({ seriesDefaults: { type: 'bar' } });
-                    break;
-                case "Donut":
-                    kChart.setOptions({ seriesDefaults: { type: 'donut' } });
-                    break;
-                case "Pie":
-                    kChart.setOptions({ seriesDefaults: { type: 'pie' } });
-                    break;
-                case "Funnel":
-                    kChart.setOptions({ seriesDefaults: { type: 'funnel' } });
-                    break;
+               case "Column":
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'column' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+
+                        }
+                        break;
+                    case "Bar":
+                        {
+                            kChart.setOptions({ seriesDefaults: { type: 'bar' } });
+                            kChart.setOptions({
+                                seriesDefaults: { labels: { visible: false } }
+                            });
+                        }
+                        break;
+                    case "Donut":
+                        kChart.setOptions({ seriesDefaults: { type: 'donut' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
+                        break;
+                    case "Pie":
+                        kChart.setOptions({ seriesDefaults: { type: 'pie' } });
+                        kChart.setOptions({
+                            seriesDefaults: { labels: { visible: true } }
+                            });
+                        break;
+                    case "Funnel":
+                        kChart.setOptions({ seriesDefaults: { type: 'funnel' } });
+                         kChart.setOptions({
+                                seriesDefaults: { labels: { visible: true } }
+                            });
+                        break;
                 case "WaterFall":
                     kChart.setOptions({ seriesDefaults: { type: 'waterfall' } });
                     break;
@@ -660,6 +700,8 @@
                                 //fromDate: { type: "string", editable: false, validation: { required: true } },
                                 //todate: { type: "string", editable: false, validation: { required: true } },
                                 status: { type: "string", editable: false, validation: { required: true } },
+                                reviewreport: { type: "string", editable: false, validation: { required: true } },
+
                                 completion_date: { type: "string", editable: false },
                                 reporting_interval: { type: "string", editable: false, validation: { required: true } },
                                 cutoff_date: { type: "string", editable: false },
@@ -677,7 +719,9 @@
                     //{ field: "fromDate", title: "Review from" },
                     { field: "reporting_interval", title: "Reporting Interval", format: "{0:0}" },
                     { field: "status", title: "Status", width: "150px", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" : status==\"To be initiated\"? \"blue\" : status==\"Completed\"? \"greenwithcur\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>' },
-                    { field: "status", title: "Review Report", width: "200px", template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Completed\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status= "#= status#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>' },
+                   // { field: "status", title: "Review Report", width: "200px", template: '<a class="#:status==\"To be initiated\"? \"white\" : status==\"Completed\"? \"green\" : status==\"Ongoing\"? \"orange\" :\"white\"#" href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status= "#= status#" }))">#:status==\"To be initiated\"? \"Not Applicable\" : status==\"Completed\"? \"Review report\" : status==\"Ongoing\"? \"Review report\" :\"white\" #</a>' },
+                    { field: "reviewreport", title: "Review Report", attributes: { style: "cursor: pointer" }, template: '<a class="#: reviewreport==\"Late\"? \"red\" :  reviewreport==\"Not Applicable\"? \"white\" : reviewreport==\"Review Report\"? \"orange\" : reviewreport==\"Review Report\"? \"orange\" :\"white\"#"  href="@Server.UrlDecode(Url.Action("AuthorReview", "Home", new { pro_doc_id = "#=pro_doc_id#", status = "#= status#" }))">#=reviewreport#</a>' },
+
                     {
                         field: "completion_date", title: "Completion Date", width: "250px"
                     },
@@ -690,12 +734,12 @@
 
                 reorderable: true,
                 sortable: true,
-                           pageable:true,
+                           //pageable:true,
 
-                //pageable: {
-                //    alwaysVisible: false,
-                //    pageSizes: [10, 20, 50]
-                //},
+                pageable: {
+                    alwaysVisible: false,
+                    pageSizes: [10, 20, 50,'All']
+                },
                 resizable: true,
                 detailTemplate: kendo.template($("#template").html()),
                 detailInit: detailInit,
@@ -956,7 +1000,7 @@
                 { type: "year", selected: false }
               ],
 
-              height: 500,
+              //height: 500,
               editable: false,
               showWorkHours: false,
               showWorkDays: false,
@@ -1025,8 +1069,8 @@
                 { field: "start", title: "Start Date", format: "{0:MM/dd/yyyy}", width: 100 ,editable: true, sortable: true },
                 { field: "end", title: "End Date", format: "{0:MM/dd/yyyy}", width:100 ,editable: true, sortable: true }
               ],
-            height: 600,
-            width: 1200,
+            //height: 600,
+            //width: 1200,
             editable: false,
             showWorkHours: false,
             showWorkDays: false,
@@ -1049,7 +1093,7 @@
 
             actions: [
 
-                "Minimize",
+                "Maximize",
 
                 "Close"
 
@@ -1058,7 +1102,7 @@
                 $('#grid').data('kendoGrid').refresh()
             },
 
-        }).data("kendoWindow").center().open();
+        }).data("kendoWindow").center().maximize().open();
     }
 </script>
 

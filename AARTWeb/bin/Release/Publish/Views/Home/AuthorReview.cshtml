@@ -21,11 +21,20 @@
 @*<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">*@
 @*<script src="https://code.jquery.com/jquery-1.10.2.js"></script>*@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.tiny.cloud/1/z3nlcbnpwyo8jleqdpgi909s6hlk4twhqii9408762djdpvt/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>tinymce.init({ selector: 'textarea' });</script>
+
 <style>
+    table.k-editor {
+        height: 500px !important;
+    }
+
     .popupfield {
-     padding:0px !important;
-        height:40px !important;
-        margin-top:15px !important;}
+        padding: 0px !important;
+        height: 570px !important;
+        margin-top: 15px !important;
+    }
+
     th {
         text-align: center !important;
         padding: 15px;
@@ -37,8 +46,8 @@
         padding: 15px;
     }
     /*th, td {
-        padding: 15px !important;
-    }*/
+            padding: 15px !important;
+        }*/
 
     .kicofmt {
         color: #265690;
@@ -48,43 +57,77 @@
         font-size: 27px;
         margin: 0px;
     }
+    /*
+        Increase the width of the edit form.
+        The default one is 400px.
+    */
 
-    .revdat {
-        float: right;
+    .k-edit-form-container {
+        width: 100% !important;
     }
 
-    .ui-dialog {
-        top: 50% !important;
-        left: 20% !important;
-        width: 60% !important;
-        height: 500px !important;
-        overflow-y: scroll;
+    .k-edit-form-container {
+        width: 100%;
+        /*height: 701px;*/
     }
 
-    .ui-widget-content {
-        background: none;
-        background-color: aliceblue;
+    .k-edit-buttons {
+        bottom: -5% !important;
+    }
+    /*
+        Decrease the width of the edit form labels. The default one is 30%.
+        The new width should depend on the column titles.
+        Switch the text alignment to the left. By default, it is to the right.
+    */
+
+    .k-popup-edit-form .k-edit-label {
+        width: 5%;
+        text-align: left;
     }
 
-    .ui-widget-header, .ui-state-default, ui-button {
-        background: lightgreen;
-        border: 1px solid #b9cd6d;
-        color: black;
-        font-weight: bold;
+    /*
+        Increase the width of the textbox containers. The default one is 60%.
+        The sum of label and editor percentage widths should be around 90%, to make up for existing paddings.
+    */
+    .k-popup-edit-form .k-edit-field {
+        width: 90%;
     }
 
-    div.k-edit-form-container {
-        width: auto;
-        height: auto;
+        /*
+        Expand the edit textboxes and any other Kendo UI widgets.
+        In case of unexpected side effects, use widget-specific classes, instead of .k-widget.
+    */
+        .k-popup-edit-form .k-edit-field > .k-textbox,
+        .k-popup-edit-form .k-edit-field > .k-widget:not(.k-tooltip) {
+            width: 98%;
+        }
+
+    .k-window {
+        visibility: visible;
+        display: block;
+        /*padding-top: 44px !important;*/
+        min-width: 90px;
+        min-height: 50px;
+        /*top: 1% !important;*/
+        left: 1% !important;
+        z-index: 10003;
+        opacity: 1;
+        transform: scale(1);
+        width: 98% !important;
+        height: 680px !important;
     }
 
-    .k-edit-label {
-        width: 15% !important;
-        text-align: left !important;
+    .k-editor-dialog.k-editor-table-wizard-dialog.k-window-content {
+        width: 100% !important;
+        overflow: auto !important;
     }
 
-    .k-edit-field {
-        width: 80% !important;
+    .k-editor-dialog.k-editor-table-wizard-dialog .k-tabstrip-wrapper .k-content {
+        height: 100% !important;
+    }
+
+    .k-window > div.k-popup-edit-form {
+        width: 100% !important;
     }
 
     .red {
@@ -146,36 +189,139 @@
         //});
     });
 </script>
+<script type="text/x-kendo-template" id="lineHeight-template">
+    <label for='templateTool' style='vertical-align:middle;'>Line spacing:</label>
+    <select id='templateTool' style='width:110px'><option value='120%'>Single</option><option value='180%'>1.5 lines</option><option value='240%'>Double</option></select>
+</script>
+<script type="text/x-kendo-template" id="insertSymbol-template">
+    <label for='templateTool1' style='vertical-align:middle;'>Insert Symbol:</label>
+    <select id='templateTool1' style='width:90px'>
+        <option value='1'>&Omega;</option>
+        <option value='2'>&reg;</option>
+        <option value='3'>&raquo;</option>
+        <option value='4'>&euro;</option>
+        <option value='5'>&pound;</option>
+        <option value='6'>&yen;</option>
+        <option value='7'>&copy;</option>
+        <option value='8'>&trade;</option>
+        <option value='9'>&plusmn;</option>
+        <option value='10'>&ne;</option>
+        <option value='11'>&le;</option>
+        <option value='12'>&ge;</option>
+        <option value='13'>&divide;</option>
+        <option value='14'>&Chi;</option>
+        <option value='15'>&infin;</option>
+        <option value='16'>&mu;</option>
+        <option value='17'>&alpha;</option>
+        <option value='18'>&beta;</option>
+        <option value='19'>&Pi;</option>
+        <option value='20'>&UnderBar;</option>
+    </select>
+
+</script>
+<script>
+    var MergeColumnCellsCommand = kendo.ui.editor.Command.extend({
+        exec: function () {
+            var range = this.lockRange(true),
+                currentTd = kendo.ui.editor.Dom.closest(range.endContainer, "td"),
+                columnIndex = kendo.ui.editor.Dom.findNodeIndex(currentTd);
+            nextTd = $(currentTd).parent().next().children()[columnIndex];
+
+            if (currentTd && nextTd) {
+                nextTd.remove();
+                $(currentTd).prop("rowspan", 2);
+            }
+
+            this.releaseRange(range);
+        }
+    });
+
+    var MergeRowCellsCommand = kendo.ui.editor.Command.extend({
+        exec: function () {
+            var range = this.lockRange(true),
+                currentTd = $(kendo.ui.editor.Dom.closest(range.endContainer, "td")),
+                nextTd = currentTd.next();
+
+            if (currentTd && nextTd) {
+                nextTd.remove();
+                currentTd.prop("colspan", 2);
+            }
+
+            this.releaseRange(range);
+        }
+    });
+
+    $.extend(kendo.ui.editor, {
+        MergeColumnCellsCommand: MergeColumnCellsCommand,
+        MergeRowCellsCommand: MergeRowCellsCommand
+    });
+
+    var mergeTool = kendo.ui.editor.TableModificationTool.extend({
+        command: function (commandArguments) {
+            var options = $.extend(commandArguments, this.options);
+
+            if (options.type == "column") {
+                return new MergeColumnCellsCommand($.extend(commandArguments, {}));
+            } else {
+                return new MergeRowCellsCommand($.extend(commandArguments, {}));
+            }
+        }
+    });
+
+    kendo.ui.editor.EditorUtils.registerTool(
+        "cellsMergeVertically",
+        new mergeTool({
+            type: "column",
+            action: "merge",
+            template: new kendo.ui.editor.ToolTemplate({
+                template: kendo.ui.editor.EditorUtils.buttonTemplate,
+                title: "Merge Next Column"
+            })
+        })
+    );
+
+    kendo.ui.editor.EditorUtils.registerTool(
+        "cellsMergeHorizontally",
+        new mergeTool({
+            type: "row",
+            action: "merge",
+            template: new kendo.ui.editor.ToolTemplate({
+                template: kendo.ui.editor.EditorUtils.buttonTemplate,
+                title: "Merge Next Row"
+            })
+        })
+    );
+</script>
 <script>
 
     var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
 
     $(document).ready(function () {
-       var productdtls;
-         var prodoctemplate;
-         var prodocsection;
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetProDocStructure","Home")',
-                contentType: "application/json",
-                dataType: "json",
-                async: false,
-                success: function (result) {
-                    productdtls = JSON.parse(result.getprodocdtls);
-                    $("#product-name").text(productdtls[0].productname);
-                    $("#doctype").text(productdtls[0].documentname);
+        var productdtls;
+        var prodoctemplate;
+        var prodocsection;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetProDocStructure","Home")',
+            contentType: "application/json",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                productdtls = JSON.parse(result.getprodocdtls);
+                $("#product-name").text(productdtls[0].productname);
+                $("#doctype").text(productdtls[0].documentname);
 
-                    $("#reviewprd").text(productdtls[0].reviewperiod);
+                $("#reviewprd").text(productdtls[0].reviewperiod);
 
-                    $("#komdate").text(productdtls[0].kom);
+                $("#komdate").text(productdtls[0].kom);
 
-                    prodoctemplate = JSON.parse(result.getprodoctemplate);
-                    prodocsection = JSON.parse(result.getprodocsecassignment);
-                },
-                error: function (response) {
-                    swal('error');
-                }
-            });
+                prodoctemplate = JSON.parse(result.getprodoctemplate);
+                prodocsection = JSON.parse(result.getprodocsecassignment);
+            },
+            error: function (response) {
+                swal('error');
+            }
+        });
         var datasource = new kendo.data.DataSource({
             schema: {
                 model: {
@@ -193,10 +339,10 @@
                 read: {
                     url: '@Url.Action("ProDocSecAssList", "Home")',
                     type: 'post',
-					dataType: 'json',
-					complete: function (e) {
-						//console.log(e);
-					}
+                    dataType: 'json',
+                    complete: function (e) {
+                        //console.log(e);
+                    }
                 },
                 update: {
                     url: '@Url.Action("UpdateProDocSecAss", "Home")',
@@ -213,13 +359,13 @@
                         return { models: options }
                     }
                 }
-             },
-           // pageSize: 10
+            },
+            // pageSize: 10
         });
 
         $("#grid").kendoGrid({
             dataSource: datasource,
-           // height: 750,
+            // height: 750,
             reorderable: true,
             sortable: true,
             //pageable: {
@@ -228,21 +374,31 @@
             //    },
             resizable: true,
             columns: [
-                { field: "Section", title: "Section",width: "300px" },
+                { field: "Section", title: "Section", width: "300px" },
+                { field: "Status", editable: false, title: "Status", width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+
                 { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
-                { field: "status", title: "Status",width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
-                { command: ["edit", { name: "Submit", click: SubmitSecRecord } ,{ name: "Accept", click: AcceptRecord }, { name: "Revert", click: RevertRecord }], width: "100px" },
-                { command: [ {name: "View Comments", click: OpenData} ], width: "100px" }
+
+                { command: ["edit", { name: "Submit", click: SubmitSecRecord }, { name: "Accept", click: AcceptRecord }, { name: "Revert", click: RevertRecord }], width: "100px" },
+                { command: [{ name: "View Comments", click: OpenData }], width: "100px" }
             ],
-            editable: "popup",
-              dataBound: function (e) {
+            editable: {
+                mode: "popup",
+                window: {
+                    title: "Edit",
+                    animation: true,
+                    width: "100%",
+                    height: "700px",
+                }
+            },
+            dataBound: function (e) {
                 $("#grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 $("#grid tbody tr .k-grid-Submit").each(function () {
@@ -250,17 +406,17 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
-                 $("#grid tbody tr .k-grid-Accept").each(function () {
+                $("#grid tbody tr .k-grid-Accept").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 $("#grid tbody tr .k-grid-Revert").each(function () {
@@ -268,8 +424,8 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
             }
@@ -281,7 +437,7 @@
                     id: "ProDoc_Template_id",
                     fields: {
                         Action: { type: 'string', editable: false },
-                                                Status: { type: 'string', editable: false },
+                        Status: { type: 'string', editable: false },
 
                         Template_Content: { type: 'string', editable: true },
                         ProductStatus: { type: 'string', editable: true },
@@ -293,20 +449,20 @@
                 read: {
                     url: '@Url.Action("ProDocActList", "Home")',
                     type: 'post',
-					dataType: 'json',
-					complete: function (o) {
-						//console.log(o);
-					}
+                    dataType: 'json',
+                    complete: function (o) {
+                        //console.log(o);
+                    }
                 },
                 update: {
                     url: '@Url.Action("UpdateProDocActAss", "Home")',
                     type: 'post',
-					dataType: 'json',
-					complete: function (e) {
+                    dataType: 'json',
+                    complete: function (e) {
                         swal(e.responseJSON.info);
-                                                $("#act-grid").data("kendoGrid").dataSource.read();
+                        $("#act-grid").data("kendoGrid").dataSource.read();
 
-						//reloadPage();
+                        //reloadPage();
                     }
                 },
                 parameterMap: function (options, operation) {
@@ -314,13 +470,13 @@
                         return { models: options }
                     }
                 }
-             },
+            },
             //pageSize: 10
         });
 
         $("#act-grid").kendoGrid({
             dataSource: pDataSource,
-           // height: 750,
+            // height: 750,
             reorderable: true,
             sortable: true,
             //pageable: {
@@ -329,11 +485,12 @@
             //    },
             resizable: true,
             columns: [
-                { field: "Action", title: "Action", width: "300px"},
-                { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
-                { field: "status", editable: false, title: "Status",width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
-                { command: ["edit", { name: "Submit", click: SubmitActRecord } ,{ name: "Accept", click: AcceptActRecord }, { name: "Revert", click: RevertActRecord }], width: "100px" },
-                { command: [ {name: "View Comments", click: OpenActData} ], width: "100px" }
+                { field: "Action", title: "Action"},
+                { field: "Status", editable: false, title: "Status", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+
+                { field: "Template_Content", title: "Comment", encoded: false, editor: SectionEditor },
+                { command: [ { name: "Submit", click: SubmitActRecord }, { name: "Accept", click: AcceptActRecord }, { name: "Revert", click: RevertActRecord }], width: "100px" },
+                { command: [{ name: "Contact Log", click: OpenActData }], width: "100px" }
             ],
             editable: "popup",
             dataBound: function (e) {
@@ -342,8 +499,8 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 $("#act-grid tbody tr .k-grid-Submit").each(function () {
@@ -351,8 +508,8 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 $("#act-grid tbody tr .k-grid-Accept").each(function () {
@@ -360,8 +517,8 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 $("#act-grid tbody tr .k-grid-Revert").each(function () {
@@ -369,8 +526,8 @@
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
             }
@@ -379,9 +536,36 @@
     });
 
     function SectionEditor(container, options) {
+//                 $('<textarea class="textarea" data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).append(tinymce.init({
+//    selector: "textarea",
+//    plugins: [
+//        "advlist autolink lists link image charmap print preview anchor",
+//        "searchreplace visualblocks code fullscreen",
+//        "insertdatetime media table paste"
+//    ],
+//    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+//}));
+
             //$('<textarea data-bind="value: ' + options.field + '" rows="4" cols="1000"></textarea>').appendTo(container);
-        $('<textarea data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
-            resizable: { content: true, toolbar: true },
+        $('<textarea class="textarea" data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
+            resizable: { content: true },
+            encoded: false,
+
+            execute: function (e) {
+                var editor = this;
+                if (e.name == "createtable") {
+                    setTimeout(function () {
+                        var table = $(editor.body).find("table:not(.custom-table)");
+                        table.addClass("custom-table");
+                        table.attr("style", "border-collapse: collapse; border: 1px solid black; ");
+                        table.find("tr td")
+                            .each(function () {
+                                var currentStyle = $(this).attr("style");
+                                $(this).attr("style", currentStyle + " border: 1px solid black;");
+                            });
+                    }, 0);
+                }
+            },
             tools: [
                 {
                     name: "fontName",
@@ -404,6 +588,31 @@
                         { text: "Verdana", value: "Verdana" },
                         { text: "Webdings", value: "Webdings" },
                         { text: "Wingdings", value: "Wingdings" }]
+                },
+                {
+                    name: "fontSize",
+                    items: [
+                        { text: '8px', value: '8px' },
+                        { text: '10px', value: '10px' },
+                        { text: '13px', value: '13px' },
+                        { text: '16px', value: '16px' },
+                        { text: '18px', value: '18px' },
+                        { text: '24px', value: '24px' },
+                        { text: '26px', value: '26px' },
+                        { text: '28px', value: '28px' },
+                        { text: '36px', value: '36px' },
+                        { text: '48px', value: '48px' },
+                        { text: '72px', value: '72px' }
+                    ]
+                },
+                {
+                    name: "customTemplate",
+                    template: $("#lineHeight-template").html()
+                },
+                {
+
+                    name: "customTemplate1",
+                    template: $("#insertSymbol-template").html(),
                 },
                 "bold",
                 "italic",
@@ -431,14 +640,55 @@
                 "addColumnRight",
                 "deleteRow",
                 "deleteColumn",
+                "cellsMergeVertically",
+                "cellsMergeHorizontally",
                 "viewHtml",
                 "formatting",
                 "cleanFormatting",
-                "fontSize",
                 "foreColor",
                 "backColor",
                 "print"
-            ]
+            ],
+            imageBrowser: {
+                messages: {
+                    dropFilesHere: "Drop files here"
+                },
+                transport: {
+                    read: {
+                        //url: "https://demos.telerik.com/kendo-ui/service/ImageBrowser/Read",
+                        url: '@Url.Action("Read", "ImageBrowser")',
+                        type: "post"
+
+                    },
+                    destroy: {
+                        url: '@Url.Action("Destroy", "ImageBrowser")',
+                        type: "POST"
+                    },
+                    create: {
+                        url: '@Url.Action("Create", "ImageBrowser")',
+                        type: "POST"
+                    },
+
+                    thumbnailUrl: '@Url.Action("Thumbnail", "ImageBrowser")',
+
+                    uploadUrl: '@Url.Action("Upload", "ImageBrowser")',
+                    imageUrl: '@Url.Action("Image", "ImageBrowser", new { path = "ID" })'.replace("ID", '{0}'),
+                }
+            },
+        });
+        $("#templateTool").kendoDropDownList({
+            change: function (e) {
+                $(".textarea").data("kendoEditor").body.style.lineHeight = e.sender.value();
+
+            }
+        });
+        $("#templateTool1").kendoDropDownList({
+            change: function (e) {
+                var inputValue = e.sender._inputValue();
+                var editor = $(".textarea").data("kendoEditor");
+                editor.exec("inserthtml", { html: inputValue });                //$('#editor').data('kendoEditor').exec("insertHtml", { html: inputValue });
+            },
+
         });
 	};
 
@@ -615,7 +865,7 @@
                         { field: "Reviewer_Datetime", title: "Date/Time" },
                         { field: "Status", title: "Status" },
                         { field: "Review_Comment", title: "Comment" },
-                        { command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
+                        //{ command: [{ name: "Difference", click: OpenActDiffData }], width: "100px" }
                     ],
                     editable: false
                 }).data("kendoGrid");
@@ -628,7 +878,7 @@
 
         dataWnd = $("#k-diffwnd").kendoWindow({
             width: 1000,
-            title: "Details",
+            title: "Contact Log",
             visible: false,
             modal: true
         }).data("kendoWindow");
@@ -644,7 +894,7 @@
              height: 150,
              padding : 0,
 
-             title: "Comments",
+             title: "Contact Log",
              actions: ["Close"],
              visible: false,
              modal: true,
@@ -674,7 +924,7 @@
              width: 400,
              height: 150,
              padding : 0,
-             title: "Comments",
+             title: "Contact Log",
              actions: ["Close"],
              visible: false,
              modal: true,
@@ -1015,7 +1265,7 @@
              width: 400,
              height: 150,
              padding : 0,
-             title: "Comments",
+             title: "Contact Log",
              actions: ["Close"],
              visible: false,
              modal: true,
@@ -1055,7 +1305,7 @@
     </div>
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control popupfield" />
+        <textarea id="comment" class="form-control popupfield" />
     </div>
 
     <br />
@@ -1077,22 +1327,22 @@
     </div>
 
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control popupfield" />
+        <textarea id="comment" class="form-control popupfield" />
     </div>
 
     <br />
 
-    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" />
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="SubmitActRecordByUser()" style="float: right;margin-right: 2%;" />
 </script>
 
 <script type="text/x-kendo-template" id="comment-template">
     <div id="section-comment">
-        <input type="text" id="comment" class="form-control popupfield" />
+        <textarea id="comment" class="form-control popupfield" />
     </div>
 
     <br />
 
-    <input type="submit" class="btn btn-primary" value="Submit" onclick="UpdateAcceptReject()" />
+    <input type="submit" class="btn btn-primary" value="Submit" onclick="UpdateAcceptReject()" style="float: right;margin-right: 2%;" />
 </script>
 
 <script type="text/x-kendo-template" id="viewdata-template">
@@ -1202,7 +1452,7 @@
         <p>Dialog box</p>
     </div>*@
 <div id="dialog-2" title="Pending Activity and section">
-    <table id="table" border="1" style="text-align:center;padding:2px;">
+    <table id="table" border="1" style="text-align:center;padding:2px;width: 100%;">
         <tr>
             <th align="center">Type</th>
             <th align="center">Assigned To</th>
@@ -1241,15 +1491,16 @@
 
         </div>
     </div>
+    <button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary com-btn">Download Document</button>
+
+    @if ((string)ViewData["status"] == "Ongoing")
+    {
+        <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Complete Report</button>
+    }
 </div>
 
 
-<button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary com-btn">Download Document</button>
 
-@if ((string)ViewData["status"] == "Ongoing")
-{
-    <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Complete Report</button>
-}
 
 
 

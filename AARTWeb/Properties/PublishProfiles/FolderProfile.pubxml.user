@@ -8,17 +8,128 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_PublishTargetUrl>D:\AART\Azure download\AARTWeb\AARTWeb\bin\Release\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="App_GlobalResources/EditorLocalization.bg-BG.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.da-DK.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.de-DE.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.en-US.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.fr-FR.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.nl-NL.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.pl-PL.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.pt-BR.resx">
+      <publishTime>01/13/2020 15:12:07</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.pt-PT.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.ru-RU.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.uk-UA.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/EditorLocalization.zh-CN.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.bg-BG.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.da-DK.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.de-DE.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.en-US.resx">
+      <publishTime>01/13/2020 15:12:06</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.es-ES.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.fr-FR.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.nl-NL.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.pl-PL.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.pt-BR.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.pt-PT.resx">
+      <publishTime>01/13/2020 15:12:05</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.ru-RU.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.uk-UA.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/GridLocalization.zh-CN.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.bg-BG.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.da-DK.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.en-US.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.fr-FR.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.nl-NL.resx">
+      <publishTime>01/13/2020 15:12:04</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.pl-PL.resx">
+      <publishTime>01/13/2020 15:12:03</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.pt-BR.resx">
+      <publishTime>01/13/2020 15:12:03</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.pt-PT.resx">
+      <publishTime>01/13/2020 15:12:03</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.ru-RU.resx">
+      <publishTime>01/13/2020 15:12:03</publishTime>
+    </File>
+    <File Include="App_GlobalResources/UploadLocalization.zh-CN.resx">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
     <File Include="bin/AARTServerVO.dll">
-      <publishTime>11/05/2019 11:05:51</publishTime>
+      <publishTime>05/11/2019 11:05:51</publishTime>
     </File>
     <File Include="bin/AARTServerVO.pdb">
       <publishTime>11/05/2019 11:05:51</publishTime>
     </File>
     <File Include="bin/AARTWeb.dll">
-      <publishTime>12/09/2019 16:57:16</publishTime>
+      <publishTime>01/21/2020 10:30:08</publishTime>
     </File>
     <File Include="bin/AARTWeb.pdb">
-      <publishTime>12/09/2019 16:57:16</publishTime>
+      <publishTime>01/21/2020 10:30:08</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/25/2019 11:31:51</publishTime>
@@ -40,6 +151,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>04/22/2019 01:06:16</publishTime>
+    </File>
+    <File Include="bin/Quartz.dll">
+      <publishTime>07/10/2018 12:27:38</publishTime>
+    </File>
+    <File Include="bin/Quartz.pdb">
+      <publishTime>07/10/2018 12:27:38</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe.config">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -98,11 +215,614 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>09/25/2019 11:31:51</publishTime>
     </File>
+    <File Include="bin/Telerik.Web.Mvc.dll">
+      <publishTime>12/06/2013 16:52:40</publishTime>
+    </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>09/25/2019 11:31:52</publishTime>
     </File>
     <File Include="bin/Xceed.Words.NET.dll">
       <publishTime>09/25/2019 11:31:51</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Black/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Default/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Forest/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Hay/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Metro/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2007/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Black/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/gradient.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Blue/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/gradient.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Office2010Silver/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Outlook/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Simple/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sitefinity/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Sunset/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.black.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.common.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.default.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.forest.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.hay.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.metro.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.office2007.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.office2010black.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.office2010blue.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.office2010silver.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.outlook.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.rtl.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.simple.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.sitefinity.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.sunset.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.telerik.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.transparent.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.vista.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.web20.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.webblue.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/telerik.windows7.min.css">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Telerik/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/active.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/gradient.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/group.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/hover.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/selected.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/toolbar.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Transparent/widget.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Vista/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Web20/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/treeview-line.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/treeview-nodes-rtl.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/WebBlue/treeview-nodes.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/editor.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/imagebrowser.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/loading.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/slider-h.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/slider-v.gif">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/sprite-vertical.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Content/2013.2.611/Windows7/sprite.png">
+      <publishTime>01/13/2020 15:12:02</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -129,7 +849,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>04/12/2019 16:47:51</publishTime>
+      <publishTime>12/04/2019 16:47:51</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -1454,6 +2174,96 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Global.asax">
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
+    <File Include="Scripts/2013.2.611/jquery-1.7.1.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/jquery.validate.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.all.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.autocomplete.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.calendar.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.chart.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.combobox.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.common.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.datepicker.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.datetimepicker.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.draganddrop.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.editor.min.js">
+      <publishTime>01/13/2020 15:12:02</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.editing.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.filtering.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.grouping.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.reordering.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.grid.resizing.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.imagebrowser.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.list.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.menu.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.panelbar.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.slider.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.splitter.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.tabstrip.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.textbox.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.timepicker.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.treeview.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.upload.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
+    <File Include="Scripts/2013.2.611/telerik.window.min.js">
+      <publishTime>01/13/2020 15:12:01</publishTime>
+    </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
@@ -1521,13 +2331,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/css/style.css">
-      <publishTime>04/12/2019 16:47:51</publishTime>
+      <publishTime>12/26/2019 12:21:14</publishTime>
     </File>
     <File Include="Themes/Images/aart-logo2.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Themes/Images/AART-NEW-COLOR-LOGO.png">
-      <publishTime>04/12/2019 14:57:55</publishTime>
+      <publishTime>12/04/2019 14:57:55</publishTime>
     </File>
     <File Include="Themes/Images/aart-new-logo.jpg">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -1551,10 +2361,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Themes/Images/downloadicon.jpg">
-      <publishTime>11/04/2019 14:23:49</publishTime>
+      <publishTime>04/11/2019 14:23:49</publishTime>
     </File>
     <File Include="Themes/Images/favicon.png">
-      <publishTime>11/07/2019 18:43:48</publishTime>
+      <publishTime>07/11/2019 18:43:48</publishTime>
     </File>
     <File Include="Themes/Images/ft-logo.png">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -1568,50 +2378,53 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Themes/Images/welcome-bg.png">
       <publishTime>10/22/2019 16:35:05</publishTime>
     </File>
+    <File Include="Themes/Upload-Images/ImageBrowser/Thumbnail/a100.png">
+      <publishTime>01/13/2020 14:22:43</publishTime>
+    </File>
     <File Include="Views/Account/ChangePassword.cshtml">
-      <publishTime>08/11/2019 16:15:40</publishTime>
+      <publishTime>11/08/2019 16:15:40</publishTime>
     </File>
     <File Include="Views/Account/ForgotPassword.cshtml">
-      <publishTime>11/01/2019 11:23:26</publishTime>
+      <publishTime>01/11/2019 11:23:26</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>11/21/2019 16:11:31</publishTime>
+      <publishTime>12/11/2019 13:09:59</publishTime>
     </File>
     <File Include="Views/Admin/Admin.cshtml">
-      <publishTime>12/04/2019 12:15:20</publishTime>
+      <publishTime>04/12/2019 12:15:20</publishTime>
     </File>
     <File Include="Views/Audit/Audit.cshtml">
-      <publishTime>05/12/2019 12:08:00</publishTime>
+      <publishTime>12/05/2019 12:08:00</publishTime>
     </File>
     <File Include="Views/Help/help.cshtml">
-      <publishTime>11/06/2019 16:29:49</publishTime>
+      <publishTime>06/11/2019 16:29:49</publishTime>
     </File>
     <File Include="Views/Home/Author.cshtml">
-      <publishTime>12/09/2019 16:01:18</publishTime>
+      <publishTime>01/02/2020 12:31:01</publishTime>
     </File>
     <File Include="Views/Home/AuthorAssignment.cshtml">
-      <publishTime>09/12/2019 16:42:54</publishTime>
+      <publishTime>01/21/2020 10:10:34</publishTime>
     </File>
     <File Include="Views/Home/AuthorReview.cshtml">
-      <publishTime>09/12/2019 16:30:38</publishTime>
+      <publishTime>01/21/2020 10:10:34</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>10/22/2019 10:24:46</publishTime>
     </File>
     <File Include="Views/Home/Manager.cshtml">
-      <publishTime>12/09/2019 16:01:18</publishTime>
+      <publishTime>01/07/2020 22:35:44</publishTime>
     </File>
     <File Include="Views/Home/UsersStatus.cshtml">
-      <publishTime>12/06/2019 16:31:25</publishTime>
+      <publishTime>06/12/2019 16:31:25</publishTime>
     </File>
     <File Include="Views/KickOffMeeting/KickoffMeeting.cshtml">
       <publishTime>11/20/2019 15:26:53</publishTime>
     </File>
     <File Include="Views/KickOffMeeting/ReassignAssignment.cshtml">
-      <publishTime>12/06/2019 15:24:18</publishTime>
+      <publishTime>06/12/2019 15:24:18</publishTime>
     </File>
     <File Include="Views/Product/AddProduct.cshtml">
-      <publishTime>06/12/2019 11:25:40</publishTime>
+      <publishTime>12/06/2019 11:25:40</publishTime>
     </File>
     <File Include="Views/Role/AddRole.cshtml">
       <publishTime>10/14/2019 19:46:36</publishTime>
@@ -1626,19 +2439,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/20/2019 11:54:37</publishTime>
     </File>
     <File Include="Views/Shared/_MasterLayout.cshtml">
-      <publishTime>12/09/2019 15:58:43</publishTime>
+      <publishTime>01/02/2020 12:22:07</publishTime>
     </File>
     <File Include="Views/User/AddUser.cshtml">
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>10/14/2019 19:46:36</publishTime>
+      <publishTime>01/13/2020 15:07:54</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>10/14/2019 19:46:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/28/2019 11:27:55</publishTime>
+      <publishTime>01/21/2020 10:28:06</publishTime>
     </File>
   </ItemGroup>
 </Project>
