@@ -10,64 +10,370 @@
     <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
     <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
-    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    @*<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />*@
     <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.min.css" rel="stylesheet">
     <link href="~/GeneralJscripts/TelerikCSS/kendo.blueopal.mobile.min.css" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" />
-
+    @*<script src="~/Scripts/timeout-dialog.js"></script>*@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
+   
     <style type="text/css">
-      #page-container {
+        #loading-img {
+            background: url('../Themes/Images/aartloading.gif') center center no-repeat;
+            height: 100%;
+            z-index: 20;
+            /*background-image: url('../../Themes/Images/aartloading.gif');*/
+        }
+
+        .overlay {
+            background: #e9e9e9;
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0.5;
+        }
+
+        button {
+            font-size: 100%;
+            margin: 0;
+            vertical-align: baseline;
+            *vertical-align: middle;
+        }
+
+        button {
+            line-height: normal;
+            *overflow: visible;
+        }
+
+        button {
+            cursor: pointer;
+            -webkit-appearance: button;
+        }
+
+        button {
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            border: 1px solid #cccccc;
+            border-width: 1px;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            color: #333333;
+            display: inline-block;
+            font-size: 14px;
+            line-height: normal;
+            padding: 5px 10px;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        }
+
+            .button:hover, button:hover {
+                text-decoration: none;
+                background-position: 0 -15px;
+            }
+
+            .button:focus, button:focus {
+                -webkit-box-shadow: 0 0px 2px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: 0 0px 2px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 0px 2px rgba(0, 0, 0, 0.4);
+                outline: none;
+            }
+
+        /* Timeout Dialog Styles */
+        .timeout-dialog {
+            padding: 15px;
+            position: absolute;
+            /*background: #eeeeee url("../imgs/timeout-icon.png") no-repeat 15px 25px;*/
+            border: 1px solid #ffffff;
+            -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+            .timeout-dialog .ui-dialog-title {
+                font-size: 16px;
+                font-weight: bold;
+                display: block;
+                padding: 0 0 15px 0;
+                margin-left: 80px;
+            }
+
+            .timeout-dialog .ui-dialog-titlebar-close {
+                display: none;
+            }
+
+            .timeout-dialog .ui-dialog-buttonpane {
+                margin-top: 15px;
+            }
+
+            .timeout-dialog ~ .ui-widget-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: #000;
+                filter: alpha(opacity=40);
+                -khtml-opacity: 0.4;
+                -moz-opacity: 0.4;
+                opacity: 0.4;
+            }
+
+            .timeout-dialog p {
+                margin: 0 0 5px 80px;
+            }
+
+        #timeout-keep-signin-btn {
+            color: #FFF;
+            background-color: #0f5895;
+            background-repeat: repeat-x;
+            background-image: -khtml-gradient(linear, left top, left bottom, from(#377bb2), to(#0f5895));
+            background-image: -moz-linear-gradient(top, #377bb2, #0f5895);
+            background-image: -ms-linear-gradient(top, #377bb2, #0f5895);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #377bb2), color-stop(100%, #0f5895));
+            background-image: -webkit-linear-gradient(top, #377bb2, #0f5895);
+            background-image: -o-linear-gradient(top, #377bb2, #0f5895);
+            background-image: linear-gradient(top, #377bb2, #0f5895);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#377bb2', endColorstr='#0f5895', GradientType=0);
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            color: #ffffff;
+            text-shadow: none;
+            margin: 5px 10px 5px 0;
+        }
+
+        #timeout-sign-out-button {
+            color: #FFF;
+            background-color: #e6e6e6;
+            background-repeat: repeat-x;
+            background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#e6e6e6));
+            background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e6e6e6));
+            background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: linear-gradient(top, #ffffff, #e6e6e6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            color: #000000;
+            text-shadow: none;
+            margin: 5px 0;
+        }
+
+        #timeout-countdown {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        //function getsession(_callback) {
+        //    var getsessiontime;
+        //        $.ajax({
+        //                url: "../Account/getsessiontime",
+        //            type: 'get',
+        //                 async: false,
+        //                success: function (rs) {
+        //                    getsessiontime = rs;
+        //                    alert("getsession funtion" + getsessiontime);
+        //                },
+        //                error: function (err) {
+        //                    swal(err);
+        //                }
+        //        });
+        //                _callback();
+
+        //    return parseInt(getsessiontime * 60);
+        //}
+        @*$(function () {
+
+            var getsessiontime;
+                $.ajax({
+                        url: "../Account/getsessiontime",
+                    type: 'get',
+                    async: false,
+                        success: function (rs) {
+                            getsessiontime = rs;
+                            alert("../Account/getsessiontime" + getsessiontime + parseInt(getsessiontime * 60));
+
+                        },
+                        error: function (err) {
+                            swal(err);
+                        }
+                    });
+            var fnTimeOut = function () {
+                jQuery.timeoutDialog.setupDialogTimer({
+                    timeout: 60,//parseInt(getsessiontime * 60),
+                    countdown: 20,
+                    logout_redirect_url: '@Url.Action("Logout", "Account")',
+                  //  keep_alive_url: '@Url.Action("Keepalive", "Home")'
+               });
+            };
+            fnTimeOut();
+        });*@
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).bind("contextmenu", function (e) {
+                return false;
+            });
+        });
+        var isDirty = function () {
+            //if ($(".ptxt")[0]) {
+            //  $("h1").show();
+            //  return true;
+            //}
+            if ($(".k-content").is(":focus")) {
+                //alert("True");
+                return true;
+
+                //input and text area has focus
+            } else {
+                //  alert("false");
+
+                return false;
+                //no focus for input and textarea
+            }
+        };
+
+        window.onload = function () {
+            window.addEventListener("beforeunload", function (e) {
+                if (!isDirty()) {
+                    return undefined;
+                }
+
+                var confirmationMessage =
+                    "It awewewelooks like you have been editing something. " +
+                    "If you leave before saving, your changes will be lost.";
+
+                (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+                return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+            });
+        };
+
+        //window.addEventListener('beforeunload', function (e) {
+        //    e.preventDefault();
+        //    e.returnValue = '';
+        //});
+    </script>
+    <script>
+        history.pushState(null, document.title, location.href);
+        history.back();
+        history.forward();
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+    @*<script>
+            (function (global) {
+
+
+
+                if (typeof (global) === "undefined") {
+                    throw new Error("window is undefined");
+                }
+
+
+
+                var _hash = "!";
+                var noBackPlease = function () {
+                    global.location.href += "#";
+
+
+
+                    // making sure we have the fruit available for juice (^__^)
+                    global.setTimeout(function () {
+                        global.location.href += "!";
+                    }, 50);
+                };
+
+
+
+                global.onhashchange = function () {
+                    if (global.location.hash !== _hash) {
+                        global.location.hash = _hash;
+                    }
+                };
+
+
+
+                global.onload = function () {
+                    noBackPlease();
+
+
+
+                    // disables backspace on page except on input fields and textarea..
+                    document.body.onkeydown = function (e) {
+                        var elm = e.target.nodeName.toLowerCase();
+                        if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
+                            e.preventDefault();
+                        }
+                        // stopping event bubbling up the DOM tree..
+                        e.stopPropagation();
+                    };
+                }
+
+
+
+            })(window);
+        </script>*@
+    <style type="text/css">
+        #page-container {
             position: relative;
             min-height: 80vh;
         }
+
             #page-container .firstsection-inner {
-          
                 width: 100%;
                 min-height: 81vh;
-              
             }
 
         #content-wrap {
             padding-bottom: 2.5rem; /* Footer height */
         }
+
         .fotr-cpy {
             padding-top: 10px;
             background: #dbdbdb;
             display: table;
             width: 100%;
-            margin-top:10px;
+            margin-top: 10px;
             position: absolute;
-bottom: 0;
-right: 0;
-left: 0;
-            
+            bottom: 0;
+            right: 0;
+            left: 0;
         }
 
         html {
-
-    position:relative;
-    min-height:100%;
-}
+            position: relative;
+            min-height: 100%;
+        }
         /*html{overflow: hidden;}*/
 
         .k-grid-header th.k-header {
             background-color: #1a5087 !important;
- white-space: initial !important;
+            white-space: initial !important;
             vertical-align: top;
             font-size: inherit !important;
-color: white !important;
+            color: white !important;
         }
 
         /*.k-grid-header th.k-header {
             white-space: initial !important;
         }*/
-       
+
         .k-grid td {
             /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
                             background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0.15)));
@@ -113,9 +419,9 @@ color: white !important;
             .k-grid-header th.k-header > .k-link {
                 color: white !important;
                 font-size: inherit;
-display: table-row;
- white-space: pre-line !important;
-            vertical-align: top;
+                display: table-row;
+                white-space: pre-line !important;
+                vertical-align: top;
             }
 
         .k-detail-cell .k-tabstrip .k-content {
@@ -155,14 +461,15 @@ display: table-row;
 
         /*.cyrght{ color:#fff;}
         .pwdby{ color:#fff;}*/
-                body {
-                  /*position: relative;*/
-                  margin: 0;
-                  /*padding-bottom: 6rem;*/
-                  min-height: 100%;
-                  font-family: "Helvetica Neue", Arial, sans-serif;
-                  padding-bottom: 60px;
-                }
+        body {
+            /*position: relative;*/
+            margin: 0;
+            /*padding-bottom: 6rem;*/
+            min-height: 100%;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            padding-bottom: 60px;
+        }
+
         .avatar {
             vertical-align: middle;
             width: 50px;
@@ -179,19 +486,25 @@ display: table-row;
             display: inline-block;
         }
 
-        .logout-drpmn span{ color:#333; font-size:13px; display:table;}
-         .logout-drpmn img {
+        .logout-drpmn span {
+            color: #333;
+            font-size: 13px;
+            display: table;
+        }
+
+        .logout-drpmn img {
             margin-right: 6px;
         }
+
         .dropdown-content {
             display: none;
             background-color: white;
-            min-width:150px;
+            min-width: 150px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
             position: fixed;
-            top:52px;
-            right:13px;
+            top: 52px;
+            right: 13px;
         }
 
 
@@ -207,7 +520,7 @@ display: table-row;
 
                 .dropdown-content a:hover {
                     background-color: #ddd;
-                    color:black !important;
+                    color: black !important;
                 }
 
 
@@ -242,31 +555,32 @@ display: table-row;
                 padding: 5px 15px;
                 opacity: 0.7;
             }
-             .navigation li :active {
-                color: red !important; 
-              
+
+            .navigation li :active {
+                color: red !important;
             }
+
             .navigation li :hover {
                 color: orangered !important;
             }
+
         .navbar-inverse .navbar-nav > .active > a {
-                            color: orangered !important;
-                            background-color:#ffffff !important;
-                            text-decoration: underline !important;
+            color: orangered !important;
+            background-color: #ffffff !important;
+            text-decoration: underline !important;
         }
+
         .navbar-inverse .navbar-nav > li > a {
             color: #265690 !important;
             /*font-size: large !important;
             padding-top: 25% !important;*/
-
         }
-.navbar-nav > li {
 
-    float: left;
-    padding-top: 12px;
-    font-size: 16px;
-
-}
+        .navbar-nav > li {
+            float: left;
+            padding-top: 12px;
+            font-size: 16px;
+        }
         /*#footer {
             height: 35px;
             width: 100%;
@@ -276,42 +590,42 @@ display: table-row;
     </style>
     @*<script>
 
-        // Window load event used just in case window height is dependant upon images
-        $(window).bind("load", function () {
+            // Window load event used just in case window height is dependant upon images
+            $(window).bind("load", function () {
 
-            var footerHeight = 0,
-                footerTop = 0,
-                $footer = $("#footer");
+                var footerHeight = 0,
+                    footerTop = 0,
+                    $footer = $("#footer");
 
-            positionFooter();
+                positionFooter();
 
-            function positionFooter() {
+                function positionFooter() {
 
-                footerHeight = $footer.height();
-                footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
+                    footerHeight = $footer.height();
+                    footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
 
-                if (($(document.body).height() + footerHeight) < $(window).height()) {
-                    $footer.css({
-                        position: "absolute"
-                    }).animate({
-                        top: footerTop
-                    })
-                } else {
-                    $footer.css({
-                        position: "static"
-                    })
+                    if (($(document.body).height() + footerHeight) < $(window).height()) {
+                        $footer.css({
+                            position: "absolute"
+                        }).animate({
+                            top: footerTop
+                        })
+                    } else {
+                        $footer.css({
+                            position: "static"
+                        })
+                    }
+
                 }
 
-            }
+                $(window)
+                    .scroll(positionFooter)
+                    .resize(positionFooter)
 
-            $(window)
-                .scroll(positionFooter)
-                .resize(positionFooter)
-
-        });
+            });
 
 
-    </script>*@
+        </script>*@
 </head>
 <body style="background-color: #f5f6fa;">
     @*#ACCFF29C,#f8f9fc*@
@@ -322,10 +636,10 @@ display: table-row;
             <div class="">
                 <div class="navbar-header" style="display:inline-flex;">
                     @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>*@
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>*@
                     @*<img style="width: 200px;" src="~/Themes/Images/AART.png" />*@
                     @*<img style="width: 200px;" src="~/Themes/Images/aart-new-logo.jpg" />*@
                     <a href="@Url.Action("Login", "Account")" title="Dashboard" class="links">
@@ -334,133 +648,133 @@ display: table-row;
                     </a>
                     @*<img style="width: 200px;" src="~/Themes/Images/AART-NEW-COLOR-LOGO.png" />*@
 
-                <ul class="nav navbar-nav">
-                    @*<li><a href="#">Dash Board</a></li>
-        <li><a href="#">Add Product</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Audit Trail</a></li>
-        <li><a href="#">Help</a></li>*@
-                    @if (HttpContext.Current.Session["role"] != null)
-                    {
-                        if (HttpContext.Current.Session["role"].ToString() == "Administrator")
+                    <ul class="nav navbar-nav">
+                        @*<li><a href="#">Dash Board</a></li>
+                            <li><a href="#">Add Product</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Audit Trail</a></li>
+                            <li><a href="#">Help</a></li>*@
+                        @if (HttpContext.Current.Session["role"] != null)
                         {
-                            @*<li class="navigation">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Admin" ? "active" : "")">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>
+                            if (HttpContext.Current.Session["role"].ToString() == "Administrator")
+                            {
+                                @*<li class="navigation">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Admin" ? "active" : "")">@Html.ActionLink("Dashboard", "Admin", "Admin")</li>
 
-                            @*<li class="navigation">@Html.ActionLink("Add Report", "Index", "Product")</li>*@
-                            @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
-                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                <li class="navigation">
-                    <a href="@Url.Action("Help", "Help")"
-                       type="submit"
-                       target="_blank">
-                        Help
-                    </a>
-                </li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
-                                <a href="@Url.Action("Help", "Help")"
-                                   type="submit"
-                                   target="_blank">
-                                    Help
-                                </a>
-                            </li>
-                        }
-                        else if (HttpContext.Current.Session["role"].ToString() == "Manager")
-                        {
-                            @*<li class="active">@Html.ActionLink("Dashboard", "Manager", "Home")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Manager" ? "active" : "")">@Html.ActionLink("Dashboard", "Manager", "Home")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Add Report", "Index", "Product")</li>
-                            @*<li>@Html.ActionLink("Add Report", "Index", "Product")</li>*@
-                            @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
-                            @*<li>@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("Users Status", "UsersStatus", "Home")</li>
+                                @*<li class="navigation">@Html.ActionLink("Add Report", "Index", "Product")</li>*@
+                                @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
+                                @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                    <li class="navigation">
+                                        <a href="@Url.Action("Help", "Help")"
+                                           type="submit"
+                                           target="_blank">
+                                            Help
+                                        </a>
+                                    </li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")">
+                                    <a href="@Url.Action("Help", "Help")"
+                                       type="submit"
+                                       target="_blank">
+                                        Help
+                                    </a>
+                                </li>
+                            }
+                            else if (HttpContext.Current.Session["role"].ToString() == "Manager")
+                            {
+                                @*<li class="active">@Html.ActionLink("Dashboard", "Manager", "Home")</li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Manager" ? "active" : "")">@Html.ActionLink("Dashboard", "Manager", "Home")</li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Add Report", "Index", "Product")</li>
+                                @*<li>@Html.ActionLink("Add Report", "Index", "Product")</li>*@
+                                @*<li class="navigation">@Html.ActionLink("Audit Trail", "AuditReport", "Partner")</li>*@
+                                @*<li>@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "UsersStatus" ? "active" : "")">@Html.ActionLink("Users Status", "UsersStatus", "Home")</li>
 
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
-                                <a href="@Url.Action("Help", "Help")"
-                                   type="submit"
-                                   target="_blank">
-                                    Help
-                                </a>
-                            </li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")">
+                                    <a href="@Url.Action("Help", "Help")"
+                                       type="submit"
+                                       target="_blank">
+                                        Help
+                                    </a>
+                                </li>
 
-                            @*<li>
-                    <a href="@Url.Action("Help", "Help")"
-                       type="submit"
-                       target="_blank">
-                        Help
-                    </a>
-                </li>*@
-                        }
-                        else if (HttpContext.Current.Session["role"].ToString() == "Author")
-                        {
-                            @*<li class="navigation">@Html.ActionLink("Dashboard", "Author", "Home")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Author" ? "active" : "")">@Html.ActionLink("Dashboard", "Author", "Home")</li>
+                                @*<li>
+                                        <a href="@Url.Action("Help", "Help")"
+                                           type="submit"
+                                           target="_blank">
+                                            Help
+                                        </a>
+                                    </li>*@
+                            }
+                            else if (HttpContext.Current.Session["role"].ToString() == "Author")
+                            {
+                                @*<li class="navigation">@Html.ActionLink("Dashboard", "Author", "Home")</li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Author" ? "active" : "")">@Html.ActionLink("Dashboard", "Author", "Home")</li>
 
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")" >@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
-                                <a href="@Url.Action("Help", "Help")"
-                                   type="submit"
-                                   target="_blank">
-                                    Help
-                                </a>
-                            </li>
-                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                <li class="navigation">
-                    <a href="@Url.Action("Help", "Help")"
-                       type="submit"
-                       target="_blank">
-                        Help
-                    </a>
-                </li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")">
+                                    <a href="@Url.Action("Help", "Help")"
+                                       type="submit"
+                                       target="_blank">
+                                        Help
+                                    </a>
+                                </li>
+                                @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                    <li class="navigation">
+                                        <a href="@Url.Action("Help", "Help")"
+                                           type="submit"
+                                           target="_blank">
+                                            Help
+                                        </a>
+                                    </li>*@
+                            }
+                            else
+                            {
+                                @*<li class="navigation">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>*@
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "AuthorAssignment" ? "active" : "")">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>
+
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")">
+                                    <a href="@Url.Action("Help", "Help")"
+                                       type="submit"
+                                       target="_blank">
+                                        Help
+                                    </a>
+                                </li>
+                                @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
+                                    <li class="navigation">
+                                        <a href="@Url.Action("Help", "Help")"
+                                           type="submit"
+                                           target="_blank">
+                                            Help
+                                        </a>
+                                    </li>*@
+                            }
                         }
                         else
                         {
-                            @*<li class="navigation">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>*@
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "AuthorAssignment" ? "active" : "")">@Html.ActionLink("Dashboard", "AuthorAssignment", "Home")</li>
-
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Audit" ? "active" : "")">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Help" ? "active" : "")" >
-                                <a href="@Url.Action("Help", "Help")"
-                                   type="submit"
-                                   target="_blank">
-                                    Help
-                                </a>
-                            </li>
-                            @*<li class="navigation">@Html.ActionLink("AuditTrail", "Audit", "Audit")</li>
-                <li class="navigation">
-                    <a href="@Url.Action("Help", "Help")"
-                       type="submit"
-                       target="_blank">
-                        Help
-                    </a>
-                </li>*@
+                            Response.Redirect("~/Account/Login");
                         }
-                    }
-                    else
-                    {
-                        Response.Redirect("~/Account/Login");
-                    }
-                </ul>
+                    </ul>
                     @*<h1 style="color: wheat;font-family: initial;position: fixed;left: 14%;top: 3%;">Manager Dashboard</h1>*@
 
                     @*@Html.ActionLink(, "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })*@
                 </div>
 
                 @*<div id="user-tools">
-            Hi,<strong> @Session["UserName"] </strong>
+                        Hi,<strong> @Session["UserName"] </strong>
 
-            @Html.ActionLink("Change Password", "ChangePassword", "Account")
-            |
-            @Html.ActionLink("Logout", "Logout", "Account")
-        </div>*@
+                        @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                        |
+                        @Html.ActionLink("Logout", "Logout", "Account")
+                    </div>*@
                 <div id="user-tools">
 
 
 
                     @*<img src="img_avatar.png" alt="Avatar" class="avatar">S*@
-                        <div class="dropdown">
+                    <div class="dropdown">
 
 
 
@@ -468,29 +782,29 @@ display: table-row;
 
 
 
-                            <div class="logout-drpmn">
-                                <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
-                                <div class="dropbtn">
-                                    @Session["Name"]
-                                    <span class="userinfo">(@Session["role"])</span>
-                                </div>
-
-
-
-
-                                <div class="dropdown-content">
-                                    @Html.ActionLink("Change Password", "ChangePassword", "Account")
-                                    @Html.ActionLink("Logout", "Logout", "Account")
-                                </div>
+                        <div class="logout-drpmn">
+                            <img src="~/Themes/Images/img_avatar.png" alt="Avatar" class="avatar" />
+                            <div class="dropbtn">
+                                @Session["Name"]
+                                <span class="userinfo">(@Session["role"])</span>
                             </div>
-                            @*Hi,<strong> @Session["UserName"] </strong>
 
 
 
-        @Html.ActionLink("Change Password", "ChangePassword", "Account")
-        |
-        @Html.ActionLink("Logout", "Logout", "Account")*@
+
+                            <div class="dropdown-content">
+                                @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                                @Html.ActionLink("Logout", "Logout", "Account")
+                            </div>
                         </div>
+                        @*Hi,<strong> @Session["UserName"] </strong>
+
+
+
+                            @Html.ActionLink("Change Password", "ChangePassword", "Account")
+                            |
+                            @Html.ActionLink("Logout", "Logout", "Account")*@
+                    </div>
 
 
 
@@ -505,22 +819,32 @@ display: table-row;
             </div>
         </div>
 
-     
-            @*<p>&copy; @DateTime.Now.Year - AART</p>
-                <p>Product by <b>Ancla Consultancy Services</b></p>*@
-            <div class="fotr-cpy">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
-                    <p>&copy; @DateTime.Now.Year - AART </p>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
-                    <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
-                </div>
+
+        @*<p>&copy; @DateTime.Now.Year - AART</p>
+            <p>Product by <b>Ancla Consultancy Services</b></p>*@
+        <div class="fotr-cpy">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 cyrght">
+                <p>&copy; @DateTime.Now.Year - AART </p>
             </div>
-        
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 pwdby">
+                <p>Product by  <a href="https://www.anclacorp.com/" target="_blank">Ancla Technology Solutions India Private Limited</a> </p>
+            </div>
+        </div>
+
 
 
     </div>
-
+    <div id="loadingimg" class="overlay">
+        <div id="loading-img"></div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            setTimeout(function () {
+                // document.body.removeChild(modal);
+                $("#loadingimg").hide();
+            }, 0); //Delay just used for example and must be set to 0.
+        };
+    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

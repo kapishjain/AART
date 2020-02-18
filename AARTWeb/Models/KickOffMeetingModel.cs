@@ -486,6 +486,8 @@ namespace AARTWeb.Models
             public string target_timeline { get; set; }
             public string status { get; set; }
             public string comment { get; set; }
+            public string prodocid { get; set; }
+
         }
         public class AssgnSecProdList
         {
@@ -498,6 +500,8 @@ namespace AARTWeb.Models
             public User user_id { get; set; }
             public string target_date { get; set; }
             public string status { get; set; }
+            public string prodocid { get; set; }
+
             public string comment { get; set; }
         }
         public class User

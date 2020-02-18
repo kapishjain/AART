@@ -80,7 +80,7 @@
 				{
 					field: "ReviewPeriodTo", title: "Review To", editor: endDateEditor ,format: "{0:dd-MMM-yyyy}", width: "130px"
 				},
-                { command: "destroy", title: " ", width: "150px" }],
+                { command: "destroy", title: "", width: "150px" }],
              editable: {
                 createAt: "top"
             },
@@ -223,10 +223,16 @@
 			} else if (docatten[i].Complexity.complexity_description == "Select Complexity") {
 				swal("Please Select Complexity");
 				return;
-			} else if (Date.parse(docatten[i].ReviewPeriodTo) == Date.parse(docatten[i].ReviewPeriodFrom)) {
-				swal("Both From and to Date can't be same.")
-				return;
-			} else if (docatten[i].MainAuthor.user_name == docatten[i].CoAuthor.user_name) {
+            }
+            else if (Date.parse(docatten[i].ReviewPeriodTo) == Date.parse(docatten[i].ReviewPeriodFrom)) {
+                swal("The Review from date and Review to date can't be same.");
+                return;
+            }
+            else if (Date.parse(docatten[i].ReviewPeriodTo) <= Date.parse(docatten[i].ReviewPeriodFrom)) {
+                swal("The Review To Date must be greater than the Review from date");
+                return;
+            }
+            else if (docatten[i].MainAuthor.user_name == docatten[i].CoAuthor.user_name) {
 				swal("Both MainAuthor and LeadAuthor can't be same.")
 				return;
 			}

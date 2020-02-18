@@ -1,11 +1,13 @@
 ﻿using AARTWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace AARTWeb.Controllers
 {
@@ -308,12 +310,86 @@ namespace AARTWeb.Controllers
             //BaseModel audit = new BaseModel();
 
             //audit.InsertAudit("LogOut", "Successfully Logout", "Success");
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    dt.AcceptChanges();
+                    HttpContext.Application["EditUserSection"] = dt;
+                }
+                else
+                {
 
+                }
+            }
 
             // model.Logout();
             Session.Abandon();
 
             return View("Login");
+        }
+        public string sessionexpire()
+        {
+            //BaseModel audit = new BaseModel();
+
+            //audit.InsertAudit("LogOut", "Successfully Logout", "Success");
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    dt.AcceptChanges();
+                    HttpContext.Application["EditUserSection"] = dt;
+                }
+                else
+                {
+
+                }
+            }
+
+            // model.Logout();
+            Session.Abandon();
+
+            return "Logout";
+            //return View("Login");
+        }
+        public string getsessiontime()
+        {
+            LoginViewModel objmdl = new LoginViewModel();
+            objmdl.getremainingsession();
+            //            HttpSessionState session = HttpContext.Current.Session;
+            //            DateTime? sStart = session[SessionKeys.SessionStart] as DateTime?;
+
+            //            Below code gives you remaining time
+
+            //if (sessionStart.HasValue)
+            //                TimeSpan remainingTime = sStart.Value - DateTime.Now;
+            //HttpSessionState session = HttpContext.Current.Session;//Return current sesion
+            //DateTime? sessionStart = session[SessionKeys.SessionStart] as DateTime?;//Convert into DateTime object
+            //if (sessionStart.HasValue)//Check if session has not expired
+            //    TimeSpan remaining = sessionStart.Value - DateTime.Now;//Get the remaining time
+            return System.Web.HttpContext.Current.Session.Timeout.ToString();
         }
     }
 }

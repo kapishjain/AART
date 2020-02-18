@@ -14,6 +14,8 @@ using System.Xml;
 using System.Xml.XPath;
 using AARTServerVO;
 using Newtonsoft.Json;
+using System.Data;
+using System.Text.RegularExpressions;
 
 namespace AARTWeb.Controllers
 {
@@ -23,6 +25,8 @@ namespace AARTWeb.Controllers
         public static String docval = null;
         public static Int32 prodocid = 0;
         public static String htmlString = null;
+        public static string destinationFile = null;
+
         public ActionResult Index()
         {
             //DocX document = null;
@@ -171,7 +175,10 @@ namespace AARTWeb.Controllers
 
             return View("AuthorAssignment");
         }
-       
+        public string GetUserName()
+        {
+            return Session["UserName"].ToString();
+        }
         public ActionResult Manager()
         {
             //Auth cl = new Auth();
@@ -208,7 +215,7 @@ namespace AARTWeb.Controllers
             objprmdl.GetManagerDashBoardDetails();
             return View(objprmdl);
         }
-        
+
         public ActionResult AuthorAssignment()
         {
             //Auth cl = new Auth();
@@ -221,7 +228,7 @@ namespace AARTWeb.Controllers
         }
         public ActionResult GetReportsByUser(string id)
         {
-         //   objprmdl.GetReportsByUser();
+            //   objprmdl.GetReportsByUser();
             var productDetails = objprmdl.GetReportsByUser();
             if (id != "All")
             {
@@ -277,7 +284,7 @@ namespace AARTWeb.Controllers
             }
             return Json(productDetails, JsonRequestBehavior.AllowGet);
         }
-    
+
         [ValidateInput(false)]
         [HttpPost]
         public string UpdateActivitySection(ProDocActivityVo models)
@@ -290,6 +297,32 @@ namespace AARTWeb.Controllers
         public string UpdateSection(TemplateSectionVo models)
         {
             string result = objprmdl.UpdateSecAssUser(models);
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    dt.AcceptChanges();
+                    HttpContext.Application["EditUserSection"] = dt;
+                    return result;
+
+                }
+                else
+                {
+                    return result;
+
+                }
+            }
             return result;
         }
         [HttpPost]
@@ -349,8 +382,8 @@ namespace AARTWeb.Controllers
         [HttpPost]
         public JsonResult GetProDocActvity()
         {
-            var proDocSecAssList = objprmdl.GetProDocActvity(prodocid);
-            return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
+            var proDocSecActList = objprmdl.GetProDocActvity(prodocid);
+            return Json(proDocSecActList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult ProDocSecAssList()
@@ -360,10 +393,10 @@ namespace AARTWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProDocActList()
+        public JsonResult ProDocActList()// get prodoclist
         {
-            var proDocSecAssList = objprmdl.GetProDocActAss(prodocid);
-            return Json(proDocSecAssList, JsonRequestBehavior.AllowGet);
+            var proDocSecActList = objprmdl.GetProDocActAss(prodocid);
+            return Json(proDocSecActList, JsonRequestBehavior.AllowGet);
         }
 
         [ValidateInput(false)]
@@ -371,14 +404,65 @@ namespace AARTWeb.Controllers
         public string UpdateProDocSecAss(TemplateSectionVo models)
         {
             string res = objprmdl.UpdateProDocSecAss(models);
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    dt.AcceptChanges();
+                    HttpContext.Application["EditUserSection"] = dt;
+                    return res;
+
+                }
+                else
+                {
+                    return res;
+
+                }
+            }
             return res;
         }
 
         [ValidateInput(false)]
-        [HttpPost]        
+        [HttpPost]
         public string UpdateProDocActAss(TemplateSectionVo models)
         {
             string res = objprmdl.UpdateProDocActAss(models);
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                            dt.AcceptChanges();
+                        }
+                    }
+                    HttpContext.Application["EditUserSection"] = dt;
+                    return res;
+
+                }
+                else
+                {
+                    return res;
+
+                }
+            }
+
             return res;
         }
 
@@ -424,26 +508,105 @@ namespace AARTWeb.Controllers
         public ActionResult PrictDoc(string doctext)
         {
             List<TemplateSectionVo> Grid = JsonConvert.DeserializeObject<List<TemplateSectionVo>>(doctext);
-            htmlString = "<h1 style='text-align: center;'><strong>Report</strong></h1>" + "<br>";
-            for (int i = 0; i < Grid.Count; i++)
+            //htmlString = "<h1 style='text-align: center;'><strong>Report</strong></h1>" + "<br>";
+            string sourceFile = Server.MapPath(Path.Combine("/", "Themes/Template/PSURTemplate.dotx"));
+            var filename = Path.GetFileNameWithoutExtension(sourceFile);
+            destinationFile = Server.MapPath(Path.Combine("/", "Themes/DownloadDocs/" + "PBRER" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".docx"));
+            try
             {
-                htmlString += "<br><h2><strong>" + Grid[i].Section + "</strong></h2>" + Grid[i].Template_Content;
+                // Create a copy of the template file and open the copy 
+                System.IO.File.Copy(sourceFile, destinationFile, true);
+                WordprocessingDocument wordDoc =
+                WordprocessingDocument.Open(destinationFile, true);
+                wordDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+                //marker for main document part
+                var mainDocPart = wordDoc.MainDocumentPart;
+
+                //Iterate through the paragraphs to find the bookmarks inside
+                //load bookmarks
+                var bookmarks = mainDocPart.Document.Body.Descendants<BookmarkStart>();
+
+                for (int i = 0; i < Grid.Count; i++)
+                {
+                    //find our bookmark
+                    string bookmarkname1 = Regex.Match(Grid[i].Section, @"(\d+.\d+.\d+.|\d+.\d+.|\d+.)").Value;
+                    string bookmarkname = bookmarkname1.Replace(".", "_");
+                    //get to first element
+                    if (bookmarkname1 == null || bookmarkname1 == "")
+                    {
+                        bookmarkname = Regex.Replace(Grid[i].Section, @"[\d+|.|\s]", "");
+                    }
+                    var bookmark = from bookmarkIndex in bookmarks where bookmarkIndex.Name == "BK_" + bookmarkname select bookmarkIndex;
+                    if (bookmark.Count() > 0)
+                    {
+                        htmlString = "";
+                        if (Grid[i].Template_Content != null)
+                        {
+                            htmlString = "<html>" + Grid[i].Template_Content.Replace("<table>", "<table border='1' style=' border-collapse: collapse; border: 1px solid black;width:100%;'>");
+                        }
+                        string UrlLink = new Uri(Request.Url, Url.Content("~")).AbsoluteUri + "ImageBrowser/Image";
+                        string source = "/ImageBrowser/Image";
+                        string CON = htmlString;
+                        htmlString = CON.Replace(source, UrlLink);
+                        OpenXmlElement elem = bookmark.First().Parent;
+                        String cid = "chunkid_" + i;
+                        MemoryStream ms = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(htmlString));
+                        AlternativeFormatImportPart formatImportPart = wordDoc.MainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Html, cid);
+                        formatImportPart.FeedData(ms);
+                        AltChunk altChunk = new AltChunk();
+                        altChunk.Id = cid;
+                        elem.InsertAfterSelf<AltChunk>(altChunk);
+                        elem.Remove();
+                    }
+                }
+                DocumentSettingsPart settingsPart = mainDocPart.Document.MainDocumentPart.GetPartsOfType<DocumentSettingsPart>().First();
+                // Create object to update fields on open
+                UpdateFieldsOnOpen updateFields = new UpdateFieldsOnOpen();
+                updateFields.Val = new DocumentFormat.OpenXml.OnOffValue(true);
+                // Insert object into settings part.
+                settingsPart.Settings.PrependChild<UpdateFieldsOnOpen>(updateFields);
+                settingsPart.Settings.Save();
+                wordDoc.Close();
+                return Json("Sucess");
+
+            }
+            catch (Exception ex)
+            {
+                //string ErrorData = "Please Close the Word and try again";
+                return Json(ex.Message);
             }
             return Json("Sucess");
+
         }
-        public ActionResult GenerateDoc()
+        public void GenerateDoc()
         {
-            var strBody = new StringBuilder();
-            AddFormatting(strBody, htmlString);
-            Response.Clear();
-            Response.Charset = "";
-            Response.ContentType = "application/msword";
-            string strFileName = "Amitiza(Periodic Benefit Risk Evaluation Report(PBRER))" + ".doc";
-            Response.AddHeader("Content-Disposition", "inline;filename=" + strFileName);
-            Response.Write(strBody.ToString());
-            Response.End();
-            Response.Flush();
-            return View();
+            //var strBody = new StringBuilder();
+            //string UrlLink = new Uri(Request.Url, Url.Content("~")).AbsoluteUri + "ImageBrowser/Image";
+            //string source = "/ImageBrowser/Image";
+            //string CON = htmlString;
+            //htmlString = CON.Replace(source, UrlLink);
+
+            //AddFormatting(strBody, htmlString);
+            //Response.Clear();
+            //Response.Charset = "";
+            //Response.ContentType = "application/msword";
+            //string strFileName = "Amitiza(Periodic Benefit Risk Evaluation Report(PBRER))" + ".doc";
+            //Response.AddHeader("Content-Disposition", "inline;filename=" + strFileName);
+            //Response.Write(strBody.ToString());
+            //Response.End();
+            //Response.Flush();
+            System.IO.FileInfo file = new System.IO.FileInfo(destinationFile);
+            if (file.Exists)
+            {
+                Response.Clear();
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+                Response.AddHeader("Content-Length", file.Length.ToString());
+                Response.ContentType = "application/octet-stream";
+                Response.WriteFile(file.FullName);
+                Response.End();
+            }
+
+            //  return View();
         }
         private void AddFormatting(StringBuilder strBody, string yourHtmlContent)
         {
@@ -497,7 +660,7 @@ namespace AARTWeb.Controllers
         }
 
         [ValidateInput(false)]
-        [HttpPost]        
+        [HttpPost]
         public string SubmitSecAsignRecordByUser(int id, string comment, string section, string status, string templateContent) {
 
             TemplateSectionVo template = new TemplateSectionVo();
@@ -520,7 +683,7 @@ namespace AARTWeb.Controllers
 
             TemplateSectionVo template = new TemplateSectionVo();
             template.ProDoc_Template_id = id;
-            template.Comment = comment;            
+            template.Comment = comment;
             template.Status = status;
             template.Template_Content = templateContent;
 
@@ -532,15 +695,15 @@ namespace AARTWeb.Controllers
 
         [ValidateInput(false)]
         [HttpPost]
-        public string SubmitAuthRevSecAsignRecordByUser(int id, string comment, string status, string templateContent)
+        public string SubmitAuthRevSecAsignRecordByUser(int id, string comment, string status, string templateContent,string accessas)
         {
 
             TemplateSectionVo template = new TemplateSectionVo();
             template.ProDoc_Section_Assignment_id = id;
-            template.Comment = comment;            
+            template.Comment = comment;
             template.Status = status;
             template.Template_Content = templateContent;
-
+            template.Access_as = accessas;
             var model = new ProductModel();
             var res = model.SubmitAuthRevSecRecordByUser(template);
 
@@ -549,14 +712,15 @@ namespace AARTWeb.Controllers
 
         [ValidateInput(false)]
         [HttpPost]
-        public string SubmitAuthRevActAsignRecordByUser(int id, string comment, string status, string templateContent)
+        public string SubmitAuthRevActAsignRecordByUser(int id, string comment, string status, string templateContent, string accessas)
         {
 
             TemplateSectionVo template = new TemplateSectionVo();
             template.ProDoc_Template_id = id;
-            template.Comment = comment;            
+            template.Comment = comment;
             template.Status = status;
             template.Template_Content = templateContent;
+            template.Access_as = accessas;
 
             var model = new ProductModel();
             var res = model.SubmitAuthRevActRecordByUser(template);
@@ -580,7 +744,7 @@ namespace AARTWeb.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-		[HttpPost]
+        [HttpPost]
         public JsonResult GetDocumentWiseCount() {
             var model = objprmdl.GetUserDocumentChartDetails();
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -621,13 +785,99 @@ namespace AARTWeb.Controllers
             var res = objprmdl.GetUserSectionChartDetails(selectedItem);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
-        //[HttpPost]
-        //public JsonResult GetReportWiseCount()
-        //{
-        //    var model = objprmdl.GetUserReportChartDetails();
-        //    return Json(model, JsonRequestBehavior.AllowGet);
-        //}
+        [HttpGet]
+        public string Editsection(String prodocsecID)
+        {
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count < 1)
+                {
+                    DataRow workRow;
+                    workRow = dt.NewRow();
+                    workRow[0] = Session["UserID"];
+                    workRow[1] = prodocsecID;
+                    workRow[2] = Session["Name"];
 
+                    dt.Rows.Add(workRow);
+                    return "falsenooneisusing";
+                }
+                else
+                {
 
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        if (dr["SectionNo"].ToString() == prodocsecID && dr["UserID"].ToString() != Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            return dr["Name"].ToString();
+                        }
+                    }
+                    //else
+                    //{
+                    DataRow workRow;
+                    workRow = dt.NewRow();
+                    workRow[0] = Session["UserID"];
+                    workRow[1] = prodocsecID;
+                    workRow[2] = Session["Name"];
+
+                    dt.Rows.Add(workRow);
+                    return "falsenooneisusing";
+                    //  }
+                }
+            }
+            return "falsenooneisusing";
+
+        }
+        [HttpGet]
+        public void Deletesectionfromsession()
+        {
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    //foreach (DataRow dr in dt.Rows)
+                    //{
+                        
+                    //}
+                    dt.AcceptChanges();
+
+                    HttpContext.Application["EditUserSection"] = dt;
+
+                }
+                else
+                {
+
+                }
+            }
+        }
+        public void ExtendTimeout()
+        {
+            string res = null;
+          //  if (timeout > 0) //20 is the default timeout setting
+           // {
+                //HttpContext.Session.Clear();
+                //HttpContext.Session.RemoveAll();
+              //  res = System.Web.HttpContext.Current.Session.Timeout.ToString();
+                HttpContext.Session.Timeout = 2;
+                //filterContext.Result = new RedirectResult("/");
+          //  }
+          //  return res.ToString();
+            // return Json(Session.Timeout);
+        }
     }
+
+
 }
+  

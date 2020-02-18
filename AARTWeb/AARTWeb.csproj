@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="AARTServerVO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Azure download\bin\netstandard2.0\AARTServerVO.dll</HintPath>
+      <HintPath>..\..\bin\netstandard2.0\AARTServerVO.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -333,6 +333,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FileBrowserController.cs" />
     <Compile Include="Controllers\ImageBrowserController.cs" />
     <Compile Include="Controllers\AARTBaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -1045,6 +1046,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\timeout-dialog.js" />
     <Content Include="Themes\css\aart_style.css" />
     <Content Include="Themes\css\fonts\BebasNeue-webfont.svg" />
     <Content Include="Themes\css\fonts\Dharma Type Font License.txt" />
@@ -1106,9 +1108,17 @@
     <Content Include="Views\Help\help.cshtml" />
     <Content Include="Views\Shared\_HelpLayout.cshtml" />
     <Content Include="Views\Home\UsersStatus.cshtml" />
+    <Content Include="Themes\Template\PSURTemplate.dotx" />
+    <Content Include="Themes\Upload-File\FileBrowser\ImageFiles\uploadimages\Files\AART API Test Case.xlsx" />
+    <Content Include="Themes\Upload-File\FileBrowser\ImageFiles\uploadimages\Files\AART Doc.zip" />
+    <Content Include="Themes\Upload-File\FileBrowser\ImageFiles\uploadimages\Files\Web API published dll.zip" />
+    <Content Include="Themes\Upload-File\FileBrowser\Upload\upload\Files\Product Development.zip" />
+    <Content Include="Themes\Upload-File\FileBrowser\Upload\upload\Files\Template_ProjectTracking.xls" />
+    <Content Include="Themes\Upload-File\FileBrowser\Upload\upload\Files\Web API published dll.zip" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Themes\DownloadDocs\" />
     <Folder Include="Themes\Upload-Images\ImageBrowser\Create\" />
     <Folder Include="Themes\Upload-Images\ImageBrowser\Destroy\" />
     <Folder Include="Themes\Upload-Images\ImageBrowser\Image\" />

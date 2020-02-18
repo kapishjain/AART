@@ -16,6 +16,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
+using System.Web.SessionState;
 
 namespace AARTWeb.Models
 {
@@ -131,7 +132,7 @@ namespace AARTWeb.Models
                                     HttpContext.Current.Session["UserID"] = data[0].user_id;
                                     HttpContext.Current.Session["role"] = data[0].role_name;
                                     HttpContext.Current.Session["Name"] = data[0].name;
-
+                                    //HttpApplicationState.
                                     //InsertAudit("Login", "Logged In successfully", "Success", username,"");
 
                                     //HttpContext.Current.Session["role_id"] = data[0].role_Id;
@@ -335,6 +336,13 @@ namespace AARTWeb.Models
 
             //}
             //return addr;
+        }
+        public void getremainingsession()
+        {
+            HttpSessionState session = HttpContext.Current.Session;//Return current sesion
+           // DateTime? sessionStart = session[session.SessionStart] as DateTime?;//Convert into DateTime object
+          //  if (sessionStart.HasValue)//Check if session has not expired
+          //      TimeSpan remaining = sessionStart.Value - DateTime.Now;//Get the remaining time
         }
         public static bool IsValid(string Password)
         {

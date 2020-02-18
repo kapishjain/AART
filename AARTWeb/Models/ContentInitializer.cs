@@ -30,13 +30,13 @@ namespace AARTWeb.Models
                //  {
                // HttpContext.Current.Session["UserName"].ToString() = obj = DateTime.Now.Ticks.ToString();
              //   }
-                return "uploadimages";
+                return "upload";
             }
         }
 
         public string CreateUserFolder(System.Web.HttpServerUtilityBase server)
         {
-            var virtualPath = Path.Combine(rootFolder, Path.Combine("ImageFiles", UserID), prettyName);
+            var virtualPath = Path.Combine(rootFolder, Path.Combine("Upload", UserID), prettyName);
 
             var path = server.MapPath(virtualPath);
             if (!Directory.Exists(path))

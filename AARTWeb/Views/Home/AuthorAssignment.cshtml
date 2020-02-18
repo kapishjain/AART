@@ -105,16 +105,19 @@
     */
 
     .k-popup-edit-form .k-edit-label {
-        width: 5%;
+        width: 10%;
         text-align: left;
+        padding: 0;
     }
-
+    .k-edit-field.k-no-editor {
+    padding:0;
+    }
     /*
         Increase the width of the textbox containers. The default one is 60%.
         The sum of label and editor percentage widths should be around 90%, to make up for existing paddings.
     */
     .k-popup-edit-form .k-edit-field {
-        width: 90%;
+        width: 85%;
     }
 
     .k-editor-dialog.k-editor-table-wizard-dialog.k-window-content {
@@ -154,7 +157,7 @@
     }
 
     table.k-editor {
-        height: 335px !important;
+        height: 415px !important;
     }
 
     .red {
@@ -479,8 +482,6 @@
         });
 
         $("#sectioncount").click(function () {
-            //$("#divgrid").show();
-            //$("#dashboard").hide();
 
             $("#divsectiongrid").slideDown("slow", function () {
                 getSectiongrid("All");
@@ -646,31 +647,21 @@
             .appendTo(container);
     }
 
-		$.ajax({
-			url: "@Url.Action("GetUserCountdetailsSection", "Product")",
-			type: "post",
-			dataType: "json",
-			success: function (data) {
-			//	console.log(data);
-    //            //DocumentChart(seccount);
-    //            var seccount = {
-    //                ToBeInitiated: data[1].ToBeInitiated,
-    //                onGoing: data[1].onGoing,
-    //                reverted: data[1].reverted,
-    //                submited: data[1].submited,
-    //                toBeRevied: data[1].toBeRevied
+    $.ajax({
+        url: "@Url.Action("GetUserCountdetailsSection", "Product")",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            DocumentSecChart(data);
 
-    //            };
-                                DocumentSecChart(data);
+        },
+        error: function (err) {
 
-			},
-			error: function (err) {
-
-			}
-		});
+        }
+    });
 
     function DocumentSecChart(tData) {
-		$("#SectionChart").kendoChart({
+        $("#SectionChart").kendoChart({
             //title: {
             //    text: "Document wise Product",
             //    color: "#000000"
@@ -684,63 +675,65 @@
                     //color: "#ffffff"
                 }
 
-			 },
-			 dataSource: {
-				data: tData
-			},
-            seriesDefaults: {
-                type: "column"
             },
-             chartArea: {
-        height: 200
-    },
+            dataSource: {
+                data: tData
+            },
+            seriesDefaults: {
+                type: "column",
+                labels: { visible: true, position: "insideBase", background: "transparent" },
+            },
+            chartArea: {
+                height: 200
+            },
             series: [
-				{
-					field: "Tobeinitiated",
-					name: "To be initiated",
-					categoryField: "document_name",
+                {
+                    field: "Tobeinitiated",
+                    name: "To be initiated",
+                    categoryField: "document_name",
                     color: "#36b9cc"
-				}, {
-					field: "OnGoing",
-					name: "OnGoing",
-					categoryField: "document_name",
+                }, {
+                    field: "OnGoing",
+                    name: "OnGoing",
+                    categoryField: "document_name",
                     color: "#4e73df"
-				}, {
-					field: "SubmittedForReview",
-					name: "Submitted for review",
-					categoryField: "document_name",
+                }, {
+                    field: "SubmittedForReview",
+                    name: "Submitted for review",
+                    categoryField: "document_name",
                     color: "#f6c23e"
                 },
                 {
-					field: "Accepted",
-					name: "Accepted",
-					categoryField: "document_name",
+                    field: "Accepted",
+                    name: "Accepted",
+                    categoryField: "document_name",
                     color: "#1cc88a"
                 },
                 {
-					field: "Reverted",
-					name: "Reverted",
-					categoryField: "document_name",
+                    field: "Reverted",
+                    name: "Reverted",
+                    categoryField: "document_name",
                     color: "#e74a3b"
-				}
+                }
             ],
 
             valueAxis: {
                 labels: {
-                    format: "{0}",
-                    //color: "#ffffff"
+                    format: "{0:0}",
+                    rotation: "auto"
                 },
+                majorUnit: 2,
                 line: {
                     visible: false
                 },
             },
             categoryAxis: {
-				labels: {
-					rotation: -90
-				},
-				majorGridLines: {
-					visible: true
-				},
+                labels: {
+                    rotation: -90
+                },
+                majorGridLines: {
+                    visible: true
+                },
                 line: {
                     visible: true
                 },
@@ -792,7 +785,8 @@
 				data: dData
 			},
             seriesDefaults: {
-                type: "column"
+                type: "column",
+                 labels: { visible: true, position: "insideBase", background: "transparent" },
              },
             chartArea: {
         height: 200
@@ -828,12 +822,13 @@
 				}
             ],
 
-            valueAxis: {
+           valueAxis: {
                 labels: {
-                    format: "{0}",
-                    //color: "#ffffff"
+                    format: "{0:0}",
+                    rotation: "auto"
                 },
-                line: {
+                 majorUnit: 2,
+                 line: {
                     visible: false
                 },
             },
@@ -1090,9 +1085,11 @@
     }
    function getActivityGrid(val)
     {
-          var datasource = new kendo.data.DataSource({
+       var datasource = new kendo.data.DataSource({
+              	pageSize: 10,
+
             schema: {
-                total: "",
+                //total: "",
                 model: {
                                         id: "pro_doc_template",
 
@@ -1109,6 +1106,7 @@
                         comment: { type: 'string', editable: false },
                         status: { type: 'string', editable: false },
                                                 progress: { type: 'string', editable: false },
+                                                                                                prodocid: { type: 'string', editable: false },
 
                         template_content: { type: 'string', editable: true }
                     }
@@ -1138,80 +1136,90 @@
             },
         });
 
-        $("#grid").kendoGrid({
-            dataSource: datasource,
-             height: 750,
-            reorderable: true,
-            sortable: true,
-            pageable: true,
-            resizable: true,
-            columns: [
-                { field: "product_name", title: "Product Name" },
-                { field: "document_name", title: "Document Name" },
+       $("#grid").kendoGrid({
+           dataSource: datasource,
+           height: 750,
+           reorderable: true,
+           sortable: true,
+           toolbar: ["excel"],
+           groupable: true,
+
+           pageable: {
+               alwaysVisible: true,
+               pageSizes: [10, 20, 50, 100, 'All']
+           },
+           resizable: true,
+           columns: [
+               { field: "prodocid", title: "Report ID" },
+
+               { field: "product_name", title: "Product Name" },
+               { field: "document_name", title: "Document Name" },
                // { field: "document_template_id", title: "Action Id" },
-                { field: "action", title: "Action", width: "200px" },
-                //{ field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
-                { field: "target_timeline", title: "Target Timeline",  width: "140px" },
-                //{ field: "status", title: "Status" },
-                { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#"">#=status#</a>' },
+               { field: "action", title: "Action", width: "200px" },
+               //{ field: "aggred_timeline", title: "Agreed Timeline",  width: "140px" },
+               { field: "target_timeline", title: "Target Timeline", width: "140px" },
+               //{ field: "status", title: "Status" },
+               { field: "status", title: "Status", template: '<a style="text-decoration: none;" class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#"">#=status#</a>' },
 
-                { field: "template_content", title: "Comment", encoded: false, editor: SectionEditor, width: "200px" },
-                { command: [ { name: "Submit", click: SubmitActRecord }], width: "100px" },
-                                { command: [ {name: "Contact Log", click: OpenActData} ], width: "100px" }
+               { field: "template_content", title: "Comment", encoded: false, editor: SectionEditor, width: "200px" },
+               { command: [{ name: "Submit", click: SubmitActRecord }], width: "100px" },
+               { command: [{ name: "Contact Log", click: OpenActData }], width: "100px" }
 
-                //{
-                //    command: "edit", width: "100px"
-                //}
-            ],
-            editable: "popup",
-            dataBound: function (e) {
-                $("#grid tbody tr .k-grid-edit").each(function () {
-                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
-                    //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "Submitted") {
+               //{
+               //    command: "edit", width: "100px"
+               //}
+           ],
+           editable: "popup",
+           dataBound: function (e) {
+               $("#grid tbody tr .k-grid-edit").each(function () {
+                   var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                   //Check in the current dataItem if the row is editable
+                   if (currentDataItem.status == "Submitted") {
                        // $(this).remove();
-                        $(this).prop('disabled', true);
-                        $(this).addClass("disablebutton");
+                       $(this).prop('disabled', true);
+                       $(this).addClass("disablebutton");
 
-                    }
-                })
-                $("#grid tbody tr .k-grid-Submit").each(function () {
-                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
-                    //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "Submitted") {
-                        $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                   }
+               })
+               $("#grid tbody tr .k-grid-Submit").each(function () {
+                   var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                   //Check in the current dataItem if the row is editable
+                   if (currentDataItem.status == "Submitted") {
+                       $(this).prop('disabled', true);
+                       $(this).addClass("disablebutton");
 
-                        //$("input").prop('disabled', true);
-                    }
-                })
-                 $("#grid tbody tr .k-grid-edit").each(function () {
-                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
-                    //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be reviewed") {
+                       //$("input").prop('disabled', true);
+                   }
+               })
+               $("#grid tbody tr .k-grid-edit").each(function () {
+                   var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                   //Check in the current dataItem if the row is editable
+                   if (currentDataItem.status == "To be reviewed") {
                        // $(this).remove();
-                        $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                       $(this).prop('disabled', true);
+                       $(this).addClass("disablebutton");
 
 
-                    }
-                })
-                $("#grid tbody tr .k-grid-Submit").each(function () {
-                    var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
-                    //Check in the current dataItem if the row is editable
-                    if (currentDataItem.status == "To be reviewed") {
+                   }
+               })
+               $("#grid tbody tr .k-grid-Submit").each(function () {
+                   var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                   //Check in the current dataItem if the row is editable
+                   if (currentDataItem.status == "To be reviewed") {
                        // $(this).remove();
-                        $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                       $(this).prop('disabled', true);
+                       $(this).addClass("disablebutton");
 
 
-                    }
-                })
-            }
-        });
+                   }
+               })
+           }
+       });
     }
     function getSectiongrid(val) {
         var secDatasource = new kendo.data.DataSource({
+             	pageSize: 10,
+
             schema: {
                 total: "",
                 model: {
@@ -1223,6 +1231,7 @@
                         target_timeline: { type: 'string', editable: false },
                         status: { type: 'string', editable: false },
                         progress: { type: 'string', editable: false },
+                                                prodocid: { type: 'string', editable: false },
 
                         template_content: { type: 'string', editable: true },
 
@@ -1256,24 +1265,29 @@
 
         $("#section_assignments_grid").kendoGrid({
             dataSource: secDatasource,
-             height: 750,
+            height: 750,
             reorderable: true,
             sortable: true,
-            pageable: true,
+            toolbar: ["excel"],
+            groupable: true,
+
+            pageable: {
+                alwaysVisible: true,
+                pageSizes: [10, 20, 50, 100, 'All']
+            },
             resizable: true,
             //edit: addSubmitButton,
             columns: [
+                { field: "prodocid", title: "Report ID" },
                 { field: "product_name", title: "Product Name" },
                 { field: "document_name", title: "Document Name" },
                 { field: "section", title: "Section", width: "150px" },
-
                 { field: "target_timeline", title: "Target Date", width: "140px" },
                 //{ field: "status", title: "Status" },
-                                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#" )">#=status#</a>' },
-
+                { field: "status", title: "Status", template: '<a style="text-decoration: none;"  class="#: progress==\"Late\"? \"red\" :  status==\"Reverted\"? \"red\" : status==\"Submitted\"? \"green\" : status==\"To be reviewed\"? \"orange\" :\"white\"#" )">#=status#</a>' },
                 { field: "template_content", title: "Template Content", encoded: false, editor: SectionEditor, width: "400px" },
-                { command: ["edit", { name: "Submit", click: SubmitRecord }], width: "100px" },
-                                                { command: [ {name: "View comments", click: OpenData} ], width: "100px" }
+                { command: [{ name: "edit", click: EditClick }, { name: "Submit", click: SubmitRecord }], width: "100px" },
+                { command: [{ name: "View comments", click: OpenData }], width: "100px" }
 
 
                 //{
@@ -1287,43 +1301,63 @@
                 //}
             ],
             editable: "popup",
+            cancel: function (e) {
+                // recId = $("#pro-sec-id").text();
+                // var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                $.ajax({
+                    url: '@Url.Action("Deletesectionfromsession", "Home")',
+                    type: 'get',
+                    async: true,
+                    // data: { prodocsecID: dataItem.ProDoc_Section_Assignment_id },
+                    success: function (rs) {
+                        // swal(rs);
+
+                    },
+                    error: function (err) {
+                        swal(err);
+                    }
+                });
+                $("#section_assignments_grid").data("kendoGrid").dataSource.read();
+
+            },
             dataBound: function (e) {
                 $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
-                       // $(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        // $(this).remove();
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                         //  $(this).addClass('blue');
                     }
                 })
-                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "Submitted") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
-                 })
-                 $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
+                })
+                $("#section_assignments_grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "To be reviewed") {
                         //$(this).remove();
                         //  $(this).addClass('blue');
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
-                 $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
+                $("#section_assignments_grid tbody tr .k-grid-Submit").each(function () {
                     var currentDataItem = $("#section_assignments_grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.status == "To be reviewed") {
                         //$(this).remove();
-                          $(this).prop('disabled', true);
-                                                $(this).addClass("disablebutton");
+                        $(this).prop('disabled', true);
+                        $(this).addClass("disablebutton");
                     }
                 })
                 //$("#section_assignments_grid tbody tr").each(function () {
@@ -1339,7 +1373,31 @@
     }
     //$(document).ready(function () {
 
+      function EditClick(e) {
+                recId = $("#section_assignments_grid").text();
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
+        $.ajax({
+            url: '@Url.Action("Editsection", "Home")',
+            type: 'get',
+            async: true,
+            data: {prodocsecID:dataItem.ProDoc_Section_Assignment_id},
+            success: function (rs) {
+                if (rs == "falsenooneisusing") {
+                  //  alert("IF");
+                }
+                else {
+                    swal("You can't edit this section because '" + rs + "' already editing.");
+                    $("#grid").data("kendoGrid").dataSource.read();
+                                    return false;
+
+                }
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });           
+    }
     //});
       function reload() {
             window.location.reload();
@@ -1377,7 +1435,7 @@
     function SectionEditor(container, options) {
 
         $('<textarea class="textarea" data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
-            resizable: { content: true },
+            //resizable: { content: true },
             encoded: false,
             execute: function(e) {
                         var editor = this;
@@ -1420,17 +1478,19 @@
                 {
                     name: "fontSize",
                     items: [
-                        { text: '8px', value: '8px' },
-                        { text: '10px', value: '10px' },
-                        { text: '13px', value: '13px' },
-                        { text: '16px', value: '16px' },
-                        { text: '18px', value: '18px' },
-                        { text: '24px', value: '24px' },
-                        { text: '26px', value: '26px' },
-                        { text: '28px', value: '28px' },
-                        { text: '36px', value: '36px' },
-                        { text: '48px', value: '48px' },
-                        { text: '72px', value: '72px' }
+                         { text: '8px', value: '10.5px' },
+                        { text: '10px', value: '13px' },
+                        { text: '12px', value: '16px' },
+                        { text: '13px', value: '17px' },
+                        { text: '14px', value: '18.5px' },
+                        { text: '16px', value: '21px' },
+                        { text: '18px', value: '24px' },
+                        { text: '24px', value: '32px' },
+                        { text: '26px', value: '34.5px' },
+                        { text: '28px', value: '37.5px' },
+                        { text: '32px', value: '42.5px' },
+                        { text: '48px', value: '64px' },
+                        { text: '72px', value: '96px' }
                     ]
                 },
                 {

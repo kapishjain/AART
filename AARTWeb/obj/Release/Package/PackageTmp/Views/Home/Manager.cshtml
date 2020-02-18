@@ -688,57 +688,57 @@
 
 
     function DocumentChart(dData) {
-		 $("#chart").kendoChart({
+        $("#chart").kendoChart({
             legend: {
                 position: "top",
                 labels: {
                 }
 
-			 },
-			 dataSource: {
-				data: dData
-			},
+            },
+            dataSource: {
+                data: dData
+            },
             seriesDefaults: {
                 type: "column"
             },
             series: [
-				{
-					field: "tobeinitated",
-					name: "To be initiated",
-					categoryField: "document_code",
+                {
+                    field: "tobeinitated",
+                    name: "To be initiated",
+                    categoryField: "document_code",
                     color: "#36b9cc"
-				}, {
-					field: "onGoing",
-					name: "OnGoing",
-					categoryField: "document_code",
+                }, {
+                    field: "onGoing",
+                    name: "OnGoing",
+                    categoryField: "document_code",
                     color: "#f6c23e"
-				}, {
-					field: "Completed",
-					name: "Completed",
-					categoryField: "document_code",
+                }, {
+                    field: "Completed",
+                    name: "Completed",
+                    categoryField: "document_code",
                     color: "#1cc88a"
                 }
             ],
             chartArea: {
-        height: 350
-    },
-            valueAxis: {
+                height: 350
+            },
+           valueAxis: {
                 labels: {
-                    format: "{0}",
-                                            rotation: "auto"
-                    //color: "#ffffff"
+                    format: "{0:0}",
+                    rotation: "auto"
                 },
-                line: {
+                 majorUnit: 2,
+                 line: {
                     visible: false
                 },
             },
             categoryAxis: {
-				labels: {
-					rotation: -90
-				},
+                labels: {
+                    rotation: -90
+                },
                 majorGridLines: {
                     visible: true
-				},
+                },
                 line: {
                     visible: true
                 },
@@ -777,7 +777,17 @@
             },
             chartArea: {
         height: 350
-    },
+            },
+            valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
             //chartArea: { background: "#63778B" },
             //seriesDefaults: {
             //    type: "column"
@@ -823,7 +833,17 @@
 			 },
              chartArea: {
         height: 350
-    },
+             },
+             valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
 			 dataSource: {
 				data: tData
 			},
@@ -1017,6 +1037,8 @@
                model: {
                    id: "pro_doc_id",
                    fields: {
+                                              prodocid: { type: "string", editable: false },
+
                        pro_doc_id: { type: "int", editable: false },
                        product_description: { type: "string", editable: false, nullable: true, validation: { required: true } },
                        document_name: { type: "string", editable: false, validation: { required: true } },
@@ -1122,6 +1144,9 @@
                }
            },
            columns: [
+                {
+                   field: "prodocid", title: "Report ID"
+               },
                {
                    field: "product_description", title: "Product Name",
                                    

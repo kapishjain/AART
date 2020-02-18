@@ -4,14 +4,14 @@
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
 }
 @*<script src="~/GeneralJscripts/TelerikScripts/jquery.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
-<script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/jszip.min.js"></script>
+    <script src="~/GeneralJscripts/TelerikScripts/kendo.all.min.js"></script>
 
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
-<link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
-<link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">*@
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.common.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.default.min.css" rel="stylesheet">
+    <link href="~/GeneralJscripts/TelerikCSS/kendo.default.mobile.min.css" rel="stylesheet">*@
 @*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
 
 
@@ -25,7 +25,7 @@
         var docData;
         var alluser;
         getDocTypeData();
-       getUserByRoleData();      
+       getUserByRoleData();
 
         function getDocTypeData() {
             $.ajax({
@@ -60,7 +60,7 @@
                 }
             });
         }
-     
+
         var productdtls;
          var prodoctemplate;
          var prodocsection;
@@ -72,8 +72,9 @@
                 async: false,
                 success: function (result) {
                     productdtls = JSON.parse(result.getprodocdtls);
-                    $("#product-name").text(productdtls[0].productname);
-                    $("#doctype").text(productdtls[0].documentname);
+                    //$("#product-name").text(productdtls[0].productname);
+                    $("#doctype").text(productdtls[0].prodocid);
+                    //$("#doctype").text(productdtls[0].documentname + " id : " +  productdtls[0].prodocid);
 
                     $("#reviewprd").text(productdtls[0].reviewperiod);
 
@@ -164,7 +165,7 @@
            },
            height: 550,
 
-          
+
            columns: [
 
                {
@@ -192,7 +193,7 @@
                        }).appendTo(container);
                    }
                },
-               
+
                //{
                //    // The modelId column.
                //    title: "User",
@@ -256,7 +257,7 @@
                             },
                             select: function (e) {
                                 selectedBehalf = e.dataItem.user_name
-                                
+
                             }
                        }).appendTo(container);
                    }
@@ -273,19 +274,19 @@
                     selectedUser = "";
                     selectedBehalf = "";
                     var records = e.sender.dataSource.data();
-                    
+
                     var dataItem;
                     var i;
-                    for (i = 0; i < records.length; i++) {                        
-                        if (i >= 1) {                            
+                    for (i = 0; i < records.length; i++) {
+                        if (i >= 1) {
                             var j;
                             for (j = 0; j < i; j++) {
 
- 
+
 
                                 if (records[i].attendiesrole != undefined) {
 
- 
+
 
                                     if (records[j].attendiesrole.role_name + records[j].attendiesuser.user_name == records[i].attendiesrole.role_name + records[i].attendiesuser.user_name) {
                                         swal("User already exists for that role.");
@@ -293,7 +294,7 @@
                                         $('#grid').data("kendoGrid").dataSource.remove(dataItem);
                                     }
 
- 
+
 
                                     if (i < records.length) {
                                         if (records[j].attendiesuser.user_name + records[j].attendiesbehalfof.user_name == records[i].attendiesbehalfof.user_name + records[i].attendiesuser.user_name) {
@@ -301,16 +302,16 @@
                                             dataItem = records[i];
                                             $('#grid').data("kendoGrid").dataSource.remove(dataItem);
                                         }
-                                    }                                    
-                                                                                                                                                
-                                }                                                                
+                                    }
+
+                                }
                             }
-                        }                        
-                    }                    
+                        }
+                    }
                 },
        });
 
-      
+
 
          @*$.ajax({
                 type: "Get",
@@ -332,11 +333,13 @@
            //dataSource:komtempalte,
            dataSource: {
                data: prodoctemplate,
-               pageSize: 10,
+               pageSize: 15,
 
                schema: {
                    model: {
                        fields: {
+                                                      prodocid: { type: "string", editable: false },
+
                            product_document_mapping_id: { type: "string", editable: false },
 
                            document_template_id: { type: "string", editable: false },
@@ -356,7 +359,7 @@
            sortable: true,
            pageable: {
                alwaysVisible: true,
-               pageSizes: [10, 20, 30]
+               pageSizes: [10, 20, 30, 'All']
            },
            resizable: true,
 
@@ -366,6 +369,8 @@
 
 
            columns: [
+                              { field: "prodocid", title: "Report ID", width: "150px", editable: false },
+
                { field: "role_name", title: "Role", width: "150px", editable: false },
                {
                    field: "user", title: "Assign To", width: "100px",
@@ -374,7 +379,7 @@
 
                },
                { field: "action", title: "Action", width: "200px", editable: false },
-               { field: "agree_timeline", title: "Agreed Timeline", type: "date", format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
+               { field: "agree_timeline", title: "Agreed Timeline", editor:agtDateEditor, format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
                { field: "target_timeline", title: "Target Timeline", type: "date", format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
                { field: "comment", title: "Remark/Comments", width: "200px" },
            ]
@@ -384,11 +389,13 @@
            //dataSource:komtempalte,
            dataSource: {
                data: prodocsection,
-               pageSize: 10,
+               pageSize: 50,
                schema: {
                    model: {
                        //id: section_id,
                        fields: {
+                           prodocid: { type: "string", editable: false },
+
                            product_document_mapping_id: { type: "string", editable: false },
                            document_section_assignment_id: { type: "string", editable: false },
                            section_heading: { type: "string", validation: { required: true }, editable: false },
@@ -396,10 +403,10 @@
                            section_sub_heading: { type: "string", validation: { required: false }, editable: false },
                            role_id: { type: "string", validation: { required: true }, editable: false },
                            role_name: { type: "string", validation: { required: true }, editable: false },
-                           user: {  editable: true },
+                           user: { editable: true },
                            agree_timeline: { type: "date", validation: { required: false }, editable: true },
 
-                           target_timeline: { type: "date", validation: { required: false }, editable: true },
+                           target_timeline: { type: "date", validation: { required: false }, editable: false },
                        }
                    }
                },
@@ -410,8 +417,8 @@
            reorderable: true,
            sortable: true,
            pageable: {
-               alwaysVisible: false,
-               pageSizes: [15, 20, 30]
+               alwaysVisible: true,
+               pageSizes: [15, 20, 30,'All']
            },
            resizable: true,
            groupable: true,
@@ -424,15 +431,16 @@
            columns: [
                //{ field: "role_id", title: "Role_id", width: "150px",editable: false },
                //{ field: "section_sub_id", title: "Section No", width: "150px", editable: false },
+               { field: "prodocid", title: "Report ID", width: "150px", editable: false },
 
                { field: "section_heading", title: "Section", width: "150px", editable: false, groupable: true },
 
                { field: "section_sub_heading", title: "Section Heading", width: "150px", editable: false },
                { field: "role_name", title: "Role", width: "150px", editable: false },
-               { field: "user", title: "Assign To", width: "100px", editor: categoryDropDownEditor4,template: "#= user.user_name #" },
-               { field: "agree_timeline", title: "Agreed Timeline", type: "date", format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
+               { field: "user", title: "Assign To", width: "100px", editor: categoryDropDownEditor4, template: "#= user.user_name #" },
+               { field: "agree_timeline", title: "Agreed Timeline",editor:agtDateEditor, format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
 
-               { field: "target_timeline", title: "Target Timeline", type: "date", format: "{0:dd-MMM-yyyy}", width: "130px", editable: true },
+               { field: "target_timeline", title: "Target Timeline", type: "date", format: "{0:dd-MMM-yyyy}", width: "130px", editable: false },
                { field: "comment", title: "Remark/Comments", width: "200px" },
                //{ command: ["edit"], title: "&nbsp;", width: "250px" }
 
@@ -440,7 +448,7 @@
 
        });
 
-       function categoryDropDownEditor3(container, options) {          
+       function categoryDropDownEditor3(container, options) {
            $('<input name="' + options.field + '"/>')
                .appendTo(container)
                .kendoDropDownList({
@@ -491,6 +499,19 @@
                    }
                });
        }
+       function agtDateEditor(container, options) {
+        var d = new Date($("#komdate").text().replace(/-/gi, '/'));
+        var minimumDate = kendo.parseDate(d,"dd/MMM/yyyy");
+      //  var updatedDate = kendo.date.addDays(minimumDate, 10);
+        $('<input onkeydown="return false;" name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDatePicker({
+                format: "dd-MMM-yyyy",
+                value: minimumDate,
+                min: minimumDate,
+                max: options.model.target_timeline
+            });
+    }
    });
 
     function submitrecord() {
@@ -545,6 +566,15 @@
         color: blue !important;
     background-color: cornflowerblue;
     }*/
+     .k-grid-content {
+    height:500px;
+    }
+    .k-pager-sizes {
+    display : block !important;
+    }
+    .k-pager-info{
+        display:block !important;
+    }
     button, select {
         border-radius: 4px;
         text-transform: none;

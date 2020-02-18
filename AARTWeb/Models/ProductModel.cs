@@ -824,7 +824,7 @@ namespace AARTWeb.Models
                 httpClient.BaseAddress = new Uri(url);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid);
+                var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid + "&userid=" + Convert.ToInt32(HttpContext.Current.Session["UserID"]));
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -856,7 +856,7 @@ namespace AARTWeb.Models
                 httpClient.BaseAddress = new Uri(url);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var responseTask = httpClient.GetAsync("Product/GetProductDocumentAuthoring?prodocmapid=" + prodocmapid);
+                var responseTask = httpClient.GetAsync("Product/GetProductDocumentAuthoring?prodocmapid=" + prodocmapid + "&userid=" + Convert.ToInt32(HttpContext.Current.Session["UserID"]));
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -894,7 +894,10 @@ namespace AARTWeb.Models
                     templateSection.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
                     templateSection.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
                     templateSection.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
-                    templateSection.Status = "O";
+                    if (templateSection.Assigned_Username == HttpContext.Current.Session["UserName"].ToString())
+                        templateSection.Status = "O";
+                    else
+                        templateSection.Status = "I";
                     //List<TemplateSectionVo> tList = new List<TemplateSectionVo>();
                     //tList.Add(templateSection);
                     var responseTask = httpClient.PutAsJsonAsync("Product/UpdateSecAsignRecordByUser", templateSection);
@@ -1360,7 +1363,7 @@ namespace AARTWeb.Models
                 httpClient.BaseAddress = new Uri(url);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid);
+                var responseTask = httpClient.GetAsync("Product/GetProductDocumentActivityAuthoring?prodocmapid=" + prodocmapid + "&userid=" + Convert.ToInt32(HttpContext.Current.Session["UserID"]));
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -1527,7 +1530,11 @@ namespace AARTWeb.Models
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["token"].ToString());
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
-                vo.Status = "I";
+                if(vo.Access_as== "Lead Author" || vo.Access_as == "Maanger")
+                    vo.Status = "S";
+                else
+                    vo.Status = "I";
+
                 vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
                 vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
 
@@ -1566,8 +1573,10 @@ namespace AARTWeb.Models
                 vo.User_id = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
                 vo.Last_Modified_Date = DateTime.Now.ToString("dd/MMM/yyyy HH:mm:ss");
                 vo.Last_Modified_By = HttpContext.Current.Session["UserID"].ToString();
-
-                vo.Status = "I";
+                if (vo.Access_as == "Lead Author" || vo.Access_as == "Maanger")
+                    vo.Status = "S";
+                else
+                    vo.Status = "I";
                 var responseTask = httpClient.PutAsJsonAsync("Product/SubmitActivityRecordByUser", vo);
 
 
@@ -2039,6 +2048,8 @@ namespace AARTWeb.Models
             public string comment { get; set; }
             public string status { get; set; }
             public string template_content { get; set; }
+            public string prodocid { get; set; }
+
         }
         public class ProDocSectionByUserModel
         {
@@ -2049,6 +2060,8 @@ namespace AARTWeb.Models
             public string template_content { get; set; }
             public string target_timeline { get; set; }
             public string status { get; set; }
+            public string prodocid { get; set; }
+
         }
         public class GetProDocTemplateForChartModel
         {
@@ -2093,6 +2106,7 @@ namespace AARTWeb.Models
             public string cutoff_date { get; set; }
             public string reviewreport { get; set; }
             public string comments { get; set; }
+            public string prodocid { get; set; }
 
             public leadAuthor1 leadAuthor { get; set; }
 
@@ -2117,6 +2131,10 @@ namespace AARTWeb.Models
             public string cutoff_date { get; set; }
             public string comments { get; set; }
             public string reviewreport { get; set; }
+            public string prodocid { get; set; }
+            public string lead_author_user_id { get; set; }
+            public string co_lead_author_user_id { get; set; }
+            public string Worked_as { get; set; }
 
 
             //public leadAuthor1 leadAuthor { get; set; }

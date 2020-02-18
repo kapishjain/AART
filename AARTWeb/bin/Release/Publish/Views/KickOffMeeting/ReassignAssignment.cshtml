@@ -18,6 +18,15 @@
         color: blue !important;
     background-color: cornflowerblue;
     }*/
+    .k-grid-content {
+    height:500px;
+    }
+    .k-pager-sizes {
+    display : block !important;
+    }
+    .k-pager-info{
+        display:block !important;
+    }
     .w3-button:hover {
         color: blue !important;
         background-color: darkgrey !important;
@@ -43,7 +52,9 @@
              schema: {
                 model: {
                     id: "pro_doc_template",
-                    fields: {
+                     fields: {
+                                                prodocid: { type: "string", editable: false },
+
                         pro_doc_template: { type: "string", editable: false },
                         document_template_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
                         responsible_role_id: { type: "string", editable: false, validation: { required: true } },
@@ -94,12 +105,18 @@
                 if (operation != "read") {
                     return { models: kendo.stringify( options.models ) };
                 }
-            }
+            },
+                         pageSize: 15
+
         });
 
         $("#KOMTemplate").kendoGrid({
             dataSource: proDataSource,
             editable: "inline",
+             pageable: {
+                alwaysVisible: true,
+                pageSizes: [10, 20, 50, 100, 'All'],
+            },
             save: function (e) {
                 if (!e.model.isNew()) {
                     if (!confirm("Are you really sure that you want to update the data ?")) {
@@ -110,14 +127,16 @@
             columns: [
                 //{ field: "document_template_id", Title: "Document Template ID" },
                 //{ field: "responsible_role_id", Title: "Responsible RoleID" },
-                //{ field: "user_id", Title: "UserID"},
-                { field: "role_name", title: "Role"},
-                { field: "user", title: "ReAssign To", editor: categoryDropDownEditor3, template: "#= user.user_name #"},
+                //{ field: "user_id", Title: "UserID"},prodocid
+                { field: "prodocid", title: "Report ID" },
+
+                { field: "role_name", title: "Role" },
+                { field: "user", title: "ReAssign To", editor: categoryDropDownEditor3, template: "#= user.user_name #" },
                 { field: "action", title: "Action", width: "150px" },
                 { field: "aggred_timeline", title: "Agreed Timeline", format: "{0:dd-MMM-yyyy}" },
                 { field: "target_timeline", title: "Target Timeline", format: "{0:dd-MMM-yyyy}" },
                 { field: "comment", title: "Comment" },
-                { command: ["edit"]}
+                { command: ["edit"] }
             ]
         });
 
@@ -125,7 +144,8 @@
              schema: {
                 model: {
                     id: "pro_doc_section_assignment_id",
-                    fields: {
+                     fields: {
+                        prodocid: { type: "string", editable: false },
                         pro_doc_section_assignment_id: { type: "string", editable: false },
                         document_section_assignment_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
                         role_id: { type: "string", editable: false, validation: { required: true } },
@@ -176,12 +196,18 @@
                 if (operation != "read") {
                     return { sModels: options };
                 }
-            }
+            },
+                         pageSize: 50
+
         });
 
         $("#KOMSection").kendoGrid({
             dataSource: secDataSource,
             editable: "inline",
+             pageable: {
+                alwaysVisible: true,
+                pageSizes: [10, 20, 50, 100, 'All'],
+            },
             save: function (e) {
                 if (!e.model.isNew()) {
                     if (!confirm("Are you really sure that you want to update the data ?")) {
@@ -194,6 +220,8 @@
                 //{ field: "document_section_assignment_id", Title: "Document Section Assignment ID" },
                 //{ field: "role_id", Title: "RoleID"},
                 //{ field: "user_id", Title: "UserID"},
+                                                                { field: "prodocid", title: "Report ID" },
+
                 { field: "role_name", title: "Role" },
                 { field: "sectionname", title: "SectionName" },
                 { field: "user_id", title: "ReAssign To", editor: categoryDropDownEditor4, template: "#= user_id.user_name #" },

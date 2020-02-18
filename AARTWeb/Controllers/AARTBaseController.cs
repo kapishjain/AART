@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -21,12 +22,14 @@ namespace AARTWeb.Controllers
         //{
         //    return View();
         //}
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            
+            var app = HttpContext.Application;
             if (Session["UserID"] == null || Session["token"] == null)
             {
                 filterContext.Result = new RedirectResult("~/Account/Login");
+
                 // filterContext.Result = RedirectToRoute("Login", "Account");
                 // OR 
                 //filterContext.Result = new ViewResult
@@ -110,7 +113,29 @@ namespace AARTWeb.Controllers
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
+            if (HttpContext.Application["EditUserSection"] != null)
+            {
+                DataTable dt = (DataTable)HttpContext.Application["EditUserSection"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int r = 0; r < dt.Rows.Count; ++r)
+                    {
+                        DataRow dr = dt.Rows[r];
+                        if (dr["UserID"].ToString() == Session["UserID"].ToString())
+                        {
+                            // do your deed
+                            dr.Delete();
+                        }
+                        //...
+                    }
+                    dt.AcceptChanges();
+                    HttpContext.Application["EditUserSection"] = dt;
+                }
+                else
+                {
 
+                }
+            }
             //Log the error!!
             //  _Logger.Error(filterContext.Exception);
             Session.Abandon();

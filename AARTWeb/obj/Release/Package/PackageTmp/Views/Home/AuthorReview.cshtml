@@ -21,14 +21,22 @@
 @*<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">*@
 @*<script src="https://code.jquery.com/jquery-1.10.2.js"></script>*@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script src="https://cdn.tiny.cloud/1/z3nlcbnpwyo8jleqdpgi909s6hlk4twhqii9408762djdpvt/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script>tinymce.init({ selector: 'textarea' });</script>
+@*<script src="https://cdn.tiny.cloud/1/z3nlcbnpwyo8jleqdpgi909s6hlk4twhqii9408762djdpvt/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({ selector: 'textarea' });</script>*@
 
 <style>
     table.k-editor {
-        height: 500px !important;
+        height: 480px !important;
     }
-
+    .k-grid-content {
+    height:500px;
+    }
+    .k-pager-sizes {
+    display : block !important;
+    }
+    .k-pager-info{
+        display:block !important;
+    }
     .popupfield {
         padding: 0px !important;
         height: 570px !important;
@@ -295,8 +303,22 @@
 <script>
 
     var wnd, detailsTemplate, Id, Status, Comment, dataWnd, dataTemplate, diffSecWnd, diffActWnd, diffSecTemplate, diffActTemp, template, from;
-
+    var username;
     $(document).ready(function () {
+        @*var str = @Html.Raw(Json.Encode(ViewData["status"]));
+        alert(str);*@
+        $.ajax({
+            url: '@Url.Action("GetUserName", "Home")',
+            type: 'get',
+            success: function (rs) {
+                username = rs;
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });
+        //                    var user_id ='<%= Session["UserName"] %>'; //'<%=HttpContext.Current.Session["UserName"]%>';
+        //alert(user_id);
         var productdtls;
         var prodoctemplate;
         var prodocsection;
@@ -323,14 +345,23 @@
             }
         });
         var datasource = new kendo.data.DataSource({
+            //pageSize: 20,
+
             schema: {
                 model: {
                     id: "ProDoc_Section_Assignment_id",
                     fields: {
+                        prodocid: { type: 'string', editable: false },
+
                         Section: { type: 'string', editable: false },
                         Template_Content: { type: 'string', editable: true },
                         Status: { type: 'string', editable: false },
                         Product_Status: { type: 'string', editable: false },
+                        User_id: { type: 'string', editable: false },
+                        Last_Modified_By: { type: 'string', editable: false },
+                        Assigned_Username: { type: 'string', editable: false },
+                        Last_Modified_ID: { type: 'string', editable: false },
+                        Access_as: { type: 'string', editable: false }
 
                     }
                 }
@@ -354,32 +385,40 @@
 
                     }
                 },
+
                 parameterMap: function (options, operation) {
                     if (operation != "read") {
                         return { models: options }
                     }
                 }
             },
-            // pageSize: 10
+             pageSize: 50
         });
 
         $("#grid").kendoGrid({
             dataSource: datasource,
-            // height: 750,
+                         //height: 600,
+
+            groupable: true,
             reorderable: true,
             sortable: true,
-            //pageable: {
-            //        alwaysVisible: false,
-            //        pageSizes: [10, 20, 30]
-            //    },
+           pageable: {
+                alwaysVisible: true,
+                pageSizes: [10, 20, 50, 100, 'All'],
+            },
             resizable: true,
+
             columns: [
+                { field: "prodocid", title: "Report ID", width: "200px" },
+
                 { field: "Section", title: "Section", width: "300px" },
                 { field: "Status", editable: false, title: "Status", width: "100px", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+                { field: "Assigned_Username", title: "Assigned to", width: "150px" },
+                { field: "Last_Modified_By", title: "Last Modified By", width: "150px" },
 
                 { field: "Template_Content", title: "Template Content", encoded: false, editor: SectionEditor },
 
-                { command: ["edit", { name: "Submit", click: SubmitSecRecord }, { name: "Accept", click: AcceptRecord }, { name: "Revert", click: RevertRecord }], width: "100px" },
+                { command: [{ name: "edit", click: EditClick }, { name: "Submit", click: SubmitSecRecord }, { name: "Accept", click: AcceptRecord }, { name: "Revert", click: RevertRecord }], width: "100px" },
                 { command: [{ name: "View Comments", click: OpenData }], width: "100px" }
             ],
             editable: {
@@ -391,6 +430,41 @@
                     height: "700px",
                 }
             },
+
+            //edit: function (e) {
+            //    $('.k-edit-field .k-editable-area').on('keypress', function (e) {
+            //        //utils.onEnter(e, function () {
+            //        //    $('.k-grid-update').focus().trigger('click');
+
+            //        //});
+            //        alert("Hi");
+            //    });
+            //    //if (!e.model.isNew()) {
+            //    //    // Disable the editor of the "id" column when editing data items
+            //    //    var numeric = e.container.find("input[name=id]").data("kendoNumericTextBox");
+            //    //    numeric.enable(false);
+            //    //}
+            //},
+            cancel: function (e) {
+                // recId = $("#pro-sec-id").text();
+                // var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                $.ajax({
+                    url: '@Url.Action("Deletesectionfromsession", "Home")',
+                    type: 'get',
+                    async: true,
+                    // data: { prodocsecID: dataItem.ProDoc_Section_Assignment_id },
+                    success: function (rs) {
+                        // swal(rs);
+
+                    },
+                    error: function (err) {
+                        swal(err);
+                    }
+                });
+                $("#grid").data("kendoGrid").dataSource.read();
+
+            },
             dataBound: function (e) {
                 $("#grid tbody tr .k-grid-edit").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
@@ -399,6 +473,30 @@
                         //$(this).remove();
                         $(this).prop('disabled', true);
                         $(this).addClass("disablebutton");
+                        return;
+                    }
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (currentDataItem.Status == "To be reviewed") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (currentDataItem.Status == "Submitted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
                     }
                 })
                 $("#grid tbody tr .k-grid-Submit").each(function () {
@@ -409,15 +507,65 @@
                         $(this).prop('disabled', true);
                         $(this).addClass("disablebutton");
                     }
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (currentDataItem.Status == "To be reviewed") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (currentDataItem.Status == "Submitted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        //if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+                        //}
+                    }
+
                 })
                 $("#grid tbody tr .k-grid-Accept").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                        $(this).prop('disabled', true);
+                        $(this).css('display', 'none');
                         $(this).addClass("disablebutton");
                     }
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (username == currentDataItem.Assigned_Username) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+
+                        }
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                    }
+                    if (username == currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        //if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+                        //}
+                    }
+
                 })
                 $("#grid tbody tr .k-grid-Revert").each(function () {
                     var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
@@ -426,6 +574,33 @@
                         //$(this).remove();
                         $(this).prop('disabled', true);
                         $(this).addClass("disablebutton");
+                    }
+                    //alert("Username--" +username + "Assigned:"+currentDataItem.Assigned_Username);
+
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (username == currentDataItem.Assigned_Username) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+
+                        }
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                    }
+
+                    if (username == currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+
                     }
                 })
             }
@@ -436,11 +611,17 @@
                 model: {
                     id: "ProDoc_Template_id",
                     fields: {
+                        prodocid: { type: 'string', editable: false },
+
                         Action: { type: 'string', editable: false },
                         Status: { type: 'string', editable: false },
-
+                        User_id: { type: 'string', editable: false },
+                        Last_Modified_By: { type: 'string', editable: false },
+                        Assigned_Username: { type: 'string', editable: false },
+                        Last_Modified_ID: { type: 'string', editable: false },
                         Template_Content: { type: 'string', editable: true },
                         ProductStatus: { type: 'string', editable: true },
+                        Access_as: { type: 'string', editable: false }
 
                     }
                 }
@@ -471,25 +652,29 @@
                     }
                 }
             },
-            //pageSize: 10
+            pageSize: 15
         });
 
         $("#act-grid").kendoGrid({
             dataSource: pDataSource,
-            // height: 750,
+             height: 600,
+            groupable: true,
             reorderable: true,
             sortable: true,
-            //pageable: {
-            //        alwaysVisible: false,
-            //        pageSizes: [10, 20, 30]
-            //    },
+           pageable: {
+                alwaysVisible: true,
+                pageSizes: [10, 20, 50, 100, 'All'],
+            },
             resizable: true,
             columns: [
-                { field: "Action", title: "Action"},
-                { field: "Status", editable: false, title: "Status", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+                { field: "prodocid", title: "Report ID" },
 
+                { field: "Action", title: "Action" },
+                { field: "Status", editable: false, title: "Status", template: '<a style="text-decoration: none;"  class="#:   Status==\"Reverted\"? \"red\" : Status==\"Submitted\"? \"green\" : Status==\"To be reviewed\"? \"orange\" :\"black\"#" )">#=Status#</a>' },
+                { field: "Assigned_Username", title: "Assigned to", width: "150px" },
+                { field: "Last_Modified_By", title: "Last Modified By", width: "150px" },
                 { field: "Template_Content", title: "Comment", encoded: false, editor: SectionEditor },
-                { command: [ { name: "Submit", click: SubmitActRecord }, { name: "Accept", click: AcceptActRecord }, { name: "Revert", click: RevertActRecord }], width: "100px" },
+                { command: [{ name: "Submit", click: SubmitActRecord }, { name: "Accept", click: AcceptActRecord }, { name: "Revert", click: RevertActRecord }], width: "100px" },
                 { command: [{ name: "Contact Log", click: OpenActData }], width: "100px" }
             ],
             editable: "popup",
@@ -511,14 +696,65 @@
                         $(this).prop('disabled', true);
                         $(this).addClass("disablebutton");
                     }
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                        if (username == currentDataItem.Assigned_Username && (currentDataItem.Status == "To be reviewed" || currentDataItem.Status == "Submitted")) {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+
+                        }
+                        //if (currentDataItem.Status != "To be initiated" || currentDataItem.Status != "OnGoing" || currentDataItem.Status != "Reverted") {
+                        //    $(this).prop('disabled', true);
+                        //    $(this).addClass("disablebutton");
+                        //}
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        //if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+                        //}
+                    }
+
                 })
                 $("#act-grid tbody tr .k-grid-Accept").each(function () {
                     var currentDataItem = $("#act-grid").data("kendoGrid").dataItem($(this).closest("tr"));
                     //Check in the current dataItem if the row is editable
                     if (currentDataItem.Product_Status == "C") {
                         //$(this).remove();
-                        $(this).prop('disabled', true);
+                        $(this).css('display', 'none');
                         $(this).addClass("disablebutton");
+                    }
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+
+                        if (username == currentDataItem.Assigned_Username) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                            $(this).addClass("disablebutton");
+
+                        }
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                    }
+                    if (username == currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        //if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+                        //}
                     }
                 })
                 $("#act-grid tbody tr .k-grid-Revert").each(function () {
@@ -528,6 +764,31 @@
                         //$(this).remove();
                         $(this).prop('disabled', true);
                         $(this).addClass("disablebutton");
+                    }
+                    //alert("Username--" +username + "Assigned:"+currentDataItem.Assigned_Username);
+
+                    if (currentDataItem.Access_as == "Co-Author") {
+                        //$(this).remove();
+                        if (username != currentDataItem.Assigned_Username) {//&& (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted")) {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+
+                        if (username == currentDataItem.Assigned_Username) {
+                            $(this).css('display', 'none'); //.prop('disabled', true);
+                        }
+                    }
+                    if (username != currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        //$(this).remove();
+                        if (currentDataItem.Status == "To be initiated" || currentDataItem.Status == "OnGoing" || currentDataItem.Status == "Reverted") {
+                            $(this).prop('disabled', true);
+                            $(this).addClass("disablebutton");
+                        }
+                    }
+                    if (username == currentDataItem.Assigned_Username && (currentDataItem.Access_as == "Lead Author" || currentDataItem.Access_as == "Maanger")) {
+                        $(this).css('display', 'none'); //.prop('disabled', true);
+                        $(this).addClass("disablebutton");
+
                     }
                 })
             }
@@ -550,7 +811,26 @@
         $('<textarea class="textarea" data-bind="value: ' + options.field + '" style="width: 100%;height:100%;" />').appendTo(container).kendoEditor({
             resizable: { content: true },
             encoded: false,
+            keyup: function (e) {
 
+
+                   $.ajax({
+               url: '@Url.Action("ExtendTimeout", "Home")',
+               //data: {
+               //    timeout: sessionTimeout
+
+               //},
+               type: 'get',
+               // dataType: 'json',
+               success: function () {
+
+               },
+               error: function () {
+                   swal("fail")
+               },
+           });
+
+  },
             execute: function (e) {
                 var editor = this;
                 if (e.name == "createtable") {
@@ -592,17 +872,19 @@
                 {
                     name: "fontSize",
                     items: [
-                        { text: '8px', value: '8px' },
-                        { text: '10px', value: '10px' },
-                        { text: '13px', value: '13px' },
-                        { text: '16px', value: '16px' },
-                        { text: '18px', value: '18px' },
-                        { text: '24px', value: '24px' },
-                        { text: '26px', value: '26px' },
-                        { text: '28px', value: '28px' },
-                        { text: '36px', value: '36px' },
-                        { text: '48px', value: '48px' },
-                        { text: '72px', value: '72px' }
+                       { text: '8px', value: '10.5px' },
+                        { text: '10px', value: '13px' },
+                        { text: '12px', value: '16px' },
+                        { text: '13px', value: '17px' },
+                        { text: '14px', value: '18.5px' },
+                        { text: '16px', value: '21px' },
+                        { text: '18px', value: '24px' },
+                        { text: '24px', value: '32px' },
+                        { text: '26px', value: '34.5px' },
+                        { text: '28px', value: '37.5px' },
+                        { text: '32px', value: '42.5px' },
+                        { text: '48px', value: '64px' },
+                        { text: '72px', value: '96px' }
                     ]
                 },
                 {
@@ -644,6 +926,8 @@
                 "cellsMergeHorizontally",
                 "viewHtml",
                 "formatting",
+                "copyFormat",
+                "applyFormat",
                 "cleanFormatting",
                 "foreColor",
                 "backColor",
@@ -758,6 +1042,7 @@
 
         recStatus = $("#status").text();
        // console.log("status: ", recStatus);
+                secaccessas = $("#accessas").text();
 
         recTemp = $("#template-content").html();
        // console.log("template: ", recTemp);
@@ -771,6 +1056,7 @@
                 status: recStatus,
                 comment: Comment,
                 templateContent: recTemp,
+                accessas:secaccessas
             },
             success: function (res) {
 
@@ -800,6 +1086,7 @@
 
         recStatus = $("#status").text();
         //console.log("status: ", recStatus);
+                        actaccessas = $("#accessas").text();
 
         recTemp = $("#template-content").html();
         //console.log("template: ", recTemp);
@@ -812,6 +1099,7 @@
                 status: recStatus,
                 comment: Comment,
                 templateContent: recTemp,
+                accessas:actaccessas
             },
             success: function (res) {
 
@@ -1258,7 +1546,31 @@
         wnd.content(detailsTemplate(dataItem));
         wnd.center().open();
     }
+    function EditClick(e) {
+                recId = $("#pro-sec-id").text();
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
+        $.ajax({
+            url: '@Url.Action("Editsection", "Home")',
+            type: 'get',
+            async: true,
+            data: {prodocsecID:dataItem.ProDoc_Section_Assignment_id},
+            success: function (rs) {
+                if (rs == "falsenooneisusing") {
+                  //  alert("IF");
+                }
+                else {
+                    swal("You can't edit this section because '" + rs + "' already editing.");
+                    $("#grid").data("kendoGrid").dataSource.read();
+                                    return false;
+
+                }
+            },
+            error: function (err) {
+                swal(err);
+            }
+        });           
+    }
 
     function SubmitActRecord(e) {
          wnd = $("#ka-wnd").kendoWindow({
@@ -1300,6 +1612,8 @@
 
         <div id="pro-sec-id">#= ProDoc_Section_Assignment_id #</div>
         <div id="status">#= Status #</div>
+        <div id="accessas">#= Access_as #</div>
+
         <div id="template-content">#= Template_Content #</div>
 
     </div>
@@ -1322,6 +1636,8 @@
 
         <div id="pro-act-id">#= ProDoc_Template_id #</div>
         <div id="status">#= Status #</div>
+        <div id="accessas">#= Access_as #</div>
+
         <div id="template-content">#= Template_Content #</div>
 
     </div>
@@ -1473,16 +1789,16 @@
     <div class="panel-body">
         <div class="tab-content">
             <div class="tab-pane fade in active" id="tab1primary">
-                <div class="col-sm-12 col-md-12 usr-tlenm">
+                <div class="col-sm-12 col-md-12 usr-tlenm" style="height:600px;">
                     @*<h2>Attendances</h2>*@
                     <div id="act-grid"></div>
                     @*<input type="button" value="Add new User" onclick="location.href='@Url.Action("AddUser", "User")'" />*@
                 </div>
             </div>
             <div class="tab-pane fade atv-tab" id="tab2primary">
-                <div class="col-sm-12 col-md-12 tble-tlenam">
+                <div class="col-sm-12 col-md-12 tble-tlenam" >
                     @*<h2>Assignment & Timelines</h2>*@
-                    <div id="grid"></div>
+                    <div  class="k-widget k-grid" id="grid" ></div>
                     @*<input type="button" value="Add new role" onclick="location.href='@Url.Action("AddRole", "Role")'" />*@
                 </div>
 
@@ -1491,13 +1807,14 @@
 
         </div>
     </div>
+    </div>
+
     <button id="submitbyn" onclick="downlaodrecord();" class="k-content btn k-primary com-btn">Download Document</button>
 
     @if ((string)ViewData["status"] == "Ongoing")
     {
         <button id="submitbyn" onclick="submitrecord();" class="k-content btn k-primary com-btn">Complete Report</button>
     }
-</div>
 
 
 

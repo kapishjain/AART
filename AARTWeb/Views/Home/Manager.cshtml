@@ -252,7 +252,7 @@
 <script type="x/kendo-template" id="page-template2">
     <div class="page-template">
         <div class="header">
-            <p style="font-size: 22px;  font-weight: bold;">Total Count</p>
+            <p style="font-size: 22px;  font-weight: bold;">Total Report</p>
             <div style="float: right; font-size: 12px; font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
     </div>
@@ -297,7 +297,7 @@
             //        });
             //    });
             kendo.drawing.drawDOM($("#downloaddashbaord"), {
-                paperSize: ["600mm", "300mm"],
+                paperSize: ["450mm", "300mm"],
                 margin: { left: "0cm", top: "4cm", right: "0cm", bottom: "0cm" },
                 template: $("#page-template4").html()
             }).then(function (group) {
@@ -520,13 +520,13 @@
                 cType1 = item.text();
                 var kChart = $("#chart").data("kendoChart");
                 if (cType1 == "Stacked bar")
-                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: true } });
+                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: true , labels: {visible: true, position: "insideBase", background: "transparent" }} });
                 else if (cType1 == "Stacked column")
-                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: true } });
+                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: true, labels: {visible: true, position: "insideBase", background: "transparent" } } });
                 else if (cType1 == "Column")
-                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: false } });
+                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: false, labels: {visible: true, position: "insideBase", background: "transparent" } } });
                 else
-                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false } });
+                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false , labels: {visible: true, position: "insideBase", background: "transparent" }} });
 
                 kChart.dataSource.read();
                 kChart.refresh();
@@ -688,57 +688,58 @@
 
 
     function DocumentChart(dData) {
-		 $("#chart").kendoChart({
+        $("#chart").kendoChart({
             legend: {
                 position: "top",
                 labels: {
                 }
 
-			 },
-			 dataSource: {
-				data: dData
-			},
+            },
+            dataSource: {
+                data: dData
+            },
             seriesDefaults: {
-                type: "column"
+                type: "column",
+                   labels: { visible: true, position: "insideBase", background: "transparent" },
             },
             series: [
-				{
-					field: "tobeinitated",
-					name: "To be initiated",
-					categoryField: "document_code",
+                {
+                    field: "tobeinitated",
+                    name: "To be initiated",
+                    categoryField: "document_code",
                     color: "#36b9cc"
-				}, {
-					field: "onGoing",
-					name: "OnGoing",
-					categoryField: "document_code",
+                }, {
+                    field: "onGoing",
+                    name: "OnGoing",
+                    categoryField: "document_code",
                     color: "#f6c23e"
-				}, {
-					field: "Completed",
-					name: "Completed",
-					categoryField: "document_code",
+                }, {
+                    field: "Completed",
+                    name: "Completed",
+                    categoryField: "document_code",
                     color: "#1cc88a"
                 }
             ],
             chartArea: {
-        height: 350
-    },
-            valueAxis: {
+                height: 350
+            },
+           valueAxis: {
                 labels: {
-                    format: "{0}",
-                                            rotation: "auto"
-                    //color: "#ffffff"
+                    format: "{0:0}",
+                    rotation: "auto"
                 },
-                line: {
+                 majorUnit: 2,
+                 line: {
                     visible: false
                 },
             },
             categoryAxis: {
-				labels: {
-					rotation: -90
-				},
+                labels: {
+                    rotation: -90
+                },
                 majorGridLines: {
                     visible: true
-				},
+                },
                 line: {
                     visible: true
                 },
@@ -777,7 +778,17 @@
             },
             chartArea: {
         height: 350
-    },
+            },
+            valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
             //chartArea: { background: "#63778B" },
             //seriesDefaults: {
             //    type: "column"
@@ -823,7 +834,17 @@
 			 },
              chartArea: {
         height: 350
-    },
+             },
+             valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
 			 dataSource: {
 				data: tData
 			},
@@ -1017,6 +1038,8 @@
                model: {
                    id: "pro_doc_id",
                    fields: {
+                                              prodocid: { type: "string", editable: false },
+
                        pro_doc_id: { type: "int", editable: false },
                        product_description: { type: "string", editable: false, nullable: true, validation: { required: true } },
                        document_name: { type: "string", editable: false, validation: { required: true } },
@@ -1122,6 +1145,9 @@
                }
            },
            columns: [
+                {
+                   field: "prodocid", title: "Report ID"
+               },
                {
                    field: "product_description", title: "Product Name",
                                    
@@ -1674,7 +1700,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist1" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" id="imgproductwisecount" />
+                            <img src="~/Themes/Images/images.png" id="imgproductwisecount" style="cursor: pointer;" />
 
                         </div>
                     </div>
@@ -1697,7 +1723,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" id="imgductwisecount" />
+                            <img src="~/Themes/Images/images.png" id="imgductwisecount" style="cursor: pointer;" />
 
                         </div>
                     </div>
@@ -1722,7 +1748,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist2" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png" id="imgtotalreport" />
+                            <img src="~/Themes/Images/images.png" id="imgtotalreport" style="cursor: pointer;"/>
                             @*<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                                     <div class="dropdown-header">Dropdown Header:</div>
                                     <a class="dropdown-item" href="#">Action</a>

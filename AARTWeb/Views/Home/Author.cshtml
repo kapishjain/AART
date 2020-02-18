@@ -182,7 +182,7 @@
 <script type="x/kendo-template" id="page-template2">
     <div class="page-template">
         <div class="header">
-            <p style="font-size: 22px;  font-weight: bold;">Total Count</p>
+            <p style="font-size: 22px;  font-weight: bold;">Total Report</p>
             <div style="float: right; font-size: 12px;  font-weight: 900;padding-right:2%;">#: getcurrentdate() #</div>
         </div>
     </div>
@@ -430,13 +430,13 @@
                 cType1 = item.text();
                 var kChart = $("#chart").data("kendoChart");
                 if (cType1 == "Stacked bar")
-                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: true } });
+                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: true, labels: {visible: true, position: "insideBase", background: "transparent" } } });
                 else if (cType1 == "Stacked column")
-                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: true } });
+                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: true, labels: {visible: true, position: "insideBase", background: "transparent" } } });
                 else if (cType1 == "Column")
-                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: false } });
+                    kChart.setOptions({ seriesDefaults: { type: 'column', stack: false , labels: {visible: true, position: "insideBase", background: "transparent" }} });
                 else
-                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false } });
+                    kChart.setOptions({ seriesDefaults: { type: 'bar', stack: false , labels: {visible: true, position: "insideBase", background: "transparent" }} });
 
                 kChart.dataSource.read();
                 kChart.refresh();
@@ -607,81 +607,84 @@
 		});
 
         function DocumentChart(dData) {
-		 $("#chart").kendoChart({
-            //title: {
-            //    text: "Document wise Product",
-            //    color: "#000000"
+            $("#chart").kendoChart({
+                //title: {
+                //    text: "Document wise Product",
+                //    color: "#000000"
 
-            //},
-            //chartArea: {background:"#02075D"},
-              chartArea: {
-        height: 350
-    },
-            legend: {
-                position: "top",
-                labels: {
-                    //color: "#ffffff"
-                }
+                //},
+                //chartArea: {background:"#02075D"},
+                chartArea: {
+                    height: 350
+                },
+                legend: {
+                    position: "top",
+                    labels: {
+                        //color: "#ffffff"
+                    }
 
-			 },
-			 dataSource: {
-				data: dData
-			},
-            seriesDefaults: {
-                type: "column"
-            },
-            series: [
-				{
-					field: "tobeinitated",
-					name: "To be initiated",
-					categoryField: "document_code",
-                    color: "#36b9cc"
-				}, {
-					field: "onGoing",
-					name: "OnGoing",
-					categoryField: "document_code",
-                    color: "#f6c23e"
-				}, {
-					field: "Completed",
-					name: "Completed",
-					categoryField: "document_code",
-                    color: "#1cc88a"
-                }
-            ],
+                },
+                dataSource: {
+                    data: dData
+                },
+                seriesDefaults: {
+                    type: "column",
+                                    labels: { visible: true, position: "insideBase", background: "transparent" },
 
-            valueAxis: {
-                labels: {
+                },
+                series: [
+                    {
+                        field: "tobeinitated",
+                        name: "To be initiated",
+                        categoryField: "document_code",
+                        color: "#36b9cc"
+                    }, {
+                        field: "onGoing",
+                        name: "OnGoing",
+                        categoryField: "document_code",
+                        color: "#f6c23e"
+                    }, {
+                        field: "Completed",
+                        name: "Completed",
+                        categoryField: "document_code",
+                        color: "#1cc88a"
+                    }
+                ],
+                valueAxis: {
+                    labels: {
+                        format: "{0:0}",
+                        rotation: "auto"
+                    },
+                    majorUnit: 2,
+                    line: {
+                        visible: false
+                    },
+                },
+
+                categoryAxis: {
+                    labels: {
+                        rotation: -90
+                    },
+                    majorGridLines: {
+                        visible: true
+                    },
+                    line: {
+                        visible: true
+                    },
+                    labels: {
+                        padding: { top: 1 },
+                        //color: "#ffffff"
+                    }
+                },
+                //panes: [
+                //    { name: "top-pane", background: "#000000" },
+                //    ],
+                tooltip: {
+                    visible: true,
                     format: "{0}",
-                    //color: "#ffffff"
-                },
-                line: {
-                    visible: false
-                },
-            },
-            categoryAxis: {
-				labels: {
-					rotation: -90
-				},
-				majorGridLines: {
-					visible: true
-				},
-                line: {
-                    visible: true
-                },
-                labels: {
-                    padding: { top: 1 },
-                    //color: "#ffffff"
+                    template: "#= series.name #: #= value #"
                 }
-            },
-            //panes: [
-            //    { name: "top-pane", background: "#000000" },
-            //    ],
-            tooltip: {
-                visible: true,
-                format: "{0}",
-                template: "#= series.name #: #= value #"
-            }
-        });
+            });
 	}
 
 
@@ -694,6 +697,8 @@
                         model: {
 
                             fields: {
+                                                                prodocid: { type: "string", editable: false },
+
                                 pro_doc_id: { type: "string", editable: false, nullable: true, validation: { required: true } },
                                 product_description: { type: "string", editable: false, nullable: true, validation: { required: true } },
                                 document_name: { type: "string", editable: false, validation: { required: true } },
@@ -701,6 +706,7 @@
                                 //todate: { type: "string", editable: false, validation: { required: true } },
                                 status: { type: "string", editable: false, validation: { required: true } },
                                 reviewreport: { type: "string", editable: false, validation: { required: true } },
+                                                         Worked_as: { type: 'string', editable: false },
 
                                 completion_date: { type: "string", editable: false },
                                 reporting_interval: { type: "string", editable: false, validation: { required: true } },
@@ -714,8 +720,15 @@
                      pageSize: 10,
                 },
                 columns: [
-                    { field: "product_description", title: "Product Name" },
+                                        { field: "prodocid", title: "Report ID" },
+
+                    { field: "product_description", title: "Product Name" ,attributes:{
+                        title: "#=pro_doc_id#"
+                        }
+                    },
                     { field: "document_name", title: "Document Name" },
+                                    { field: "Worked_as", title: "Working as", width: "150px" },
+
                     //{ field: "fromDate", title: "Review from" },
                     { field: "reporting_interval", title: "Reporting Interval", format: "{0:0}" },
                     { field: "status", title: "Status", width: "150px", attributes: { style: "cursor: pointer" }, template: '<a class="#: progress==\"Late\"? \"red\" : status==\"To be initiated\"? \"blue\" : status==\"Completed\"? \"greenwithcur\" : status==\"Ongoing\"? \"orange\" :\"white\"#"  onclick="confirmAssign(this, #= pro_doc_id#)">#=status#</a>' },
@@ -737,7 +750,7 @@
                            //pageable:true,
 
                 pageable: {
-                    alwaysVisible: false,
+                    alwaysVisible: true,
                     pageSizes: [10, 20, 50,'All']
                 },
                 resizable: true,
@@ -822,7 +835,17 @@
             //chartArea: { background: "#63778B" },
              chartArea: {
         height: 350
-    },
+            },
+             valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
             seriesDefaults: {
                 labels: {
                     template: "#= category # - #= kendo.format('{0:V}', value)#",
@@ -869,7 +892,16 @@
               chartArea: {
         height: 350
     },
-
+              valueAxis: {
+                labels: {
+                    format: "{0:0}",
+                    rotation: "auto"
+                },
+                 majorUnit: 2,
+                 line: {
+                    visible: false
+                },
+            },
             seriesDefaults: {
                 labels: {
                     template: "#= category # - #= kendo.format('{0:V}', value)#",
@@ -906,38 +938,56 @@
                  window.location.href = url.replace("__id__", id);
              }
          } else if (text == "To be initiated") {
-             $.ajax({
-                 url: '@Url.Action("CheckRoleAvailability", "Home")',
-                 type: 'post',
-                 data: {
-                     receivedId: id
-                 },
-                 success: function (roleres) {
-                     var receivedRoleRes = JSON.parse(roleres);
-                     if (receivedRoleRes.info) {
-                         var url = '@Url.Action("Index", "KickOffMeeting", new { pro_doc_id = "__id__" })';
-                         window.location.href = url.replace("__id__", id);
-                     } else {
-                         var nousers = "";
-                         for (var i = 0; i < receivedRoleRes.length; i++) {
-                             if (i == receivedRoleRes.length - 1)
-                                 nousers += receivedRoleRes[i].role_name + "";
-                             else
-                                 nousers += receivedRoleRes[i].role_name + " , ";
-                         }
-                         nousers = "Users are not assigned for roles " + nousers + "  kindly add or assign to continue."
-                         swal({
-                             text: nousers,
-                             className: 'swal-wide',
-                         });
-                         return;
-                     }
-                 },
-                 error: function (err) {
-                  //   console.log("Error: ", err)
-                 }
-             });
-         }
+            $.ajax({
+                url: '@Url.Action("CheckTemplateAvailability", "Home")',
+                type: 'post',
+                data: {
+                    receivedId: id
+                },
+                success: function (res) {
+                    var receivedRes = JSON.parse(res);
+                    if (receivedRes.error) {
+                        swal(receivedRes.error)
+                        return;
+                    } else {
+                        $.ajax({
+                            url: '@Url.Action("CheckRoleAvailability", "Home")',
+                            type: 'post',
+                            data: {
+                                receivedId: id
+                            },
+                            success: function (roleres) {
+                                var receivedRoleRes = JSON.parse(roleres);
+                                if (receivedRoleRes.info) {
+                                    var url = '@Url.Action("Index", "KickOffMeeting", new { pro_doc_id = "__id__" })';
+                                    window.location.href = url.replace("__id__", id);
+                                } else {
+                                    var nousers = "";
+                                    for (var i = 0; i < receivedRoleRes.length; i++) {
+                                        if (i == receivedRoleRes.length - 1)
+                                            nousers +=  receivedRoleRes[i].role_name + "";
+                                        else
+                                            nousers += receivedRoleRes[i].role_name + " , ";
+                                    }
+                                    nousers = "Users are not assigned for roles " + nousers +  "  kindly add or assign to continue."
+                                    swal({
+                                        text: nousers,
+                                        className: 'swal-wide',
+                                    });
+                                    return;
+                                }
+                            },
+                            error: function (err) {
+                               // console.log("Error: ", err)
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    //console.log("Error: ", err)
+                }
+            });
+        }
       }
      function detailInit(e)    {
         var detailRow = e.detailRow;
@@ -1310,7 +1360,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist1" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png"  id="imgproductwisecount" />
+                            <img src="~/Themes/Images/images.png"  id="imgproductwisecount" style="cursor: pointer;" />
 
                         </div>
                     </div>
@@ -1346,7 +1396,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png"  id="imgductwisecount" />
+                            <img src="~/Themes/Images/images.png"  id="imgductwisecount" style="cursor: pointer;"/>
 
                         </div>
                     </div>
@@ -1383,7 +1433,7 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div id="k-dropdownlist2" style="width:100px;"></div>
-                            <img src="~/Themes/Images/images.png"  id="imgtotalreport" />
+                            <img src="~/Themes/Images/images.png"  id="imgtotalreport" style="cursor: pointer;"/>
                             @*<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                                     <div class="dropdown-header">Dropdown Header:</div>
                                     <a class="dropdown-item" href="#">Action</a>

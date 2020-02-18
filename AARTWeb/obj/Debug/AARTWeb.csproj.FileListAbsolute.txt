@@ -563,3 +563,5 @@ D:\AART\Azure download\AARTWeb\AARTWeb\bin\Telerik.Web.Mvc.dll
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.dll
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.pdb
 D:\AART\Azure download\AARTWeb\AARTWeb\bin\Quartz.xml
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\AARTServerVO.dll
+D:\AART\Azure download\AARTWeb\AARTWeb\bin\AARTServerVO.pdb
